@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Wizard",
+    "groupId": "magic",
+    "id": "wizard",
+    "tribeType": "civilized",
+    "description": "Classicly trained maigic user.",
+  },
+  {
+    "name": "Cleric",
+    "groupId": "holy",
+    "id": "cleric",
+    "tribeType": "civilized",
+    "description": "Classicly trained holy user.",
+  },
+  {
+    "name": "Warrior",
+    "groupId": "warrior",
+    "id": "warrior",
+    "tribeType": "civilized",
+    "description": "Classicly trained warrior.",
+  }
+]

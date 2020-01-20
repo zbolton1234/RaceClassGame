@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Human",
+    "raceId": "human",
+    "id": "commonHuman",
+    "tribeType": "civilized",
+    "description": "The most common race living mainly in the plains of Hilmore.",
+    "friendlyRaces": ["elf", "drawf", "gnome"],
+    "animals": ["cow", "dog"],
+    "hatedRaces": ["goblin", "orc", "monsters", "gnoll"]
+  },
+  {
+    "name": "Forest Elf",
+    "raceId": "elf",
+    "id": "forestElf",
+    "tribeType": "civilized",
+    "description": "The most wild of the elves. They live in small villages.",
+    "friendlyRaces": ["elf", "human", "gnome"],
+    "animals": ["bear"],
+    "hatedRaces": ["goblin", "orc", "giants", "gnoll"]
+  },
+  {
+    "name": "Dessert Elf",
+    "raceId": "elf",
+    "id": "dessertElf",
+    "tribeType": "civilized",
+    "description": "Sun baked elfs that live in huts on the sand.",
+    "friendlyRaces": ["elf", "human", "lizard"],
+    "animals": ["lion"],
+    "hatedRaces": ["goblin", "orc", "gnoll"]
+  }
+]

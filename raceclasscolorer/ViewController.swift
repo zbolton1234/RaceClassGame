@@ -12,7 +12,24 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        print(Person.generate())
+        
+        let randomEnounter = Encounter()
+        print(randomEnounter.fight(team: [Person.generate()]))
+        print(randomEnounter.fight(team: [Person.generate()]))
+        print(randomEnounter.fight(team: [Person.generate()]))
+        print(randomEnounter.fight(team: [Person.generate()]))
+        print(randomEnounter.fight(team: [Person.generate()]))
     }
 
     override func didReceiveMemoryWarning() {

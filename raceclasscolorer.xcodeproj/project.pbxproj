@@ -14,6 +14,10 @@
 		827F7F0F23CA5D1700545431 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 827F7F0D23CA5D1700545431 /* LaunchScreen.storyboard */; };
 		827F7F1A23CA5D1700545431 /* raceclasscolorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F1923CA5D1700545431 /* raceclasscolorerTests.swift */; };
 		827F7F2523CA5D1700545431 /* raceclasscolorerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F2423CA5D1700545431 /* raceclasscolorerUITests.swift */; };
+		827F7F3323CA5D7C00545431 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F3223CA5D7C00545431 /* Person.swift */; };
+		829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D842823D3A76A006AEBE5 /* Encounter.swift */; };
+		829D842B23D50538006AEBE5 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D842A23D50538006AEBE5 /* Loader.swift */; };
+		829D842D23D5062C006AEBE5 /* Data.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 829D842C23D5062B006AEBE5 /* Data.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +51,10 @@
 		827F7F2023CA5D1700545431 /* raceclasscolorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = raceclasscolorerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		827F7F2423CA5D1700545431 /* raceclasscolorerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = raceclasscolorerUITests.swift; sourceTree = "<group>"; };
 		827F7F2623CA5D1700545431 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		827F7F3223CA5D7C00545431 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		829D842823D3A76A006AEBE5 /* Encounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encounter.swift; sourceTree = "<group>"; };
+		829D842A23D50538006AEBE5 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		829D842C23D5062B006AEBE5 /* Data.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Data.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +107,11 @@
 			children = (
 				827F7F0423CA5D1100545431 /* AppDelegate.swift */,
 				827F7F0623CA5D1100545431 /* ViewController.swift */,
+				827F7F3223CA5D7C00545431 /* Person.swift */,
+				829D842A23D50538006AEBE5 /* Loader.swift */,
+				829D842823D3A76A006AEBE5 /* Encounter.swift */,
 				827F7F0823CA5D1100545431 /* Main.storyboard */,
+				829D842C23D5062B006AEBE5 /* Data.xcassets */,
 				827F7F0B23CA5D1700545431 /* Assets.xcassets */,
 				827F7F0D23CA5D1700545431 /* LaunchScreen.storyboard */,
 				827F7F1023CA5D1700545431 /* Info.plist */,
@@ -193,13 +205,16 @@
 				TargetAttributes = {
 					827F7F0023CA5D1100545431 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1130;
 					};
 					827F7F1423CA5D1700545431 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1130;
 						TestTargetID = 827F7F0023CA5D1100545431;
 					};
 					827F7F1F23CA5D1700545431 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1130;
 						TestTargetID = 827F7F0023CA5D1100545431;
 					};
 				};
@@ -232,6 +247,7 @@
 				827F7F0F23CA5D1700545431 /* LaunchScreen.storyboard in Resources */,
 				827F7F0C23CA5D1700545431 /* Assets.xcassets in Resources */,
 				827F7F0A23CA5D1100545431 /* Main.storyboard in Resources */,
+				829D842D23D5062C006AEBE5 /* Data.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,8 +272,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				827F7F3323CA5D7C00545431 /* Person.swift in Sources */,
+				829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */,
 				827F7F0723CA5D1100545431 /* ViewController.swift in Sources */,
 				827F7F0523CA5D1100545431 /* AppDelegate.swift in Sources */,
+				829D842B23D50538006AEBE5 /* Loader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,7 +458,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -457,7 +476,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -477,7 +496,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/raceclasscolorer.app/raceclasscolorer";
 			};
@@ -498,7 +517,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/raceclasscolorer.app/raceclasscolorer";
 			};
@@ -518,7 +537,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = raceclasscolorer;
 			};
@@ -538,7 +557,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = raceclasscolorer;
 			};
