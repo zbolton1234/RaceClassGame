@@ -6,7 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "classes.json"
+      "filename" : "classes.json",
+      "universal-type-identifier" : "public.json"
     }
   ]
 }

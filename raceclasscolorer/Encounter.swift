@@ -12,7 +12,7 @@ class Encounter {
     let enemyTeam: [Person]
     
     init() {
-        enemyTeam = [Person.generate(), Person.generate(), Person.generate(), Person.generate(), Person.generate()]
+        enemyTeam = [Person(), Person(), Person(), Person(), Person()]
     }
     
     func fight(team: [Person]) -> FightState {

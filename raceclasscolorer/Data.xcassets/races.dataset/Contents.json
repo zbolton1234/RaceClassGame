@@ -6,7 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "races.json"
+      "filename" : "races.json",
+      "universal-type-identifier" : "public.json"
     }
   ]
 }

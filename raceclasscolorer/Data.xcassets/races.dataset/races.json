@@ -28,5 +28,25 @@
     "friendlyRaces": ["elf", "human", "lizard"],
     "animals": ["lion"],
     "hatedRaces": ["goblin", "orc", "gnoll"]
+  },
+  {
+    "name": "Red Orc",
+    "raceId": "orc",
+    "id": "redOrc",
+    "tribeType": "wild",
+    "description": "The most common orc.",
+    "friendlyRaces": ["goblin"],
+    "animals": [],
+    "hatedRaces": ["human", "elf", "drawf"]
+  },
+  {
+    "name": "Yellow Orc",
+    "raceId": "orc",
+    "id": "yellowOrc",
+    "tribeType": "wild",
+    "description": "The other most common orc.",
+    "friendlyRaces": ["goblin"],
+    "animals": [],
+    "hatedRaces": ["human", "elf", "drawf"]
   }
 ]

@@ -5,6 +5,14 @@
     "id": "wizard",
     "tribeType": "civilized",
     "description": "Classicly trained maigic user.",
+    "minHP": 5,
+    "maxHP": 10,
+    "minAttack": 1,
+    "maxAttack": 3,
+    "minDefense": 0,
+    "maxDefense": 2,
+    "attackType": "aoe",
+    "secondary": "ping"
   },
   {
     "name": "Cleric",
@@ -12,6 +20,14 @@
     "id": "cleric",
     "tribeType": "civilized",
     "description": "Classicly trained holy user.",
+    "minHP": 10,
+    "maxHP": 20,
+    "minAttack": 3,
+    "maxAttack": 5,
+    "minDefense": 5,
+    "maxDefense": 10,
+    "attackType": "single",
+    "secondary": "aoe"
   },
   {
     "name": "Warrior",
@@ -19,5 +35,13 @@
     "id": "warrior",
     "tribeType": "civilized",
     "description": "Classicly trained warrior.",
+    "minHP": 7,
+    "maxHP": 13,
+    "minAttack": 5,
+    "maxAttack": 10,
+    "minDefense": 3,
+    "maxDefense": 5,
+    "attackType": "single",
+    "secondary": "buff"
   }
 ]
