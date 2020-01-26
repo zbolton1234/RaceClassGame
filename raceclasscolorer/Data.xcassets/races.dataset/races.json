@@ -48,5 +48,35 @@
     "friendlyRaces": ["goblin"],
     "animals": [],
     "hatedRaces": ["human", "elf", "drawf"]
+  },
+  {
+    "name": "Green Orc",
+    "raceId": "orc",
+    "id": "greenOrc",
+    "tribeType": "wild",
+    "description": "The other most common orc.",
+    "friendlyRaces": ["goblin"],
+    "animals": [],
+    "hatedRaces": ["human", "elf", "drawf"]
+  },
+  {
+    "name": "Brown Orc",
+    "raceId": "orc",
+    "id": "brownOrc",
+    "tribeType": "wild",
+    "description": "The other most common orc.",
+    "friendlyRaces": ["goblin"],
+    "animals": [],
+    "hatedRaces": ["human", "elf", "drawf"]
+  },
+  {
+    "name": "Purple Orc",
+    "raceId": "orc",
+    "id": "purpleOrc",
+    "tribeType": "wild",
+    "description": "The other most common orc.",
+    "friendlyRaces": ["goblin"],
+    "animals": [],
+    "hatedRaces": ["human", "elf", "drawf"]
   }
 ]

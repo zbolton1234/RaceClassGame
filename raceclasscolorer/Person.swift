@@ -6,10 +6,26 @@
 //  Copyright © 2020 Zach Bolton. All rights reserved.
 //
 
+import GameKit
 import UIKit
 
 let allRaces = loadRaces()
 let allClasses = loadClasses()
+
+func allClasses(ofType: TribeType) -> [Class] {
+    return allClasses.filter({ $0.tribeType == ofType })
+}
+
+func allRaceIds() -> [String] {
+    return Array(Set(allRaces.map({ $0.raceId })))
+}
+
+func allRaces(ofRaceId: String) -> [Race] {
+    return allRaces.filter({ $0.raceId == ofRaceId })
+}
+
+let random = GKRandomSource()
+let randomPersentage = GKGaussianDistribution(randomSource: random, mean: 100, deviation: 20)
 
 struct Person: CustomStringConvertible {
     let id = UUID()
@@ -30,13 +46,22 @@ struct Person: CustomStringConvertible {
         if let preRace = preRace {
             selectedRace = preRace
         } else {
-            selectedRace = allRaces.randomElement()!
+            let randomType = allRaceIds().randomElement()!
+            selectedRace = allRaces(ofRaceId: randomType).randomElement()!
         }
         
         if let preClass = preClass {
             selectedClass = preClass
         } else {
-            selectedClass = allClasses.randomElement()!
+            let validClasses: [Class]
+            
+            if selectedRace.tribeType == .wild {
+                validClasses = allClasses(ofType: .wild)
+            } else {
+                validClasses = allClasses
+            }
+            
+            selectedClass = validClasses.randomElement()!
         }
         
         if let preColor = preColor {
@@ -49,9 +74,9 @@ struct Person: CustomStringConvertible {
         pclass = selectedClass
         color = selectedColor
         
-        hp = (pclass.minHP...pclass.maxHP).randomElement()!
-        attack = (pclass.minAttack...pclass.maxAttack).randomElement()!
-        defense = (pclass.minDefense...pclass.maxDefense).randomElement()!
+        hp = Int(Double(pclass.hp) * (Double(randomPersentage.nextInt()) / 100.0))
+        attack = Int(Double(pclass.attack) * (Double(randomPersentage.nextInt()) / 100.0))
+        defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0))
         
         attackType = pclass.attackType
         secondary = pclass.secondary
@@ -125,12 +150,9 @@ struct Class: Decodable {
     let id: String
     let tribeType: TribeType
     let description: String
-    let minHP: Int
-    let maxHP: Int
-    let minAttack: Int
-    let maxAttack: Int
-    let minDefense: Int
-    let maxDefense: Int
+    let hp: Int
+    let attack: Int
+    let defense: Int
     let attackType: AttackType
     let secondary: AttackType
 }

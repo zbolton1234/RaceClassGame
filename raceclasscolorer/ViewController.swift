@@ -21,11 +21,11 @@ class ViewController: UIViewController {
         let human2 = Person(preRace: allRaces[0], preClass: allClasses[1], preColor: .blue)
         
         let humanTeam = Team(members: [human1, human2])
-        print(human1.totalBuffs(team: humanTeam))
+        //print(human1.totalBuffs(team: humanTeam))
         
         let elf1 = Person(preRace: allRaces[1], preClass: allClasses[0], preColor: .green)
         humanTeam.members.append(elf1)
-        print(human1.totalBuffs(team: humanTeam))
+        //print(human1.totalBuffs(team: humanTeam))
         
         ourTeam.show(team: humanTeam)
         
