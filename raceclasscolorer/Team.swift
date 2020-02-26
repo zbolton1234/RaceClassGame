@@ -14,4 +14,8 @@ class Team {
     init(members: [Person]) {
         self.members = members
     }
+    
+    var isAlive: Bool {
+        return !members.reduce(true, { $0 && $1.currentHp <= 0 })
+    }
 }

@@ -38,6 +38,13 @@
                                     </label>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a7Z-9U-IQP">
+                                <rect key="frame" x="832" y="354" width="44" height="30"/>
+                                <state key="normal" title="Attack"/>
+                                <connections>
+                                    <action selector="attack:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Spq-cU-wXJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -45,6 +52,8 @@
                             <constraint firstItem="HwJ-p5-Vwb" firstAttribute="height" secondItem="jg2-h1-TTQ" secondAttribute="height" id="H7A-2g-JZL"/>
                             <constraint firstItem="HwJ-p5-Vwb" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="JyI-4b-pY5"/>
                             <constraint firstItem="jg2-h1-TTQ" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="O5y-9V-7VA"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="a7Z-9U-IQP" secondAttribute="bottom" constant="9" id="XzX-44-UFp"/>
+                            <constraint firstAttribute="trailing" secondItem="a7Z-9U-IQP" secondAttribute="trailing" constant="20" symbolic="YES" id="f61-NV-l1R"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="jg2-h1-TTQ" secondAttribute="trailing" constant="16" id="fce-kw-QJy"/>
                             <constraint firstItem="jg2-h1-TTQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="h5w-Oq-68r"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HwJ-p5-Vwb" secondAttribute="trailing" constant="16" id="l27-2c-j74"/>
@@ -53,8 +62,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="enemyTeam" destination="jg2-h1-TTQ" id="kDX-wF-XDX"/>
-                        <outlet property="ourTeam" destination="HwJ-p5-Vwb" id="LLL-8D-wZn"/>
+                        <outlet property="enemyTeamView" destination="jg2-h1-TTQ" id="kDX-wF-XDX"/>
+                        <outlet property="ourTeamView" destination="HwJ-p5-Vwb" id="LLL-8D-wZn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

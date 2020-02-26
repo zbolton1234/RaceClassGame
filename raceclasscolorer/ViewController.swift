@@ -10,8 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var enemyTeam: UIStackView!
-    @IBOutlet weak var ourTeam: UIStackView!
+    @IBOutlet weak var enemyTeamView: UIStackView!
+    @IBOutlet weak var ourTeamView: UIStackView!
+    
+    var ourTeam: Team?
+    var enemyTeam: Team?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +30,21 @@ class ViewController: UIViewController {
         humanTeam.members.append(elf1)
         //print(human1.totalBuffs(team: humanTeam))
         
-        ourTeam.show(team: humanTeam)
+        ourTeam = humanTeam
+        ourTeamView.show(team: humanTeam)
         
         let otherTeam = Team(members: [Person(), Person(), Person()])
-        enemyTeam.show(team: otherTeam)
+        enemyTeam = otherTeam
+        enemyTeamView.show(team: otherTeam)
+    }
+    
+    @IBAction func attack(_ sender: Any) {
+        guard let ourTeam = ourTeam, let enemyTeam = enemyTeam else {
+            return
+        }
+        
+        let encounter = Encounter(ourTeam: ourTeam, enemyTeam: enemyTeam)
+        encounter.fight()
     }
 }
 

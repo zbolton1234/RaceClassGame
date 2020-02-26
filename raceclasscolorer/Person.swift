@@ -27,7 +27,7 @@ func allRaces(ofRaceId: String) -> [Race] {
 let random = GKRandomSource()
 let randomPersentage = GKGaussianDistribution(randomSource: random, mean: 100, deviation: 20)
 
-struct Person: CustomStringConvertible {
+class Person: CustomStringConvertible {
     let id = UUID()
     let race: Race
     let pclass: Class
@@ -37,6 +37,10 @@ struct Person: CustomStringConvertible {
     let defense: Int
     let attackType: AttackType
     let secondary: AttackType
+    
+    var currentHp: Int
+    var currentAttack: Int
+    var currentDefense: Int
     
     init(preRace: Race? = nil, preClass: Class? = nil, preColor: Color? = nil) {
         let selectedRace: Race
@@ -77,6 +81,10 @@ struct Person: CustomStringConvertible {
         hp = Int(Double(pclass.hp) * (Double(randomPersentage.nextInt()) / 100.0))
         attack = Int(Double(pclass.attack) * (Double(randomPersentage.nextInt()) / 100.0))
         defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0))
+     
+        currentHp = hp
+        currentAttack = attack
+        currentDefense = defense
         
         attackType = pclass.attackType
         secondary = pclass.secondary
@@ -94,6 +102,10 @@ struct Person: CustomStringConvertible {
             
             return total + self.compareRace(person: otherPerson) + self.compareClass(person: otherPerson)
         }
+    }
+    
+    func attackModifer(enemy: Person) -> Float {
+        return Float(attack / enemy.defense)
     }
     
     func compareRace(person: Person) -> Int {

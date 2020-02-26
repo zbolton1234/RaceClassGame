@@ -8,25 +8,43 @@
 
 import UIKit
 
-class Encounter {
-    let enemyTeam: [Person]
+struct Encounter {
+    let ourTeam: Team
+    let enemyTeam: Team
     
-    init() {
-        enemyTeam = [Person(), Person(), Person(), Person(), Person()]
-    }
-    
-    func fight(team: [Person]) -> FightState {
-        //TODO: actual fighting lol
-        let testState = [true, false].randomElement()!
+    func fight() -> FightState {
+        
+        while ourTeam.isAlive && enemyTeam.isAlive {
+            ourTeam.members.enumerated().forEach({ (index, member) in
+                switch member.attackType {
+                case .aoe:
+                    for enemy in enemyTeam.members {
+                        enemy.currentHp -= Int(Float(2) * member.attackModifer(enemy: enemy))
+                    }
+                case .ping:
+                    let enemy = enemyTeam.members.randomElement()!
+                    enemy.currentHp -= 1
+                case .single:
+                    let enemy = enemyTeam.members[index]
+                    enemy.currentHp -= Int(Float(5) * member.attackModifer(enemy: enemy))
+                case .buff:
+                    for member in ourTeam.members {
+                        member.currentAttack += 1
+                    }
+                }
+            })
+        }
+        
+        let wonState = ourTeam.isAlive
         
         let reward: Reward
-        if testState {
-            reward = Reward(people: [enemyTeam.randomElement()!], points: [Points(race: team.first!.race, points: 5)])
+        if wonState {
+            reward = Reward(people: [enemyTeam.members.randomElement()!], points: [Points(race: ourTeam.members.first!.race, points: 5)])
         } else {
             reward = Reward(people: [], points: [])
         }
         
-        return FightState(won: testState, reward: reward)
+        return FightState(won: wonState, reward: reward)
     }
 }
 
