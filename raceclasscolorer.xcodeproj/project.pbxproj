@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		826025D22409767300811B98 /* BattleFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D12409767300811B98 /* BattleFieldView.swift */; };
+		826025D4240D822B00811B98 /* BattleGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D3240D822B00811B98 /* BattleGround.swift */; };
 		827F7F0523CA5D1100545431 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F0423CA5D1100545431 /* AppDelegate.swift */; };
 		827F7F0723CA5D1100545431 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F0623CA5D1100545431 /* ViewController.swift */; };
 		827F7F0A23CA5D1100545431 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 827F7F0823CA5D1100545431 /* Main.storyboard */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		826025D12409767300811B98 /* BattleFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleFieldView.swift; sourceTree = "<group>"; };
+		826025D3240D822B00811B98 /* BattleGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleGround.swift; sourceTree = "<group>"; };
 		827F7F0123CA5D1100545431 /* raceclasscolorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = raceclasscolorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		827F7F0423CA5D1100545431 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		827F7F0623CA5D1100545431 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -111,11 +115,13 @@
 			children = (
 				827F7F0423CA5D1100545431 /* AppDelegate.swift */,
 				827F7F0623CA5D1100545431 /* ViewController.swift */,
+				826025D12409767300811B98 /* BattleFieldView.swift */,
 				829D843023D612F1006AEBE5 /* Constants.swift */,
 				827F7F3223CA5D7C00545431 /* Person.swift */,
 				829D842E23D6109D006AEBE5 /* Team.swift */,
 				829D842A23D50538006AEBE5 /* Loader.swift */,
 				829D842823D3A76A006AEBE5 /* Encounter.swift */,
+				826025D3240D822B00811B98 /* BattleGround.swift */,
 				827F7F0823CA5D1100545431 /* Main.storyboard */,
 				829D842C23D5062B006AEBE5 /* Data.xcassets */,
 				827F7F0B23CA5D1700545431 /* Assets.xcassets */,
@@ -281,6 +287,8 @@
 				829D842F23D6109D006AEBE5 /* Team.swift in Sources */,
 				827F7F3323CA5D7C00545431 /* Person.swift in Sources */,
 				829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */,
+				826025D4240D822B00811B98 /* BattleGround.swift in Sources */,
+				826025D22409767300811B98 /* BattleFieldView.swift in Sources */,
 				827F7F0723CA5D1100545431 /* ViewController.swift in Sources */,
 				829D843123D612F1006AEBE5 /* Constants.swift in Sources */,
 				827F7F0523CA5D1100545431 /* AppDelegate.swift in Sources */,

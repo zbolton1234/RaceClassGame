@@ -10,8 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var enemyTeamView: UIStackView!
-    @IBOutlet weak var ourTeamView: UIStackView!
+    @IBOutlet weak var battleFieldView: BattleFieldView!
     
     //TODO: can I fix this?
     var ourTeam: Team!
@@ -39,8 +38,7 @@ class ViewController: UIViewController {
         
         encounter = Encounter(ourTeam: ourTeam, enemyTeam: enemyTeam)
 
-        ourTeamView.show(spots: encounter.battleGround.ourTeamSide, team: humanTeam)
-        enemyTeamView.show(spots: encounter.battleGround.enemyTeamSide, team: otherTeam)
+        battleFieldView.updateBattleGround(battleGround: encounter.battleGround)
     }
     
     @IBAction func attack(_ sender: Any) {
@@ -48,37 +46,11 @@ class ViewController: UIViewController {
             return
         }
         
-        encounter.fight()
-    }
-}
-
-extension UIStackView {
-    //TODO: make combo view and show BattleGround?
-    func show(spots: [Spot], team: Team) {
-        arrangedSubviews.forEach({ $0.removeFromSuperview() })
-        
-        spots.forEach({ (spot) in
-            let label = UILabel()
-            label.numberOfLines = 0
-            label.textAlignment = .center
-            
-            switch spot {
-            case .void:
-                label.backgroundColor = .black
-                label.text = "v"
-            case .empty:
-                label.backgroundColor = .lightGray
-                label.text = "e"
-            case .terain(let name):
-                label.backgroundColor = .lightGray
-                label.text = name
-            case .person(let personInSpot):
-                label.backgroundColor = .lightGray
-                
-                label.text = "\(personInSpot.race.name)\n\(personInSpot.pclass.name)\n\(personInSpot.color)\n\(personInSpot.hp) \(personInSpot.attack) \(personInSpot.defense)\n\(personInSpot.totalBuffs(team: team))"
-            }
-            
-            addArrangedSubview(label)
-        })
+        let fightResult = encounter.fight()
+        if fightResult.won {
+            print("We won")
+        } else {
+            print("We lost")
+        }
     }
 }
