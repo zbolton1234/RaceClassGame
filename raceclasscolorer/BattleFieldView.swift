@@ -17,22 +17,11 @@ class BattleFieldView: UIView {
     
     func updateBattleGround(battleGround: BattleGround) {
         currentBattleGround = battleGround
-        
-        battleGround.ourTeamSide.enumerated().forEach({ (index, state) in
-            state.position = (index + 2, 0)
-        })
-        let convertedOur = battleGround.ourTeamSide.map({ Spot.person($0) })
-        battleGround.enemyTeamSide.enumerated().forEach({ (index, state) in
-            state.position = (index + 2, 5)
-        })
-        let convertedEnemy = battleGround.enemyTeamSide.map({ Spot.person($0) })
 
-        stackViews[0].show(spots: [.void, .void] + convertedOur + [.void, .void])
-        stackViews[1].show(spots: [.void, .empty, .empty, .empty, .empty, .empty, .void])
-        stackViews[2].show(spots: [.void, .void, .empty, .empty, .empty, .void, .void])
-        stackViews[3].show(spots: [.void, .void, .empty, .empty, .empty, .void, .void])
-        stackViews[4].show(spots: [.void, .empty, .empty, .empty, .empty, .empty, .void])
-        stackViews[5].show(spots: [.void, .void] + convertedEnemy + [.void, .void])
+        //TODO: Make the views off the model not this
+        stackViews.enumerated().forEach({ (index, stackView) in
+            stackView.show(spots: battleGround.ground[index])
+        })
     }
 }
 
@@ -60,7 +49,7 @@ extension UIStackView {
             case .person(let personInSpot):
                 label.backgroundColor = .lightGray
   
-                label.text = "\(personInSpot.person.race.name)\n\(personInSpot.person.pclass.name)\n\(personInSpot.person.color)"//"\n\(personInSpot.hp) \(personInSpot.attack) \(personInSpot.defense)\n\(personInSpot.totalBuffs(team: team))"
+                label.text = "\(personInSpot.person.race.name)\n\(personInSpot.person.pclass.name)\n\(personInSpot.person.color) \(personInSpot.person.currentHp)"//"\n\(personInSpot.hp) \(personInSpot.attack) \(personInSpot.defense)\n\(personInSpot.totalBuffs(team: team))"
             }
             
             addArrangedSubview(label)

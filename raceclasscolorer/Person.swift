@@ -105,6 +105,9 @@ class Person: CustomStringConvertible {
     }
     
     func attackModifer(enemy: Person) -> Float {
+        if enemy.defense == 0 {
+            return Float(attack)
+        }
         return Float(attack / enemy.defense)
     }
     

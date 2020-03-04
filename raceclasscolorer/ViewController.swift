@@ -46,11 +46,12 @@ class ViewController: UIViewController {
             return
         }
         
-        let fightResult = encounter.fight()
-        if fightResult.won {
-            print("We won")
-        } else {
-            print("We lost")
+        encounter.fight(battleFieldView: battleFieldView) { (fightResult) in 
+            if fightResult.won {
+                print("We won")
+            } else {
+                print("We lost")
+            }
         }
     }
 }
