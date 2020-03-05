@@ -35,6 +35,7 @@ extension UIStackView {
             label.numberOfLines = 0
             label.textAlignment = .center
             label.font = .systemFont(ofSize: 10)
+            label.textColor = .black
             
             switch spot {
             case .void:
@@ -50,6 +51,13 @@ extension UIStackView {
                 label.backgroundColor = .lightGray
   
                 label.text = "\(personInSpot.person.race.name)\n\(personInSpot.person.pclass.name)\n\(personInSpot.person.color) \(personInSpot.person.currentHp)"//"\n\(personInSpot.hp) \(personInSpot.attack) \(personInSpot.defense)\n\(personInSpot.totalBuffs(team: team))"
+                
+                switch personInSpot.teamType {
+                case .our:
+                    label.textColor = .green
+                case .enemy:
+                    label.textColor = .red
+                }
             }
             
             addArrangedSubview(label)

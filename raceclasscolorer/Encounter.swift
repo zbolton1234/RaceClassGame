@@ -41,26 +41,61 @@ struct Encounter {
                 enemyState.person.currentHp -= 1
             case .single:
                 if let enemyState = battleGround.closestEnemy(attackingPerson: memberState) {
-                    print("I'm \(member.race.name)\(member.pclass.name)\(member.color) and \(enemyState.1.person.race.name)\(enemyState.1.person.pclass.name)\(enemyState.1.person.color) is \(enemyState.0)")
+                    //print("I'm \(member.race.name)\(member.pclass.name)\(member.color) and \(enemyState.1.person.race.name)\(enemyState.1.person.pclass.name)\(enemyState.1.person.color) is \(enemyState.0)")
                     
                     if enemyState.0 < 2.0 {
                         enemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: enemyState.1.person))
                     } else {
                         var newPostion = memberPosition
+                        var yChange = 0
+                        var xChange = 0
                         
                         if enemyState.1.position?.y ?? 0 > memberPosition.y {
                             newPostion.y += 1
+                            yChange = 1
                         } else if enemyState.1.position?.y ?? 0 < memberPosition.y {
                             newPostion.y -= 1
+                            yChange = -1
                         }
                         
                         if enemyState.1.position?.x ?? 0 > memberPosition.x {
                             newPostion.x += 1
+                            xChange = 1
                         } else if enemyState.1.position?.x ?? 0 < memberPosition.x {
                             newPostion.x -= 1
+                            xChange = -1
                         }
                         
-                        battleGround.move(person: memberState, position: newPostion)
+                        //TODO: feel like this is overcomplicated
+                        if !battleGround.move(person: memberState, position: newPostion) {
+                            //print("failed \(newPostion)")
+                            if xChange == 0 {
+                                newPostion.x -= 1
+                                //print("trying \(newPostion)")
+                                if !battleGround.move(person: memberState, position: newPostion) {
+                                    newPostion.x += 2
+                                    //print("trying \(newPostion)")
+                                    battleGround.move(person: memberState, position: newPostion)
+                                }
+                            } else if yChange == 0 {
+                                newPostion.y -= 1
+                                //print("trying \(newPostion)")
+                                if !battleGround.move(person: memberState, position: newPostion) {
+                                    newPostion.y += 2
+                                    //print("trying \(newPostion)")
+                                    battleGround.move(person: memberState, position: newPostion)
+                                }
+                            } else {
+                                newPostion.x += xChange
+                                //print("trying \(newPostion)")
+                                if !battleGround.move(person: memberState, position: newPostion) {
+                                    newPostion.x -= xChange
+                                    newPostion.y += yChange
+                                    //print("trying \(newPostion)")
+                                    battleGround.move(person: memberState, position: newPostion)
+                                }
+                            }
+                        }
                     }
                 }
             case .buff:

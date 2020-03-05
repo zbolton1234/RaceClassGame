@@ -67,8 +67,8 @@ class BattleGround {
         //TODO: different sizes and different layouts needed
         ground = [[.void, .void] + convertedOur + [.void, .void],
         [.void, .empty, .empty, .empty, .empty, .empty, .void],
-        [.void, .void, .empty, .empty, .empty, .void, .void],
-        [.void, .void, .empty, .empty, .empty, .void, .void],
+        [.void, .void, .empty, .void, .empty, .void, .void],
+        [.void, .void, .empty, .void, .empty, .void, .void],
         [.void, .empty, .empty, .empty, .empty, .empty, .void],
         [.void, .void] + convertedEnemy + [.void, .void]]
     }
@@ -90,9 +90,16 @@ class BattleGround {
         return distances.min(by: { $0.0 < $1.0 })
     }
     
-    func move(person: PersonState, position: (x: Int, y: Int)) {
+    func move(person: PersonState, position: (x: Int, y: Int)) -> Bool {
+        //TODO: do this better
+        if case .person(let personInSpot) = ground[position.y][position.x] {
+            if personInSpot.person.currentHp <= 0 {
+                ground[position.y][position.x] = .empty
+            }
+        }
+        
         guard case .empty = ground[position.y][position.x] else {
-            return
+            return false
         }
         
         ground[position.y][position.x] = .person(person)
@@ -102,5 +109,6 @@ class BattleGround {
         }
         
         person.position = position
+        return true
     }
 }
