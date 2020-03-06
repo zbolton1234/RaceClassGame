@@ -129,7 +129,9 @@ struct Encounter {
                 reward = Reward(people: [], points: [])
             }
             
-            completion(FightState(won: wonState, reward: reward))
+            DispatchQueue.main.sync {
+                completion(FightState(won: wonState, reward: reward))
+            }
         }
     }
 }

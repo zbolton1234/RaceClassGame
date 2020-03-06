@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cHE-2U-AtG">
     <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Battle View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="raceclasscolorer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="BattleViewController" customModule="raceclasscolorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -92,13 +92,118 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="glG-F2-zyR"/>
                     <connections>
                         <outlet property="battleFieldView" destination="PI0-5M-f9h" id="5ze-Cc-EYf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="133" y="1770"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="osU-Vf-UMI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cHE-2U-AtG" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1ef-54-xw7">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="k0e-o4-MZE" kind="relationship" relationship="rootViewController" id="G1J-pe-ZAR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Whr-BE-he6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
             <point key="canvasLocation" x="132.58928571428572" y="89.855072463768124"/>
+        </scene>
+        <!--Selection View Controller-->
+        <scene sceneID="ePu-hk-FWo">
+            <objects>
+                <viewController id="k0e-o4-MZE" customClass="SelectionViewController" customModule="raceclasscolorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LJw-Hm-dTI">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fn5-EY-PSG">
+                                <rect key="frame" x="433" y="192" width="30" height="30"/>
+                                <state key="normal" title="go"/>
+                                <connections>
+                                    <action selector="selectedBattle:" destination="k0e-o4-MZE" eventType="touchUpInside" id="2lv-rv-FzX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0op-PX-xVE">
+                                <rect key="frame" x="222" y="95" width="58" height="30"/>
+                                <state key="normal" title="Warriors"/>
+                                <connections>
+                                    <action selector="selectedOur:" destination="k0e-o4-MZE" eventType="touchUpInside" id="ru6-kA-fBw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v0R-Fa-cr0">
+                                <rect key="frame" x="223" y="151" width="56" height="30"/>
+                                <state key="normal" title="Wizards"/>
+                                <connections>
+                                    <action selector="selectedOur:" destination="k0e-o4-MZE" eventType="touchUpInside" id="kDj-D1-RZt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9g3-N0-Thd">
+                                <rect key="frame" x="227" y="211" width="48" height="30"/>
+                                <state key="normal" title="Clerics"/>
+                                <connections>
+                                    <action selector="selectedOur:" destination="k0e-o4-MZE" eventType="touchUpInside" id="LO2-c8-0Sr"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TXO-M2-p0G">
+                                <rect key="frame" x="692" y="95" width="58" height="30"/>
+                                <state key="normal" title="Warriors"/>
+                                <connections>
+                                    <action selector="selectedEnemy:" destination="k0e-o4-MZE" eventType="touchUpInside" id="hPi-6K-NRx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TSC-iO-0jd">
+                                <rect key="frame" x="693" y="151" width="56" height="30"/>
+                                <state key="normal" title="Wizards"/>
+                                <connections>
+                                    <action selector="selectedEnemy:" destination="k0e-o4-MZE" eventType="touchUpInside" id="4ai-iP-mi3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTp-Z8-ocG">
+                                <rect key="frame" x="697" y="211" width="48" height="30"/>
+                                <state key="normal" title="Clerics"/>
+                                <connections>
+                                    <action selector="selectedEnemy:" destination="k0e-o4-MZE" eventType="touchUpInside" id="YPD-AD-zHN"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Fn5-EY-PSG" firstAttribute="centerY" secondItem="LJw-Hm-dTI" secondAttribute="centerY" id="2Kg-Bx-GBZ"/>
+                            <constraint firstItem="0op-PX-xVE" firstAttribute="top" secondItem="SFD-8k-8hy" secondAttribute="top" constant="95" id="7Uy-TH-spu"/>
+                            <constraint firstItem="v0R-Fa-cr0" firstAttribute="top" secondItem="0op-PX-xVE" secondAttribute="bottom" constant="26" id="Bmb-FL-eEv"/>
+                            <constraint firstItem="TXO-M2-p0G" firstAttribute="top" secondItem="SFD-8k-8hy" secondAttribute="top" constant="95" id="QJF-UZ-E1F"/>
+                            <constraint firstItem="SFD-8k-8hy" firstAttribute="trailing" secondItem="TXO-M2-p0G" secondAttribute="trailing" constant="102" id="Qcu-iT-z7Y"/>
+                            <constraint firstItem="TSC-iO-0jd" firstAttribute="centerX" secondItem="TXO-M2-p0G" secondAttribute="centerX" id="b28-U0-BJ4"/>
+                            <constraint firstItem="0op-PX-xVE" firstAttribute="leading" secondItem="SFD-8k-8hy" secondAttribute="leading" constant="178" id="dXp-s1-9RB"/>
+                            <constraint firstItem="MTp-Z8-ocG" firstAttribute="centerX" secondItem="TXO-M2-p0G" secondAttribute="centerX" id="her-Y3-5vp"/>
+                            <constraint firstItem="9g3-N0-Thd" firstAttribute="centerX" secondItem="0op-PX-xVE" secondAttribute="centerX" id="hsh-YJ-xN8"/>
+                            <constraint firstItem="v0R-Fa-cr0" firstAttribute="centerX" secondItem="0op-PX-xVE" secondAttribute="centerX" id="lOW-kQ-VLE"/>
+                            <constraint firstItem="TSC-iO-0jd" firstAttribute="top" secondItem="TXO-M2-p0G" secondAttribute="bottom" constant="26" id="rKa-nP-VSc"/>
+                            <constraint firstItem="MTp-Z8-ocG" firstAttribute="top" secondItem="TSC-iO-0jd" secondAttribute="bottom" constant="30" id="wuJ-xT-He6"/>
+                            <constraint firstItem="Fn5-EY-PSG" firstAttribute="centerX" secondItem="LJw-Hm-dTI" secondAttribute="centerX" id="yAm-oI-GLY"/>
+                            <constraint firstItem="9g3-N0-Thd" firstAttribute="top" secondItem="v0R-Fa-cr0" secondAttribute="bottom" constant="30" id="za7-Ux-b85"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="SFD-8k-8hy"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="yei-ke-C0U"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="showBattleViewController" destinationCreationSelector="showBattleSegue:" id="6Ig-cc-43D"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pUj-JU-8Ug" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="133" y="943"/>
         </scene>
     </scenes>
 </document>

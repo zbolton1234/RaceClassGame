@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		826025D22409767300811B98 /* BattleFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D12409767300811B98 /* BattleFieldView.swift */; };
 		826025D4240D822B00811B98 /* BattleGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D3240D822B00811B98 /* BattleGround.swift */; };
+		826025D624119A1C00811B98 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D524119A1C00811B98 /* SelectionViewController.swift */; };
 		827F7F0523CA5D1100545431 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F0423CA5D1100545431 /* AppDelegate.swift */; };
-		827F7F0723CA5D1100545431 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F0623CA5D1100545431 /* ViewController.swift */; };
+		827F7F0723CA5D1100545431 /* BattleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F0623CA5D1100545431 /* BattleViewController.swift */; };
 		827F7F0A23CA5D1100545431 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 827F7F0823CA5D1100545431 /* Main.storyboard */; };
 		827F7F0C23CA5D1700545431 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 827F7F0B23CA5D1700545431 /* Assets.xcassets */; };
 		827F7F0F23CA5D1700545431 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 827F7F0D23CA5D1700545431 /* LaunchScreen.storyboard */; };
@@ -44,9 +45,10 @@
 /* Begin PBXFileReference section */
 		826025D12409767300811B98 /* BattleFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleFieldView.swift; sourceTree = "<group>"; };
 		826025D3240D822B00811B98 /* BattleGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleGround.swift; sourceTree = "<group>"; };
+		826025D524119A1C00811B98 /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
 		827F7F0123CA5D1100545431 /* raceclasscolorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = raceclasscolorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		827F7F0423CA5D1100545431 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		827F7F0623CA5D1100545431 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		827F7F0623CA5D1100545431 /* BattleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleViewController.swift; sourceTree = "<group>"; };
 		827F7F0923CA5D1100545431 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		827F7F0B23CA5D1700545431 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		827F7F0E23CA5D1700545431 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -114,7 +116,8 @@
 			isa = PBXGroup;
 			children = (
 				827F7F0423CA5D1100545431 /* AppDelegate.swift */,
-				827F7F0623CA5D1100545431 /* ViewController.swift */,
+				827F7F0623CA5D1100545431 /* BattleViewController.swift */,
+				826025D524119A1C00811B98 /* SelectionViewController.swift */,
 				826025D12409767300811B98 /* BattleFieldView.swift */,
 				829D843023D612F1006AEBE5 /* Constants.swift */,
 				827F7F3223CA5D7C00545431 /* Person.swift */,
@@ -289,7 +292,8 @@
 				829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */,
 				826025D4240D822B00811B98 /* BattleGround.swift in Sources */,
 				826025D22409767300811B98 /* BattleFieldView.swift in Sources */,
-				827F7F0723CA5D1100545431 /* ViewController.swift in Sources */,
+				826025D624119A1C00811B98 /* SelectionViewController.swift in Sources */,
+				827F7F0723CA5D1100545431 /* BattleViewController.swift in Sources */,
 				829D843123D612F1006AEBE5 /* Constants.swift in Sources */,
 				827F7F0523CA5D1100545431 /* AppDelegate.swift in Sources */,
 				829D842B23D50538006AEBE5 /* Loader.swift in Sources */,
@@ -468,6 +472,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53BE67B895;
 				INFOPLIST_FILE = raceclasscolorer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -475,7 +480,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -486,6 +491,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53BE67B895;
 				INFOPLIST_FILE = raceclasscolorer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -493,7 +499,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = rcc.raceclasscolorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

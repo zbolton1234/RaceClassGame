@@ -24,6 +24,10 @@ func allRaces(ofRaceId: String) -> [Race] {
     return allRaces.filter({ $0.raceId == ofRaceId })
 }
 
+func classWithId(classId: String) -> Class? {
+    return allClasses.first(where: { $0.id == classId })
+}
+
 let random = GKRandomSource()
 let randomPersentage = GKGaussianDistribution(randomSource: random, mean: 100, deviation: 20)
 
