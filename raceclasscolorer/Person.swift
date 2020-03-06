@@ -24,6 +24,10 @@ func allRaces(ofRaceId: String) -> [Race] {
     return allRaces.filter({ $0.raceId == ofRaceId })
 }
 
+func allClasses(ofGroupId: String) -> [Class] {
+    return allClasses.filter({ $0.groupId == ofGroupId })
+}
+
 func classWithId(classId: String) -> Class? {
     return allClasses.first(where: { $0.id == classId })
 }
@@ -45,6 +49,13 @@ class Person: CustomStringConvertible {
     var currentHp: Int
     var currentAttack: Int
     var currentDefense: Int
+    
+    convenience init(raceId: String, groupId: String) {
+        let preRace = allRaces(ofRaceId: raceId).randomElement()!
+        let preClass = allClasses(ofGroupId: groupId).randomElement()!
+        
+        self.init(preRace: preRace, preClass: preClass)
+    }
     
     init(preRace: Race? = nil, preClass: Class? = nil, preColor: Color? = nil) {
         let selectedRace: Race

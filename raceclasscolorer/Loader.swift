@@ -17,6 +17,10 @@ func loadClasses() -> [Class] {
     return load(assetName: "classes", decodeClass: [Class].self)!
 }
 
+func loadEncounters() -> [EncounterJson] {
+    return load(assetName: "encounters", decodeClass: [EncounterJson].self)!
+}
+
 private func load<T: Decodable>(assetName: String, decodeClass: T.Type) -> T? {
     guard let asset = NSDataAsset(name: assetName),
         let decoded = try? JSONDecoder().decode(T.self, from: asset.data) else {

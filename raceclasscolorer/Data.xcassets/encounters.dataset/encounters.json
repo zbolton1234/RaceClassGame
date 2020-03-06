@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Human Warriors",
+    "raceId": "human",
+    "groupId": "warrior"
+  },
+  {
+    "name": "Elf Clerics",
+    "raceId": "elf",
+    "groupId": "holy"
+  }
+]

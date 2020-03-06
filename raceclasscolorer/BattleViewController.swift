@@ -13,13 +13,13 @@ class BattleViewController: UIViewController {
     @IBOutlet weak var battleFieldView: BattleFieldView!
 
     let ourTeam: Team
-    let enemyTeam: Team
     let encounter: Encounter
+    let battleGround: BattleGround
     
-    init?(coder: NSCoder, ourTeam: Team, enemyTeam: Team) {
+    init?(coder: NSCoder, ourTeam: Team, encounter: Encounter) {
         self.ourTeam = ourTeam
-        self.enemyTeam = enemyTeam
-        encounter = Encounter(ourTeam: ourTeam, enemyTeam: enemyTeam)
+        self.encounter = encounter
+        self.battleGround = BattleGround(ourTeam: ourTeam, enemyTeam: encounter.enemyTeam)
         
         super.init(coder: coder)
     }
@@ -27,7 +27,7 @@ class BattleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        battleFieldView.updateBattleGround(battleGround: encounter.battleGround)
+        battleFieldView.updateBattleGround(battleGround: battleGround)
     }
     
     required init?(coder: NSCoder) {
@@ -35,7 +35,7 @@ class BattleViewController: UIViewController {
     }
     
     @IBAction func attack(_ sender: Any) {
-        encounter.fight(battleFieldView: battleFieldView) { (fightResult) in
+        battleGround.fight(battleFieldView: battleFieldView) { (fightResult) in
             if fightResult.won {
                 print("We won")
             } else {

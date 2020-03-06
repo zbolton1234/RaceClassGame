@@ -56,6 +56,6 @@ class SelectionViewController: UIViewController {
         
         return BattleViewController(coder: coder,
                                     ourTeam: selectedOurTeam,
-                                    enemyTeam: selectedEnemyTeam)
+                                    encounter: randomEncounter())
     }
 }
