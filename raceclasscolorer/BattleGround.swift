@@ -52,7 +52,7 @@ class BattleGround {
     
     private(set) var ground: [[Spot]]
     
-    init(ourTeam: Team, enemyTeam: Team) {
+    init(ourTeam: Team, enemyTeam: Team, groundJson: GroundJson) {
         self.ourTeam = ourTeam
         self.enemyTeam = enemyTeam
         
@@ -71,12 +71,33 @@ class BattleGround {
         let convertedEnemy = enemyTeamSide.map({ Spot.person($0) })
 
         //TODO: different sizes and different layouts needed
-        ground = [[.void, .void] + convertedOur + [.void, .void],
-        [.void, .empty, .empty, .empty, .empty, .empty, .void],
-        [.void, .void, .empty, .void, .empty, .void, .void],
-        [.void, .void, .empty, .void, .empty, .void, .void],
-        [.void, .empty, .empty, .empty, .empty, .empty, .void],
-        [.void, .void] + convertedEnemy + [.void, .void]]
+//        ground = [[.void, .void] + convertedOur + [.void, .void],
+//        [.void, .empty, .empty, .empty, .empty, .empty, .void],
+//        [.void, .void, .empty, .void, .empty, .void, .void],
+//        [.void, .void, .empty, .void, .empty, .void, .void],
+//        [.void, .empty, .empty, .empty, .empty, .empty, .void],
+//        [.void, .void] + convertedEnemy + [.void, .void]]
+        
+        var ground = [[Spot]]()
+        for line in groundJson.ground {
+            var groundLine = [Spot]()
+            for tile in line {
+                switch tile {
+                case "e":
+                    groundLine.append(.empty)
+                case "o":
+                    groundLine.append(contentsOf: convertedOur)
+                case "m":
+                    groundLine.append(contentsOf: convertedEnemy)
+                case "t":
+                    groundLine.append(.terain("Tree"))
+                default:
+                    groundLine.append(.void)
+                }
+            }
+            ground.append(groundLine)
+        }
+        self.ground = ground
     }
     
     func closestEnemy(attackingPerson: PersonState) -> (Double, PersonState)? {

@@ -2,11 +2,13 @@
   {
     "name": "Human Warriors",
     "raceId": "human",
-    "groupId": "warrior"
+    "groupId": "warrior",
+    "groundId": "Empty"
   },
   {
     "name": "Elf Clerics",
     "raceId": "elf",
-    "groupId": "holy"
+    "groupId": "holy",
+    "groundId": "Tree"
   }
 ]

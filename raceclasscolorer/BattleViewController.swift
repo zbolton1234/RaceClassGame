@@ -19,7 +19,9 @@ class BattleViewController: UIViewController {
     init?(coder: NSCoder, ourTeam: Team, encounter: Encounter) {
         self.ourTeam = ourTeam
         self.encounter = encounter
-        self.battleGround = BattleGround(ourTeam: ourTeam, enemyTeam: encounter.enemyTeam)
+        self.battleGround = BattleGround(ourTeam: ourTeam,
+                                         enemyTeam: encounter.enemyTeam,
+                                         groundJson: encounter.groundJson)
         
         super.init(coder: coder)
     }
