@@ -160,6 +160,7 @@ enum AttackType: String, Decodable {
     case aoe
     case ping
     case single
+    case singleRanged
     case buff
 }
 

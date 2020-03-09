@@ -8,7 +8,7 @@
     "hp": 5,
     "attack": 3,
     "defense": 2,
-    "attackType": "aoe",
+    "attackType": "singleRanged",
     "secondary": "ping"
   },
   {

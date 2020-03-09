@@ -23,6 +23,7 @@
 		829D842D23D5062C006AEBE5 /* Data.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 829D842C23D5062B006AEBE5 /* Data.xcassets */; };
 		829D842F23D6109D006AEBE5 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D842E23D6109D006AEBE5 /* Team.swift */; };
 		829D843123D612F1006AEBE5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D843023D612F1006AEBE5 /* Constants.swift */; };
+		82BC2A232416BE3900A16599 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BC2A222416BE3900A16599 /* Position.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		829D842C23D5062B006AEBE5 /* Data.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Data.xcassets; sourceTree = "<group>"; };
 		829D842E23D6109D006AEBE5 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		829D843023D612F1006AEBE5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		82BC2A222416BE3900A16599 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				829D842A23D50538006AEBE5 /* Loader.swift */,
 				829D842823D3A76A006AEBE5 /* Encounter.swift */,
 				826025D3240D822B00811B98 /* BattleGround.swift */,
+				82BC2A222416BE3900A16599 /* Position.swift */,
 				827F7F0823CA5D1100545431 /* Main.storyboard */,
 				829D842C23D5062B006AEBE5 /* Data.xcassets */,
 				827F7F0B23CA5D1700545431 /* Assets.xcassets */,
@@ -287,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82BC2A232416BE3900A16599 /* Position.swift in Sources */,
 				829D842F23D6109D006AEBE5 /* Team.swift in Sources */,
 				827F7F3323CA5D7C00545431 /* Person.swift in Sources */,
 				829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */,

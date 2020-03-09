@@ -6,6 +6,12 @@
     "groundId": "Empty"
   },
   {
+    "name": "Human Wizards",
+    "raceId": "human",
+    "groupId": "magic",
+    "groundId": "Tree"
+  },
+  {
     "name": "Elf Clerics",
     "raceId": "elf",
     "groupId": "holy",

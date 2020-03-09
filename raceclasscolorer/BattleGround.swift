@@ -24,7 +24,7 @@ enum TeamType {
 class PersonState {
     let person: Person
     let teamType: TeamType
-    var position: (x: Int, y: Int)?
+    var position: Position?
     
     init(person: Person, teamType: TeamType) {
         self.person = person
@@ -69,14 +69,6 @@ class BattleGround {
             state.position = (index + 2, 5)
         })
         let convertedEnemy = enemyTeamSide.map({ Spot.person($0) })
-
-        //TODO: different sizes and different layouts needed
-//        ground = [[.void, .void] + convertedOur + [.void, .void],
-//        [.void, .empty, .empty, .empty, .empty, .empty, .void],
-//        [.void, .void, .empty, .void, .empty, .void, .void],
-//        [.void, .void, .empty, .void, .empty, .void, .void],
-//        [.void, .empty, .empty, .empty, .empty, .empty, .void],
-//        [.void, .void] + convertedEnemy + [.void, .void]]
         
         var ground = [[Spot]]()
         for line in groundJson.ground {
@@ -117,7 +109,7 @@ class BattleGround {
         return distances.min(by: { $0.0 < $1.0 })
     }
     
-    func move(person: PersonState, position: (x: Int, y: Int)) -> Bool {
+    func move(person: PersonState, position: Position) -> Bool {
         //TODO: do this better
         if case .person(let personInSpot) = ground[position.y][position.x] {
             if personInSpot.person.currentHp <= 0 {
@@ -139,6 +131,22 @@ class BattleGround {
         return true
     }
     
+    private func sightBlocked(attackingPosition: Position, defendingPosition: Position) -> Bool {
+        let allPositions = smartVisionLine(position1: attackingPosition, position2: defendingPosition)
+        
+        for position in allPositions {
+            if position != attackingPosition && position != defendingPosition {
+                if case .empty = ground[position.y][position.x] {
+                    //TODO: uuugggg
+                } else {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
     private func teamAttack(attackingTeam: [PersonState], defendingTeam: [PersonState]) {
         attackingTeam.enumerated().forEach({ (index, memberState) in
             let member = memberState.person
@@ -155,29 +163,37 @@ class BattleGround {
             case .ping:
                 let enemyState = defendingTeam.randomElement()!
                 enemyState.person.currentHp -= 1
+            case .singleRanged:
+                if let closestEnemyState = closestEnemy(attackingPerson: memberState), let closestPosition = closestEnemyState.1.position {
+                    if !sightBlocked(attackingPosition: memberPosition, defendingPosition: closestPosition) {
+                        closestEnemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person))
+                    } else {
+                        print("my line was blocked")
+                    }
+                }
             case .single:
-                if let enemyState = closestEnemy(attackingPerson: memberState) {
+                if let closestEnemyState = closestEnemy(attackingPerson: memberState) {
                     //print("I'm \(member.race.name)\(member.pclass.name)\(member.color) and \(enemyState.1.person.race.name)\(enemyState.1.person.pclass.name)\(enemyState.1.person.color) is \(enemyState.0)")
                     
-                    if enemyState.0 < 2.0 {
-                        enemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: enemyState.1.person))
+                    if closestEnemyState.0 < 2.0 {
+                        closestEnemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person))
                     } else {
                         var newPostion = memberPosition
                         var yChange = 0
                         var xChange = 0
                         
-                        if enemyState.1.position?.y ?? 0 > memberPosition.y {
+                        if closestEnemyState.1.position?.y ?? 0 > memberPosition.y {
                             newPostion.y += 1
                             yChange = 1
-                        } else if enemyState.1.position?.y ?? 0 < memberPosition.y {
+                        } else if closestEnemyState.1.position?.y ?? 0 < memberPosition.y {
                             newPostion.y -= 1
                             yChange = -1
                         }
                         
-                        if enemyState.1.position?.x ?? 0 > memberPosition.x {
+                        if closestEnemyState.1.position?.x ?? 0 > memberPosition.x {
                             newPostion.x += 1
                             xChange = 1
-                        } else if enemyState.1.position?.x ?? 0 < memberPosition.x {
+                        } else if closestEnemyState.1.position?.x ?? 0 < memberPosition.x {
                             newPostion.x -= 1
                             xChange = -1
                         }

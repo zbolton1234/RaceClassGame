@@ -50,7 +50,7 @@ class SelectionViewController: UIViewController {
     }
     
     @IBSegueAction func showBattleSegue(_ coder: NSCoder) -> BattleViewController? {
-        guard let selectedOurTeam = selectedOurTeam, let selectedEnemyTeam = selectedEnemyTeam else {
+        guard let selectedOurTeam = selectedOurTeam else {
             return nil
         }
         
