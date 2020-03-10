@@ -56,6 +56,9 @@ class BattleGround {
         self.ourTeam = ourTeam
         self.enemyTeam = enemyTeam
         
+        print(ourTeam)
+        print(enemyTeam)
+        
         ourTeamSide = ourTeam.members.map({ PersonState(person: $0,
                                                         teamType: .our) })
         enemyTeamSide = enemyTeam.members.map({ PersonState(person: $0,
@@ -155,17 +158,22 @@ class BattleGround {
                 return
             }
             
+            print("\(member.id) is attacking \(member.attackType)")
+            
             switch member.attackType {
             case .aoe:
                 for enemyState in defendingTeam {
+                    print("\(enemyState.person.id) takes \(Int(Float(2) * member.attackModifer(enemy: enemyState.person)))")
                     enemyState.person.currentHp -= Int(Float(2) * member.attackModifer(enemy: enemyState.person))
                 }
             case .ping:
                 let enemyState = defendingTeam.randomElement()!
+                print("\(enemyState.person.id) takes \(Int(Float(2) * member.attackModifer(enemy: enemyState.person)))")
                 enemyState.person.currentHp -= 1
             case .singleRanged:
                 if let closestEnemyState = closestEnemy(attackingPerson: memberState), let closestPosition = closestEnemyState.1.position {
                     if !sightBlocked(attackingPosition: memberPosition, defendingPosition: closestPosition) {
+                        print("\(closestEnemyState.1.person.id) takes \(Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person)))")
                         closestEnemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person))
                     } else {
                         print("my line was blocked")
@@ -176,8 +184,10 @@ class BattleGround {
                     //print("I'm \(member.race.name)\(member.pclass.name)\(member.color) and \(enemyState.1.person.race.name)\(enemyState.1.person.pclass.name)\(enemyState.1.person.color) is \(enemyState.0)")
                     
                     if closestEnemyState.0 < 2.0 {
+                        print("\(closestEnemyState.1.person.id) takes \(Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person)))")
                         closestEnemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person))
                     } else {
+                        print("I'm moving")
                         var newPostion = memberPosition
                         var yChange = 0
                         var xChange = 0
@@ -231,6 +241,7 @@ class BattleGround {
                     }
                 }
             case .buff:
+                print("buff all the people")
                 for memberState in attackingTeam {
                     memberState.person.currentAttack += 1
                 }

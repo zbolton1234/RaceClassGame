@@ -123,6 +123,9 @@ class Person: CustomStringConvertible {
         if enemy.defense == 0 {
             return Float(attack)
         }
+        if attack == 0 {
+            return 0.1 / Float(enemy.defense)
+        }
         return Float(attack / enemy.defense)
     }
     
