@@ -15,7 +15,6 @@ enum Spot {
     case person(PersonState)
 }
 
-//TODO: rename this
 enum TeamType {
     case our
     case enemy
@@ -249,15 +248,15 @@ class BattleGround {
         })
     }
     
-    //TODO: the passing this view here feels bad should be a block
-    func fight(battleFieldView: BattleFieldView, completion: @escaping ((FightState) -> Void)) {
+    func fight(stateChanged: @escaping (() -> Void), completion: @escaping ((FightState) -> Void)) {
         
         DispatchQueue.global(qos: .background).async {
             while self.ourTeam.isAlive && self.enemyTeam.isAlive {
                 DispatchQueue.main.sync {
                     self.teamAttack(attackingTeam: self.ourTeamSide, defendingTeam: self.enemyTeamSide)
                     self.teamAttack(attackingTeam: self.enemyTeamSide, defendingTeam: self.ourTeamSide)
-                    battleFieldView.updateBattleGround(battleGround: self)
+                    stateChanged()
+                    //battleFieldView.updateBattleGround(battleGround: self)
                 }
                 sleep(3)
             }

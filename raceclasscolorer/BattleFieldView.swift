@@ -10,23 +10,30 @@ import UIKit
 
 class BattleFieldView: UIView {
     
-    //TODO: Current logic forces 6 tall is that bad?
-    @IBOutlet private var stackViews: [UIStackView]!
+    @IBOutlet private var stackView: UIStackView!
 
     private var currentBattleGround: BattleGround?
     
     func updateBattleGround(battleGround: BattleGround) {
         currentBattleGround = battleGround
-
-        //TODO: Make the views off the model not this
-        stackViews.enumerated().forEach({ (index, stackView) in
-            stackView.show(spots: battleGround.ground[index])
-        })
+        
+        stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+        
+        for row in battleGround.ground {
+            let rowStackView = UIStackView()
+            rowStackView.axis = .horizontal
+            rowStackView.alignment = .fill
+            rowStackView.distribution = .fillEqually
+            rowStackView.spacing = 0
+            
+            rowStackView.show(spots: row)
+            
+            stackView.addArrangedSubview(rowStackView)
+        }
     }
 }
 
 extension UIStackView {
-    //TODO: make combo view and show BattleGround?
     func show(spots: [Spot]) {
         arrangedSubviews.forEach({ $0.removeFromSuperview() })
         

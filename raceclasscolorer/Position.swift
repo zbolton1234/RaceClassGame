@@ -48,7 +48,7 @@ func smartVisionLine(position1: Position, position2: Position) -> [Position] {
         errorprev = dx
         error = dx
         
-        for i in 0..<dx {
+        for _ in 0..<dx {
             x += xstep
             error += ddy
             if error > ddx {
@@ -71,7 +71,7 @@ func smartVisionLine(position1: Position, position2: Position) -> [Position] {
         errorprev = dy
         error = dy
         
-        for i in 0..<dy {
+        for _ in 0..<dy {
             y += ystep
             error += ddx
             if error > ddy {

@@ -37,7 +37,9 @@ class BattleViewController: UIViewController {
     }
     
     @IBAction func attack(_ sender: Any) {
-        battleGround.fight(battleFieldView: battleFieldView) { (fightResult) in
+        battleGround.fight(stateChanged: {
+            self.battleFieldView.updateBattleGround(battleGround: self.battleGround)
+        }, completion: { (fightResult) in
             if fightResult.won {
                 print("We won")
             } else {
@@ -45,6 +47,6 @@ class BattleViewController: UIViewController {
             }
             
             self.navigationController?.popViewController(animated: true)
-        }
+        })
     }
 }
