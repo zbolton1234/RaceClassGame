@@ -35,7 +35,51 @@ func classWithId(classId: String) -> Class? {
 let random = GKRandomSource()
 let randomPersentage = GKGaussianDistribution(randomSource: random, mean: 100, deviation: 20)
 
-class Person: CustomStringConvertible {
+enum TribeType: String, Decodable {
+    case civilized
+    case wild
+    case custom
+}
+
+enum AttackType: String, Decodable {
+    case aoe
+    case ping
+    case single
+    case singleRanged
+    case buff
+}
+
+struct Race: Decodable {
+    let name: String
+    let raceId: String
+    let id: String
+    let tribeType: TribeType
+    let description: String
+    let friendlyRaces: [String]
+    let animals: [String]
+    let hatedRaces: [String]
+}
+
+struct Class: Decodable {
+    let name: String
+    let groupId: String
+    let id: String
+    let tribeType: TribeType
+    let description: String
+    let hp: Int
+    let attack: Int
+    let defense: Int
+    let attackType: AttackType
+    let secondary: AttackType
+}
+
+enum Color: Int, CaseIterable {
+    case red
+    case blue
+    case green
+}
+
+class Person: Battler, CustomStringConvertible {
     let id = UUID()
     let race: Race
     let pclass: Class
@@ -106,7 +150,7 @@ class Person: CustomStringConvertible {
     }
     
     var description: String {
-        return "race: \(race) class: \(pclass) color: \(color)"
+        return "race: \(race.id) class: \(pclass.id) color: \(color)"
     }
     
     func totalBuffs(team: Team) -> Int {
@@ -115,21 +159,11 @@ class Person: CustomStringConvertible {
                 return total
             }
             
-            return total + self.compareRace(person: otherPerson) + self.compareClass(person: otherPerson)
+            return total + self.buffForRace(person: otherPerson) + self.buffForClass(person: otherPerson)
         }
     }
     
-    func attackModifer(enemy: Person) -> Float {
-        if enemy.defense == 0 {
-            return Float(attack)
-        }
-        if attack == 0 {
-            return 0.1 / Float(enemy.defense)
-        }
-        return Float(attack / enemy.defense)
-    }
-    
-    func compareRace(person: Person) -> Int {
+    func buffForRace(person: Person) -> Int {
         if race.raceId == person.race.raceId {
             //extra bonus if same sub race?
             return Buffs.same
@@ -141,7 +175,7 @@ class Person: CustomStringConvertible {
         return Buffs.other
     }
     
-    func compareClass(person: Person) -> Int {
+    func buffForClass(person: Person) -> Int {
         if pclass.groupId == person.pclass.groupId {
             if color == color {
                 return Buffs.identical
@@ -151,48 +185,4 @@ class Person: CustomStringConvertible {
         }
         return 0
     }
-}
-
-enum TribeType: String, Decodable {
-    case civilized
-    case wild
-    case custom
-}
-
-enum AttackType: String, Decodable {
-    case aoe
-    case ping
-    case single
-    case singleRanged
-    case buff
-}
-
-struct Race: Decodable {
-    let name: String
-    let raceId: String
-    let id: String
-    let tribeType: TribeType
-    let description: String
-    let friendlyRaces: [String]
-    let animals: [String]
-    let hatedRaces: [String]
-}
-
-struct Class: Decodable {
-    let name: String
-    let groupId: String
-    let id: String
-    let tribeType: TribeType
-    let description: String
-    let hp: Int
-    let attack: Int
-    let defense: Int
-    let attackType: AttackType
-    let secondary: AttackType
-}
-
-enum Color: Int, CaseIterable {
-    case red
-    case blue
-    case green
 }

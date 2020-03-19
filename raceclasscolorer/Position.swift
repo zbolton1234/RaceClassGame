@@ -94,3 +94,7 @@ func smartVisionLine(position1: Position, position2: Position) -> [Position] {
     
     return pointsOnLine
 }
+
+func distanceHisc(position1: Position, position2: Position) -> Double {
+    return pow(Double(position1.x - position2.x), 2) + pow(Double(position1.y - position2.y), 2)
+}

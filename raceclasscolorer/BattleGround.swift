@@ -94,59 +94,32 @@ class BattleGround {
         self.ground = ground
     }
     
-    func closestEnemy(attackingPerson: PersonState) -> (Double, PersonState)? {
-        let onOur = attackingPerson.teamType == .our
-        let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
+    func fight(stateChanged: @escaping (() -> Void), completion: @escaping ((FightState) -> Void)) {
         
-        let distances = defendingTeam.compactMap({ (defender) -> (Double, PersonState)? in
-            guard defender.person.currentHp > 0 else {
-                return nil
+        DispatchQueue.global(qos: .background).async {
+            while self.ourTeam.isAlive && self.enemyTeam.isAlive {
+                DispatchQueue.main.sync {
+                    self.teamAttack(attackingTeam: self.ourTeamSide, defendingTeam: self.enemyTeamSide)
+                    self.teamAttack(attackingTeam: self.enemyTeamSide, defendingTeam: self.ourTeamSide)
+                    stateChanged()
+                }
+                sleep(3)
             }
             
-            guard let distance = attackingPerson.distance(otherPerson: defender) else {
-                return nil
+            let wonState = self.ourTeam.isAlive
+            
+            let reward: Reward
+            if wonState {
+                reward = Reward(people: [self.enemyTeam.members.randomElement()!],
+                                points: [Points(race: self.ourTeam.members.first!.race, points: 5)])
+            } else {
+                reward = Reward(people: [], points: [])
             }
-            return (distance, defender)
-        })
-        return distances.min(by: { $0.0 < $1.0 })
-    }
-    
-    func move(person: PersonState, position: Position) -> Bool {
-        //TODO: do this better
-        if case .person(let personInSpot) = ground[position.y][position.x] {
-            if personInSpot.person.currentHp <= 0 {
-                ground[position.y][position.x] = .empty
-            }
-        }
-        
-        guard case .empty = ground[position.y][position.x] else {
-            return false
-        }
-        
-        ground[position.y][position.x] = .person(person)
-        
-        if let oldPosition = person.position {
-            ground[oldPosition.y][oldPosition.x] = .empty
-        }
-        
-        person.position = position
-        return true
-    }
-    
-    private func sightBlocked(attackingPosition: Position, defendingPosition: Position) -> Bool {
-        let allPositions = smartVisionLine(position1: attackingPosition, position2: defendingPosition)
-        
-        for position in allPositions {
-            if position != attackingPosition && position != defendingPosition {
-                if case .empty = ground[position.y][position.x] {
-                    //TODO: uuugggg
-                } else {
-                    return true
-                }
+            
+            DispatchQueue.main.sync {
+                completion(FightState(won: wonState, reward: reward))
             }
         }
-        
-        return false
     }
     
     private func teamAttack(attackingTeam: [PersonState], defendingTeam: [PersonState]) {
@@ -187,56 +160,8 @@ class BattleGround {
                         closestEnemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person))
                     } else {
                         print("I'm moving")
-                        var newPostion = memberPosition
-                        var yChange = 0
-                        var xChange = 0
                         
-                        if closestEnemyState.1.position?.y ?? 0 > memberPosition.y {
-                            newPostion.y += 1
-                            yChange = 1
-                        } else if closestEnemyState.1.position?.y ?? 0 < memberPosition.y {
-                            newPostion.y -= 1
-                            yChange = -1
-                        }
-                        
-                        if closestEnemyState.1.position?.x ?? 0 > memberPosition.x {
-                            newPostion.x += 1
-                            xChange = 1
-                        } else if closestEnemyState.1.position?.x ?? 0 < memberPosition.x {
-                            newPostion.x -= 1
-                            xChange = -1
-                        }
-                        
-                        //TODO: feel like this is overcomplicated
-                        if !move(person: memberState, position: newPostion) {
-                            //print("failed \(newPostion)")
-                            if xChange == 0 {
-                                newPostion.x -= 1
-                                //print("trying \(newPostion)")
-                                if !move(person: memberState, position: newPostion) {
-                                    newPostion.x += 2
-                                    //print("trying \(newPostion)")
-                                    move(person: memberState, position: newPostion)
-                                }
-                            } else if yChange == 0 {
-                                newPostion.y -= 1
-                                //print("trying \(newPostion)")
-                                if !move(person: memberState, position: newPostion) {
-                                    newPostion.y += 2
-                                    //print("trying \(newPostion)")
-                                    move(person: memberState, position: newPostion)
-                                }
-                            } else {
-                                newPostion.x += xChange
-                                //print("trying \(newPostion)")
-                                if !move(person: memberState, position: newPostion) {
-                                    newPostion.x -= xChange
-                                    newPostion.y += yChange
-                                    //print("trying \(newPostion)")
-                                    move(person: memberState, position: newPostion)
-                                }
-                            }
-                        }
+                        smartMove(personState: memberState, goalPosition: closestEnemyState.1.position!)
                     }
                 }
             case .buff:
@@ -247,33 +172,194 @@ class BattleGround {
             }
         })
     }
-    
-    func fight(stateChanged: @escaping (() -> Void), completion: @escaping ((FightState) -> Void)) {
+}
+
+//MARK: State Helpers
+extension BattleGround {
+    private func sightBlocked(attackingPosition: Position, defendingPosition: Position) -> Bool {
+        let allPositions = smartVisionLine(position1: attackingPosition, position2: defendingPosition)
         
-        DispatchQueue.global(qos: .background).async {
-            while self.ourTeam.isAlive && self.enemyTeam.isAlive {
-                DispatchQueue.main.sync {
-                    self.teamAttack(attackingTeam: self.ourTeamSide, defendingTeam: self.enemyTeamSide)
-                    self.teamAttack(attackingTeam: self.enemyTeamSide, defendingTeam: self.ourTeamSide)
-                    stateChanged()
-                    //battleFieldView.updateBattleGround(battleGround: self)
+        for position in allPositions {
+            if position != attackingPosition && position != defendingPosition {
+                if case .empty = ground[position.y][position.x] {
+                    //TODO: uuugggg
+                } else {
+                    return true
                 }
-                sleep(3)
-            }
-            
-            let wonState = self.ourTeam.isAlive
-            
-            let reward: Reward
-            if wonState {
-                reward = Reward(people: [self.enemyTeam.members.randomElement()!],
-                                points: [Points(race: self.ourTeam.members.first!.race, points: 5)])
-            } else {
-                reward = Reward(people: [], points: [])
-            }
-            
-            DispatchQueue.main.sync {
-                completion(FightState(won: wonState, reward: reward))
             }
         }
+        
+        return false
     }
+    
+    private func closestEnemy(attackingPerson: PersonState) -> (Double, PersonState)? {
+        let onOur = attackingPerson.teamType == .our
+        let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
+        
+        let distances = defendingTeam.compactMap({ (defender) -> (Double, PersonState)? in
+            guard defender.person.currentHp > 0 else {
+                return nil
+            }
+            
+            guard let distance = attackingPerson.distance(otherPerson: defender) else {
+                return nil
+            }
+            return (distance, defender)
+        })
+        return distances.min(by: { $0.0 < $1.0 })
+    }
+}
+
+// MARK: Mutable Helpers
+extension BattleGround {
+    private func move(person: PersonState, position: Position) {
+        guard spotEmpty(position: position) else {
+            return
+        }
+
+        ground[position.y][position.x] = .person(person)
+
+        if let oldPosition = person.position {
+            ground[oldPosition.y][oldPosition.x] = .empty
+        }
+
+        person.position = position
+    }
+    
+    private func smartMove(personState: PersonState, goalPosition: Position) {
+        guard let startPosition = personState.position else {
+            return
+        }
+        
+        var openList = [PositionNode]()
+        var closedList = [PositionNode]()
+        
+        let startNode = PositionNode(postion: startPosition)
+        let endNode = PositionNode(postion: goalPosition)
+        
+        openList.append(startNode)
+        
+        while openList.count > 0 {
+            var currentNode = openList.first!
+            var currentIndex = 0
+            
+            for (index, item) in openList.enumerated() {
+                if item.fScore < currentNode.fScore {
+                    currentNode = item
+                    currentIndex = index
+                }
+            }
+            
+            openList.remove(at: currentIndex)
+            closedList.append(currentNode)
+            
+            if currentNode == endNode {
+                if let nextNode = currentNode.nextNode(startNode: startNode) {
+                    move(person: personState, position: nextNode.position)
+                }
+                
+                print("we got it")
+                return
+            }
+            
+            let validSpots = validNearSpots(position: currentNode.position).map({ PositionNode(postion: $0) })
+            
+            for validSpot in validSpots {
+                if closedList.contains(validSpot) {
+                    continue
+                }
+                
+                validSpot.parent = currentNode
+                validSpot.gScore = currentNode.gScore + 1
+                validSpot.hScore = distanceHisc(position1: validSpot.position, position2: endNode.position)
+                
+                for openNode in openList {
+                    if validSpot == openNode && validSpot.gScore > openNode.gScore {
+                        continue
+                    }
+                }
+                
+                openList.append(validSpot)
+            }
+        }
+        
+        print("Did not find it")
+    }
+    
+    private func spotValidPath(position: Position) -> Bool {
+        switch ground[position.y][position.x] {
+        case .terain(_):
+            return false
+        case .void:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    private func spotEmpty(position: Position) -> Bool {
+        //TODO: do this better
+        if case .person(let personInSpot) = ground[position.y][position.x] {
+            if personInSpot.person.currentHp <= 0 {
+                ground[position.y][position.x] = .empty
+            }
+        }
+        
+        guard case .empty = ground[position.y][position.x] else {
+            return false
+        }
+        
+        return true
+    }
+    
+    private func validNearSpots(position: Position) -> [Position] {
+        var spots = [Position]()
+        
+        for xChange in -1...1 {
+            for yChange in -1...1 {
+                let possiblePosition = Position(x: position.x + xChange, y: position.y + yChange)
+                
+                let validX = possiblePosition.x >= 0 && possiblePosition.x < ground.first!.count
+                let validY = possiblePosition.y >= 0 && possiblePosition.y < ground.count
+                let isStartSpot = xChange == 0 && yChange == 0
+                if validX && validY && !isStartSpot && spotValidPath(position: possiblePosition) {
+                    spots.append(possiblePosition)
+                }
+            }
+        }
+        
+        return spots
+    }
+}
+
+private class PositionNode: Hashable {
+    let position: Position
+    var parent: PositionNode?
+    
+    var gScore = 0.0
+    var hScore = 0.0
+    var fScore: Double {
+        return gScore + hScore
+    }
+    
+    init(postion: Position) {
+        self.position = postion
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(position.x)
+        hasher.combine(position.y)
+    }
+    
+    func nextNode(startNode: PositionNode) -> PositionNode? {
+        if parent == startNode {
+            return self
+        } else {
+            return parent?.nextNode(startNode: startNode)
+        }
+    }
+}
+
+private func ==(lhs: PositionNode, rhs: PositionNode) -> Bool {
+  return lhs.position == rhs.position
 }
