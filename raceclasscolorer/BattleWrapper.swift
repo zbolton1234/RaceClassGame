@@ -25,9 +25,6 @@ extension Battler {
         if enemy.currentDefense == 0 {
             return Float(currentAttack)
         }
-        if attack == 0 {
-            return 0.1 / Float(enemy.currentDefense)
-        }
         return Float(currentAttack / enemy.currentDefense)
     }
 }

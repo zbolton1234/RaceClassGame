@@ -94,11 +94,27 @@ class Person: Battler, CustomStringConvertible {
     var currentAttack: Int
     var currentDefense: Int
     
+    //TODO: TEMP REPLACE WITH SPEED USING FOR TEST DUMB LOGIC
+    var canMove = true
+    
     convenience init(raceId: String, groupId: String) {
         let preRace = allRaces(ofRaceId: raceId).randomElement()!
         let preClass = allClasses(ofGroupId: groupId).randomElement()!
         
         self.init(preRace: preRace, preClass: preClass)
+    }
+    
+    //TODO: made debug only or move to test???
+    class func testDummy() -> Person {
+        let dummy = Person()
+        
+        dummy.currentHp = 1
+        dummy.currentAttack = 0
+        dummy.currentDefense = 0
+        
+        dummy.canMove = false
+        
+        return dummy
     }
     
     init(preRace: Race? = nil, preClass: Class? = nil, preColor: Color? = nil) {
@@ -137,9 +153,10 @@ class Person: Battler, CustomStringConvertible {
         pclass = selectedClass
         color = selectedColor
         
-        hp = Int(Double(pclass.hp) * (Double(randomPersentage.nextInt()) / 100.0))
-        attack = Int(Double(pclass.attack) * (Double(randomPersentage.nextInt()) / 100.0))
-        defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0))
+        //TODO: math!  need to ensure we never get a 0 here
+        hp = Int(Double(pclass.hp) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
+        attack = Int(Double(pclass.attack) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
+        defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
      
         currentHp = hp
         currentAttack = attack

@@ -63,25 +63,26 @@ class BattleGround {
         enemyTeamSide = enemyTeam.members.map({ PersonState(person: $0,
                                                             teamType: .enemy) })
         
-        ourTeamSide.enumerated().forEach({ (index, state) in
-            state.position = (index + 2, 0)
-        })
-        let convertedOur = ourTeamSide.map({ Spot.person($0) })
-        enemyTeamSide.enumerated().forEach({ (index, state) in
-            state.position = (index + 2, 5)
-        })
-        let convertedEnemy = enemyTeamSide.map({ Spot.person($0) })
-        
         var ground = [[Spot]]()
-        for line in groundJson.ground {
+        for (lineIndex, line) in groundJson.ground.enumerated() {
             var groundLine = [Spot]()
-            for tile in line {
+            for (tileIndex, tile) in line.enumerated() {
                 switch tile {
                 case "e":
                     groundLine.append(.empty)
                 case "o":
+                    ourTeamSide.enumerated().forEach({ (index, state) in
+                        state.position = (index + tileIndex, lineIndex)
+                    })
+                    let convertedOur = ourTeamSide.map({ Spot.person($0) })
+                    
                     groundLine.append(contentsOf: convertedOur)
                 case "m":
+                    enemyTeamSide.enumerated().forEach({ (index, state) in
+                        state.position = (index + tileIndex, lineIndex)
+                    })
+                    let convertedEnemy = enemyTeamSide.map({ Spot.person($0) })
+                    
                     groundLine.append(contentsOf: convertedEnemy)
                 case "t":
                     groundLine.append(.terain("Tree"))
@@ -123,20 +124,16 @@ class BattleGround {
     }
     
     //TODO:s
-    //test move and hit
     //clean up names
     //clean up edge cases
     //clean up force unwrap
     //aoe
     //extra affects
-    //does range work right?
     //is melee do anything
-    //corning
-    //sight blocked
     //dead bodies
-    //sight blocked
     //all
     //phases?  like all move then all attack?
+    //speed
     
     //summons
     //buffs
@@ -229,7 +226,7 @@ extension BattleGround {
     }
     
     private func smartMove(personState: PersonState, goalPosition: Position) {
-        guard let startPosition = personState.position else {
+        guard let startPosition = personState.position, personState.person.canMove else {
             return
         }
         
