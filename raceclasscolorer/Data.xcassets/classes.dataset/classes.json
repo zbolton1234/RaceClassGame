@@ -8,8 +8,14 @@
     "hp": 5,
     "attack": 3,
     "defense": 2,
-    "attackType": "singleRanged",
-    "secondary": "ping"
+    "attackMove": {
+        "name": "Fire Bolt",
+        "targets": 1,
+        "range": 4,
+        "isMelee": false,
+        "size": 1,
+        "damage": 3
+    }
   },
   {
     "name": "Cleric",
@@ -20,8 +26,14 @@
     "hp": 20,
     "attack": 5,
     "defense": 7,
-    "attackType": "single",
-    "secondary": "aoe"
+    "attackMove": {
+        "name": "Smite",
+        "targets": 1,
+        "range": 2,
+        "isMelee": false,
+        "size": 1,
+        "damage": 4
+    }
   },
   {
     "name": "Warrior",
@@ -32,8 +44,14 @@
     "hp": 17,
     "attack": 7,
     "defense": 5,
-    "attackType": "single",
-    "secondary": "buff"
+    "attackMove": {
+        "name": "Quick Swipes",
+        "targets": 3,
+        "range": 1,
+        "isMelee": true,
+        "size": 1,
+        "damage": 5
+    }
   },
   {
     "name": "Barb",
@@ -44,7 +62,13 @@
     "hp": 20,
     "attack": 10,
     "defense": 2,
-    "attackType": "single",
-    "secondary": "single"
+    "attackMove": {
+        "name": "Heavy Swipe",
+        "targets": 1,
+        "range": 1,
+        "isMelee": true,
+        "size": 1,
+        "damage": 7
+    }
   }
 ]

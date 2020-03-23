@@ -60,8 +60,8 @@ func smartVisionLine(position1: Position, position2: Position) -> [Position] {
                 } else if error + errorprev > ddx {
                     pointsOnLine.append(Position(x: x-xstep, y: y))
                 } else {
-                    pointsOnLine.append(Position(x: x, y: y-ystep))
-                    pointsOnLine.append(Position(x: x-xstep, y: y))
+//                    pointsOnLine.append(Position(x: x, y: y-ystep))
+//                    pointsOnLine.append(Position(x: x-xstep, y: y))
                 }
             }
             pointsOnLine.append(Position(x: x, y: y))

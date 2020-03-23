@@ -122,52 +122,52 @@ class BattleGround {
         }
     }
     
+    //TODO:s
+    //test move and hit
+    //clean up names
+    //clean up edge cases
+    //clean up force unwrap
+    //aoe
+    //extra affects
+    //does range work right?
+    //is melee do anything
+    //corning
+    //sight blocked
+    //dead bodies
+    //sight blocked
+    //all
+    //phases?  like all move then all attack?
+    
+    //summons
+    //buffs
+    //arc to support ^
+    
     private func teamAttack(attackingTeam: [PersonState], defendingTeam: [PersonState]) {
         attackingTeam.enumerated().forEach({ (index, memberState) in
             let member = memberState.person
-            guard member.currentHp > 0,
-                let memberPosition = memberState.position else {
+            guard member.currentHp > 0 else {
                 return
             }
             
-            print("\(member.id) is attacking \(member.attackType)")
+            print("\(member.id) is attacking \(member.attackMove.name)")
             
-            switch member.attackType {
-            case .aoe:
-                for enemyState in defendingTeam {
-                    print("\(enemyState.person.id) takes \(Int(Float(2) * member.attackModifer(enemy: enemyState.person)))")
-                    enemyState.person.currentHp -= Int(Float(2) * member.attackModifer(enemy: enemyState.person))
-                }
-            case .ping:
-                let enemyState = defendingTeam.randomElement()!
-                print("\(enemyState.person.id) takes \(Int(Float(2) * member.attackModifer(enemy: enemyState.person)))")
-                enemyState.person.currentHp -= 1
-            case .singleRanged:
-                if let closestEnemyState = closestEnemy(attackingPerson: memberState), let closestPosition = closestEnemyState.1.position {
-                    if !sightBlocked(attackingPosition: memberPosition, defendingPosition: closestPosition) {
-                        print("\(closestEnemyState.1.person.id) takes \(Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person)))")
-                        closestEnemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person))
-                    } else {
-                        print("my line was blocked")
-                    }
-                }
-            case .single:
-                if let closestEnemyState = closestEnemy(attackingPerson: memberState) {
-                    //print("I'm \(member.race.name)\(member.pclass.name)\(member.color) and \(enemyState.1.person.race.name)\(enemyState.1.person.pclass.name)\(enemyState.1.person.color) is \(enemyState.0)")
-                    
-                    if closestEnemyState.0 < 2.0 {
-                        print("\(closestEnemyState.1.person.id) takes \(Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person)))")
-                        closestEnemyState.1.person.currentHp -= Int(Float(5) * member.attackModifer(enemy: closestEnemyState.1.person))
-                    } else {
-                        print("I'm moving")
-                        
-                        smartMove(personState: memberState, goalPosition: closestEnemyState.1.position!)
-                    }
-                }
-            case .buff:
-                print("buff all the people")
-                for memberState in attackingTeam {
-                    memberState.person.currentAttack += 1
+            let attackMove = member.attackMove
+            var targets = closestEnemy(attackingPerson: memberState, numberOfTargets: attackMove.targets)
+            
+            //Also ensures targets is not empty
+            guard let closestTarget = targets.first else {
+                return
+            }
+
+            if closestTarget.distance >= Double(attackMove.range) + 1.0 || sightBlocked(attackingPosition: memberState.position!, defendingPosition: closestTarget.person.position!) {
+                smartMove(personState: memberState, goalPosition: closestTarget.person.position!)
+                //we moved need to update the states as we might be in range now
+                targets = closestEnemy(attackingPerson: memberState, numberOfTargets: attackMove.targets)
+            }
+
+            for target in targets {
+                if target.distance <= Double(attackMove.range) + 1.0 && !sightBlocked(attackingPosition: memberState.position!, defendingPosition: target.person.position!) {
+                    target.person.person.currentHp -= Int(Float(attackMove.damage) * member.attackModifer(enemy: closestTarget.person.person)) + 1
                 }
             }
         })
@@ -192,11 +192,12 @@ extension BattleGround {
         return false
     }
     
-    private func closestEnemy(attackingPerson: PersonState) -> (Double, PersonState)? {
+    typealias Distance = (distance: Double, person: PersonState)
+    private func closestEnemy(attackingPerson: PersonState, numberOfTargets: Int) -> [Distance] {
         let onOur = attackingPerson.teamType == .our
         let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
         
-        let distances = defendingTeam.compactMap({ (defender) -> (Double, PersonState)? in
+        let distances = defendingTeam.compactMap({ (defender) -> Distance? in
             guard defender.person.currentHp > 0 else {
                 return nil
             }
@@ -205,8 +206,9 @@ extension BattleGround {
                 return nil
             }
             return (distance, defender)
-        })
-        return distances.min(by: { $0.0 < $1.0 })
+        }).sorted(by: { $0.distance < $1.distance })
+        let allTargets = distances.count > numberOfTargets ? Array(distances[0...(numberOfTargets - 1)]) : distances
+        return allTargets
     }
 }
 

@@ -41,14 +41,6 @@ enum TribeType: String, Decodable {
     case custom
 }
 
-enum AttackType: String, Decodable {
-    case aoe
-    case ping
-    case single
-    case singleRanged
-    case buff
-}
-
 struct Race: Decodable {
     let name: String
     let raceId: String
@@ -69,8 +61,17 @@ struct Class: Decodable {
     let hp: Int
     let attack: Int
     let defense: Int
-    let attackType: AttackType
-    let secondary: AttackType
+    let attackMove: Attack
+}
+
+struct Attack: Decodable {
+    let name: String
+    //extra affect
+    let targets: Int
+    let range: Int
+    let isMelee: Bool
+    let size: Int
+    let damage: Int
 }
 
 enum Color: Int, CaseIterable {
@@ -87,8 +88,7 @@ class Person: Battler, CustomStringConvertible {
     let hp: Int
     let attack: Int
     let defense: Int
-    let attackType: AttackType
-    let secondary: AttackType
+    let attackMove: Attack
     
     var currentHp: Int
     var currentAttack: Int
@@ -145,8 +145,7 @@ class Person: Battler, CustomStringConvertible {
         currentAttack = attack
         currentDefense = defense
         
-        attackType = pclass.attackType
-        secondary = pclass.secondary
+        attackMove = pclass.attackMove
     }
     
     var description: String {
