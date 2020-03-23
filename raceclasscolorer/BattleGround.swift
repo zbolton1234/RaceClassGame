@@ -23,18 +23,17 @@ enum TeamType {
 class PersonState {
     let person: Person
     let teamType: TeamType
-    var position: Position?
+    var position: Position
     
-    init(person: Person, teamType: TeamType) {
+    init(person: Person, teamType: TeamType, position: Position) {
         self.person = person
         self.teamType = teamType
+        self.position = position
     }
     
     func distance(otherPerson: PersonState) -> Double? {
-        guard let ourPosition = position,
-            let otherPosition = otherPerson.position else {
-            return nil
-        }
+        let ourPosition = position
+        let otherPosition = otherPerson.position
         
         let xDiff = pow(Double(ourPosition.x - otherPosition.x), 2)
         let yDiff = pow(Double(ourPosition.y - otherPosition.y), 2)
@@ -58,10 +57,8 @@ class BattleGround {
         print(ourTeam)
         print(enemyTeam)
         
-        ourTeamSide = ourTeam.members.map({ PersonState(person: $0,
-                                                        teamType: .our) })
-        enemyTeamSide = enemyTeam.members.map({ PersonState(person: $0,
-                                                            teamType: .enemy) })
+        var convertedOur = [PersonState]()
+        var convertedEnemy = [PersonState]()
         
         var ground = [[Spot]]()
         for (lineIndex, line) in groundJson.ground.enumerated() {
@@ -71,19 +68,21 @@ class BattleGround {
                 case "e":
                     groundLine.append(.empty)
                 case "o":
-                    ourTeamSide.enumerated().forEach({ (index, state) in
-                        state.position = (index + tileIndex, lineIndex)
+                    convertedOur = ourTeam.members.enumerated().map({ (index, person) in
+                        PersonState(person: person,
+                                    teamType: .our,
+                                    position: (index + tileIndex, lineIndex))
                     })
-                    let convertedOur = ourTeamSide.map({ Spot.person($0) })
                     
-                    groundLine.append(contentsOf: convertedOur)
+                    groundLine.append(contentsOf: convertedOur.map({ Spot.person($0) }))
                 case "m":
-                    enemyTeamSide.enumerated().forEach({ (index, state) in
-                        state.position = (index + tileIndex, lineIndex)
+                    convertedEnemy = enemyTeam.members.enumerated().map({ (index, person) in
+                        PersonState(person: person,
+                                    teamType: .enemy,
+                                    position: (index + tileIndex, lineIndex))
                     })
-                    let convertedEnemy = enemyTeamSide.map({ Spot.person($0) })
                     
-                    groundLine.append(contentsOf: convertedEnemy)
+                    groundLine.append(contentsOf: convertedEnemy.map({ Spot.person($0) }))
                 case "t":
                     groundLine.append(.terain("Tree"))
                 default:
@@ -93,6 +92,8 @@ class BattleGround {
             ground.append(groundLine)
         }
         self.ground = ground
+        self.ourTeamSide = convertedOur
+        self.enemyTeamSide = convertedEnemy
     }
     
     func fight(stateChanged: @escaping (() -> Void), completion: @escaping ((FightState) -> Void)) {
@@ -124,9 +125,6 @@ class BattleGround {
     }
     
     //TODO:s
-    //clean up names
-    //clean up edge cases
-    //clean up force unwrap
     //aoe
     //extra affects
     //is melee do anything
@@ -134,37 +132,42 @@ class BattleGround {
     //all
     //phases?  like all move then all attack?
     //speed
+    //unit test the math problems to guard againts bad numbers
     
     //summons
     //buffs
     //arc to support ^
     
     private func teamAttack(attackingTeam: [PersonState], defendingTeam: [PersonState]) {
-        attackingTeam.enumerated().forEach({ (index, memberState) in
-            let member = memberState.person
-            guard member.currentHp > 0 else {
+        attackingTeam.enumerated().forEach({ (index, attackingPersonState) in
+            let attackingPerson = attackingPersonState.person
+            guard attackingPerson.currentHp > 0 else {
                 return
             }
             
-            print("\(member.id) is attacking \(member.attackMove.name)")
+            print("\(attackingPerson.id) is attacking \(attackingPerson.attackMove.name)")
             
-            let attackMove = member.attackMove
-            var targets = closestEnemy(attackingPerson: memberState, numberOfTargets: attackMove.targets)
+            let attackMove = attackingPerson.attackMove
+            var targets = closestEnemy(attackingPerson: attackingPersonState,
+                                       numberOfTargets: attackMove.targets)
             
             //Also ensures targets is not empty
             guard let closestTarget = targets.first else {
                 return
             }
 
-            if closestTarget.distance >= Double(attackMove.range) + 1.0 || sightBlocked(attackingPosition: memberState.position!, defendingPosition: closestTarget.person.position!) {
-                smartMove(personState: memberState, goalPosition: closestTarget.person.position!)
+            //If our closest target is out of range or we can't hit it move closer.  Might not be the best spot to move to but not sure how to fix that yet.
+            if closestTarget.distance >= Double(attackMove.range) + 1.0 || sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: closestTarget.person.position) {
+                smartMove(personState: attackingPersonState, goalPosition: closestTarget.person.position)
                 //we moved need to update the states as we might be in range now
-                targets = closestEnemy(attackingPerson: memberState, numberOfTargets: attackMove.targets)
+                targets = closestEnemy(attackingPerson: attackingPersonState, numberOfTargets: attackMove.targets)
             }
 
             for target in targets {
-                if target.distance <= Double(attackMove.range) + 1.0 && !sightBlocked(attackingPosition: memberState.position!, defendingPosition: target.person.position!) {
-                    target.person.person.currentHp -= Int(Float(attackMove.damage) * member.attackModifer(enemy: closestTarget.person.person)) + 1
+                //Check range and visibility
+                if target.distance <= Double(attackMove.range) + 1.0 && !sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: target.person.position) {
+                    //TODO: More math problems ensure this can't be 0
+                    target.person.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: closestTarget.person.person)) + 1
                 }
             }
         })
@@ -218,15 +221,16 @@ extension BattleGround {
 
         ground[position.y][position.x] = .person(person)
 
-        if let oldPosition = person.position {
-            ground[oldPosition.y][oldPosition.x] = .empty
-        }
+        let oldPosition = person.position
+        ground[oldPosition.y][oldPosition.x] = .empty
 
         person.position = position
     }
     
     private func smartMove(personState: PersonState, goalPosition: Position) {
-        guard let startPosition = personState.position, personState.person.canMove else {
+        let startPosition = personState.position
+        
+        if !personState.person.canMove {
             return
         }
         
