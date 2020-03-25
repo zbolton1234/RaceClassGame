@@ -141,7 +141,7 @@ class BattleGround {
     
     private func teamAttack(attackingTeam: [PersonState], defendingTeam: [PersonState]) {
         attackingTeam.enumerated().forEach({ (index, attackingPersonState) in
- bgfv               let attackingPerson = attackingPersonState.person
+            let attackingPerson = attackingPersonState.person
             guard attackingPerson.currentHp > 0 else {
                 return
             }
