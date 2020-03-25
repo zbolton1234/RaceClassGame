@@ -22,10 +22,6 @@ class SelectionViewController: UIViewController {
         selectedOurTeam = team(tag: sender.tag)
     }
     
-    @IBAction func selectedEnemy(_ sender: UIButton) {
-        selectedEnemyTeam = team(tag: sender.tag)
-    }
-    
     func team(tag: Int) -> Team {
         var overriddenClass: Class?
         
@@ -36,6 +32,8 @@ class SelectionViewController: UIViewController {
             overriddenClass = classWithId(classId: "wizard")
         case 2:
             overriddenClass = classWithId(classId: "cleric")
+        case 3:
+            overriddenClass = classWithId(classId: "elementalist")
         default:
             break
         }

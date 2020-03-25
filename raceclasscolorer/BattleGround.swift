@@ -31,7 +31,7 @@ class PersonState {
         self.position = position
     }
     
-    func distance(otherPerson: PersonState) -> Double? {
+    func distance(otherPerson: PersonState) -> Double {
         let ourPosition = position
         let otherPosition = otherPerson.position
         
@@ -133,6 +133,7 @@ class BattleGround {
     //phases?  like all move then all attack?
     //speed
     //unit test the math problems to guard againts bad numbers
+    //sometimes we don't attack all valid if there are bad targets
     
     //summons
     //buffs
@@ -140,13 +141,15 @@ class BattleGround {
     
     private func teamAttack(attackingTeam: [PersonState], defendingTeam: [PersonState]) {
         attackingTeam.enumerated().forEach({ (index, attackingPersonState) in
-            let attackingPerson = attackingPersonState.person
+ bgfv               let attackingPerson = attackingPersonState.person
             guard attackingPerson.currentHp > 0 else {
                 return
             }
             
             print("\(attackingPerson.id) is attacking \(attackingPerson.attackMove.name)")
             
+            let onOur = attackingPersonState.teamType == .our
+            let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
             let attackMove = attackingPerson.attackMove
             var targets = closestEnemy(attackingPerson: attackingPersonState,
                                        numberOfTargets: attackMove.targets)
@@ -167,7 +170,17 @@ class BattleGround {
                 //Check range and visibility
                 if target.distance <= Double(attackMove.range) + 1.0 && !sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: target.person.position) {
                     //TODO: More math problems ensure this can't be 0
-                    target.person.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: closestTarget.person.person)) + 1
+                    target.person.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: target.person.person)) + 1
+                    
+                    //If AOE then attack others near by
+                    if attackMove.size > 1 {
+                        for enemy in defendingTeam {
+                            if target.person.distance(otherPerson: enemy) <= Double(attackMove.size) &&
+                                !sightBlocked(attackingPosition: target.person.position, defendingPosition: enemy.position) {
+                                enemy.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: enemy.person)) + 1
+                            }
+                        }
+                    }
                 }
             }
         })
@@ -202,9 +215,7 @@ extension BattleGround {
                 return nil
             }
             
-            guard let distance = attackingPerson.distance(otherPerson: defender) else {
-                return nil
-            }
+            let distance = attackingPerson.distance(otherPerson: defender)
             return (distance, defender)
         }).sorted(by: { $0.distance < $1.distance })
         let allTargets = distances.count > numberOfTargets ? Array(distances[0...(numberOfTargets - 1)]) : distances

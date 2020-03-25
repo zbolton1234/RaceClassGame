@@ -18,6 +18,24 @@
     }
   },
   {
+    "name": "Elementalist",
+    "groupId": "magic",
+    "id": "elementalist",
+    "tribeType": "civilized",
+    "description": "A wizard with a nack for fireballs.",
+    "hp": 5,
+    "attack": 3,
+    "defense": 2,
+    "attackMove": {
+        "name": "Fire Balls",
+        "targets": 2,
+        "range": 4,
+        "isMelee": false,
+        "size": 2,
+        "damage": 3
+    }
+  },
+  {
     "name": "Cleric",
     "groupId": "holy",
     "id": "cleric",

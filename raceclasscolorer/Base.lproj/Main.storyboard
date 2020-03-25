@@ -149,25 +149,11 @@
                                     <action selector="selectedOur:" destination="k0e-o4-MZE" eventType="touchUpInside" id="LO2-c8-0Sr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TXO-M2-p0G">
-                                <rect key="frame" x="692" y="95" width="58" height="30"/>
-                                <state key="normal" title="Warriors"/>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7Q-34-OhQ">
+                                <rect key="frame" x="209" y="259" width="84" height="30"/>
+                                <state key="normal" title="Elementalist"/>
                                 <connections>
-                                    <action selector="selectedEnemy:" destination="k0e-o4-MZE" eventType="touchUpInside" id="hPi-6K-NRx"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TSC-iO-0jd">
-                                <rect key="frame" x="693" y="151" width="56" height="30"/>
-                                <state key="normal" title="Wizards"/>
-                                <connections>
-                                    <action selector="selectedEnemy:" destination="k0e-o4-MZE" eventType="touchUpInside" id="4ai-iP-mi3"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTp-Z8-ocG">
-                                <rect key="frame" x="697" y="211" width="48" height="30"/>
-                                <state key="normal" title="Clerics"/>
-                                <connections>
-                                    <action selector="selectedEnemy:" destination="k0e-o4-MZE" eventType="touchUpInside" id="YPD-AD-zHN"/>
+                                    <action selector="selectedOur:" destination="k0e-o4-MZE" eventType="touchUpInside" id="VEp-Tl-hEY"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -175,16 +161,12 @@
                         <constraints>
                             <constraint firstItem="Fn5-EY-PSG" firstAttribute="centerY" secondItem="LJw-Hm-dTI" secondAttribute="centerY" id="2Kg-Bx-GBZ"/>
                             <constraint firstItem="0op-PX-xVE" firstAttribute="top" secondItem="SFD-8k-8hy" secondAttribute="top" constant="95" id="7Uy-TH-spu"/>
+                            <constraint firstItem="b7Q-34-OhQ" firstAttribute="top" secondItem="9g3-N0-Thd" secondAttribute="bottom" constant="18" id="BG0-he-Sy8"/>
                             <constraint firstItem="v0R-Fa-cr0" firstAttribute="top" secondItem="0op-PX-xVE" secondAttribute="bottom" constant="26" id="Bmb-FL-eEv"/>
-                            <constraint firstItem="TXO-M2-p0G" firstAttribute="top" secondItem="SFD-8k-8hy" secondAttribute="top" constant="95" id="QJF-UZ-E1F"/>
-                            <constraint firstItem="SFD-8k-8hy" firstAttribute="trailing" secondItem="TXO-M2-p0G" secondAttribute="trailing" constant="102" id="Qcu-iT-z7Y"/>
-                            <constraint firstItem="TSC-iO-0jd" firstAttribute="centerX" secondItem="TXO-M2-p0G" secondAttribute="centerX" id="b28-U0-BJ4"/>
                             <constraint firstItem="0op-PX-xVE" firstAttribute="leading" secondItem="SFD-8k-8hy" secondAttribute="leading" constant="178" id="dXp-s1-9RB"/>
-                            <constraint firstItem="MTp-Z8-ocG" firstAttribute="centerX" secondItem="TXO-M2-p0G" secondAttribute="centerX" id="her-Y3-5vp"/>
                             <constraint firstItem="9g3-N0-Thd" firstAttribute="centerX" secondItem="0op-PX-xVE" secondAttribute="centerX" id="hsh-YJ-xN8"/>
                             <constraint firstItem="v0R-Fa-cr0" firstAttribute="centerX" secondItem="0op-PX-xVE" secondAttribute="centerX" id="lOW-kQ-VLE"/>
-                            <constraint firstItem="TSC-iO-0jd" firstAttribute="top" secondItem="TXO-M2-p0G" secondAttribute="bottom" constant="26" id="rKa-nP-VSc"/>
-                            <constraint firstItem="MTp-Z8-ocG" firstAttribute="top" secondItem="TSC-iO-0jd" secondAttribute="bottom" constant="30" id="wuJ-xT-He6"/>
+                            <constraint firstItem="b7Q-34-OhQ" firstAttribute="centerX" secondItem="9g3-N0-Thd" secondAttribute="centerX" id="xfH-F5-JHI"/>
                             <constraint firstItem="Fn5-EY-PSG" firstAttribute="centerX" secondItem="LJw-Hm-dTI" secondAttribute="centerX" id="yAm-oI-GLY"/>
                             <constraint firstItem="9g3-N0-Thd" firstAttribute="top" secondItem="v0R-Fa-cr0" secondAttribute="bottom" constant="30" id="za7-Ux-b85"/>
                         </constraints>
