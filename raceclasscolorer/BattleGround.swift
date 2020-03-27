@@ -160,7 +160,7 @@ class BattleGround {
             }
 
             //If our closest target is out of range or we can't hit it move closer.  Might not be the best spot to move to but not sure how to fix that yet.
-            if closestTarget.distance >= Double(attackMove.range) + 1.0 || sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: closestTarget.person.position) {
+            if (closestTarget.distance >= Double(attackMove.range) + 1.0 || sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: closestTarget.person.position) && attackMove.range != -1) {
                 smartMove(personState: attackingPersonState, goalPosition: closestTarget.person.position)
                 //we moved need to update the states as we might be in range now
                 targets = closestEnemy(attackingPerson: attackingPersonState, numberOfTargets: attackMove.targets)
@@ -168,7 +168,7 @@ class BattleGround {
 
             for target in targets {
                 //Check range and visibility
-                if target.distance <= Double(attackMove.range) + 1.0 && !sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: target.person.position) {
+                if target.distance <= Double(attackMove.range) + 1.0 || attackMove.range == -1 {
                     //TODO: More math problems ensure this can't be 0
                     target.person.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: target.person.person)) + 1
                     
@@ -211,15 +211,21 @@ extension BattleGround {
         let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
         
         let distances = defendingTeam.compactMap({ (defender) -> Distance? in
-            guard defender.person.currentHp > 0 else {
+            let blocked = sightBlocked(attackingPosition: attackingPerson.position, defendingPosition: defender.position)
+            
+            guard defender.person.currentHp > 0, (numberOfTargets == -1 || !blocked) else {
                 return nil
             }
             
             let distance = attackingPerson.distance(otherPerson: defender)
             return (distance, defender)
         }).sorted(by: { $0.distance < $1.distance })
-        let allTargets = distances.count > numberOfTargets ? Array(distances[0...(numberOfTargets - 1)]) : distances
-        return allTargets
+        
+        if numberOfTargets == -1 {
+            return distances
+        } else {
+            return distances.count > numberOfTargets ? Array(distances[0...(numberOfTargets - 1)]) : distances
+        }
     }
 }
 

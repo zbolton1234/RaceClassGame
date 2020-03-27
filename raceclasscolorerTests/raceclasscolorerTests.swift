@@ -166,4 +166,50 @@ class raceclasscolorerTests: XCTestCase {
         wait(for: [expection], timeout: 5)
     }
     
+    func testMultiHit() {
+        let nonMovingWiz = Person(preClass: classWithId(classId: "wizard"))
+        nonMovingWiz.canMove = false
+        let ourTestTeam = Team(members: [nonMovingWiz])
+        let enemyTeam = Team(members: [Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy()])
+        let testGround = GroundJson(id: "testGround", ground:  [["e", "e", "o", "e", "e"],["e", "e", "t", "e", "e"],["m"]])
+        let battleGround = BattleGround(ourTeam: ourTestTeam,
+                                        enemyTeam: enemyTeam,
+                                        groundJson: testGround)
+        
+        let expection = expectation(description: "one shot")
+        
+        battleGround.fight(stateChanged: {
+            XCTAssertTrue(battleGround.ourTeam.isAlive)
+            XCTAssertTrue(battleGround.enemyTeam.members.filter({ $0.currentHp > 0 }).count == 3)
+            expection.fulfill()
+        }, completion: { (_) in
+
+        })
+        
+        wait(for: [expection], timeout: 5)
+    }
+    
+    func testAllHit() {
+        let nonMovingWiz = Person(preClass: classWithId(classId: "bloodmage"))
+        nonMovingWiz.canMove = false
+        let ourTestTeam = Team(members: [nonMovingWiz])
+        let enemyTeam = Team(members: [Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy()])
+        let testGround = GroundJson(id: "testGround", ground:  [["e", "e", "o", "e", "e"],["e", "e", "t", "e", "e"],["m"]])
+        let battleGround = BattleGround(ourTeam: ourTestTeam,
+                                        enemyTeam: enemyTeam,
+                                        groundJson: testGround)
+        
+        let expection = expectation(description: "one shot")
+        
+        battleGround.fight(stateChanged: {
+            XCTAssertTrue(battleGround.ourTeam.isAlive)
+            XCTAssertFalse(battleGround.enemyTeam.isAlive)
+            expection.fulfill()
+        }, completion: { (_) in
+
+        })
+        
+        wait(for: [expection], timeout: 5)
+    }
+    
 }

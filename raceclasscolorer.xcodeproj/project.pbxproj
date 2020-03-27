@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		82439587242144E20011E2B0 /* BattleWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82439586242144E20011E2B0 /* BattleWrapper.swift */; };
-		82439589242149330011E2B0 /* BattleGroundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82439588242149330011E2B0 /* BattleGroundHelper.swift */; };
 		826025D22409767300811B98 /* BattleFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D12409767300811B98 /* BattleFieldView.swift */; };
 		826025D4240D822B00811B98 /* BattleGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D3240D822B00811B98 /* BattleGround.swift */; };
 		826025D624119A1C00811B98 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D524119A1C00811B98 /* SelectionViewController.swift */; };
@@ -47,7 +46,6 @@
 
 /* Begin PBXFileReference section */
 		82439586242144E20011E2B0 /* BattleWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleWrapper.swift; sourceTree = "<group>"; };
-		82439588242149330011E2B0 /* BattleGroundHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleGroundHelper.swift; sourceTree = "<group>"; };
 		826025D12409767300811B98 /* BattleFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleFieldView.swift; sourceTree = "<group>"; };
 		826025D3240D822B00811B98 /* BattleGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleGround.swift; sourceTree = "<group>"; };
 		826025D524119A1C00811B98 /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 				829D842A23D50538006AEBE5 /* Loader.swift */,
 				829D842823D3A76A006AEBE5 /* Encounter.swift */,
 				826025D3240D822B00811B98 /* BattleGround.swift */,
-				82439588242149330011E2B0 /* BattleGroundHelper.swift */,
 				82BC2A222416BE3900A16599 /* Position.swift */,
 				827F7F0823CA5D1100545431 /* Main.storyboard */,
 				829D842C23D5062B006AEBE5 /* Data.xcassets */,
@@ -299,7 +296,6 @@
 				82BC2A232416BE3900A16599 /* Position.swift in Sources */,
 				829D842F23D6109D006AEBE5 /* Team.swift in Sources */,
 				827F7F3323CA5D7C00545431 /* Person.swift in Sources */,
-				82439589242149330011E2B0 /* BattleGroundHelper.swift in Sources */,
 				829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */,
 				826025D4240D822B00811B98 /* BattleGround.swift in Sources */,
 				826025D22409767300811B98 /* BattleFieldView.swift in Sources */,

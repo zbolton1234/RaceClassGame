@@ -10,7 +10,7 @@
     "defense": 2,
     "attackMove": {
         "name": "Fire Bolt",
-        "targets": 1,
+        "targets": 2,
         "range": 4,
         "isMelee": false,
         "size": 1,
@@ -33,6 +33,24 @@
         "isMelee": false,
         "size": 2,
         "damage": 3
+    }
+  },
+  {
+    "name": "Blood Mage",
+    "groupId": "naturemagic",
+    "id": "bloodmage",
+    "tribeType": "wild",
+    "description": "The blood of my enemy is mine to control.",
+    "hp": 10,
+    "attack": 2,
+    "defense": 5,
+    "attackMove": {
+        "name": "Blood Boil",
+        "targets": -1,
+        "range": -1,
+        "isMelee": false,
+        "size": 1,
+        "damage": 1
     }
   },
   {
