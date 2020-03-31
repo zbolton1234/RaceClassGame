@@ -50,6 +50,7 @@ struct Race: Decodable {
     let friendlyRaces: [String]
     let animals: [String]
     let hatedRaces: [String]
+    let bounusSpeed: Int
 }
 
 struct Class: Decodable {
@@ -61,6 +62,7 @@ struct Class: Decodable {
     let hp: Int
     let attack: Int
     let defense: Int
+    let speed: Int
     let attackMove: Attack
 }
 
@@ -88,14 +90,13 @@ class Person: Battler, CustomStringConvertible {
     let hp: Int
     let attack: Int
     let defense: Int
+    let speed: Int
     let attackMove: Attack
     
     var currentHp: Int
     var currentAttack: Int
     var currentDefense: Int
-    
-    //TODO: TEMP REPLACE WITH SPEED USING FOR TEST DUMB LOGIC
-    var canMove = true
+    var currentSpeed: Int
     
     convenience init(raceId: String, groupId: String) {
         let preRace = allRaces(ofRaceId: raceId).randomElement()!
@@ -111,8 +112,7 @@ class Person: Battler, CustomStringConvertible {
         dummy.currentHp = 1
         dummy.currentAttack = 0
         dummy.currentDefense = 0
-        
-        dummy.canMove = false
+        dummy.currentSpeed = 0
         
         return dummy
     }
@@ -157,10 +157,12 @@ class Person: Battler, CustomStringConvertible {
         hp = Int(Double(pclass.hp) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
         attack = Int(Double(pclass.attack) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
         defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
-     
+        speed = pclass.speed + race.bounusSpeed
+        
         currentHp = hp
         currentAttack = attack
         currentDefense = defense
+        currentSpeed = speed
         
         attackMove = pclass.attackMove
     }
@@ -200,5 +202,19 @@ class Person: Battler, CustomStringConvertible {
             }
         }
         return 0
+    }
+    
+    func personImage() -> UIImage {
+        return imageFromString(string: NSString(string: race.name))
+    }
+    
+    private func imageFromString(string: NSString) -> UIImage {
+        let size = CGSize(width: 100, height: 100)
+        UIGraphicsBeginImageContext(size)
+        string.draw(in: CGRect(x: 0, y: 0, width: 100, height: 100), withAttributes: nil)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image!
     }
 }

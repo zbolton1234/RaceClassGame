@@ -8,6 +8,7 @@
     "hp": 5,
     "attack": 3,
     "defense": 2,
+    "speed": 1,
     "attackMove": {
         "name": "Fire Bolt",
         "targets": 2,
@@ -26,6 +27,7 @@
     "hp": 5,
     "attack": 3,
     "defense": 2,
+    "speed": 1,
     "attackMove": {
         "name": "Fire Balls",
         "targets": 2,
@@ -44,6 +46,7 @@
     "hp": 10,
     "attack": 2,
     "defense": 5,
+    "speed": 0,
     "attackMove": {
         "name": "Blood Boil",
         "targets": -1,
@@ -62,6 +65,7 @@
     "hp": 20,
     "attack": 5,
     "defense": 7,
+    "speed": 1,
     "attackMove": {
         "name": "Smite",
         "targets": 1,
@@ -80,6 +84,7 @@
     "hp": 17,
     "attack": 7,
     "defense": 5,
+    "speed": 1,
     "attackMove": {
         "name": "Quick Swipes",
         "targets": 3,
@@ -98,6 +103,7 @@
     "hp": 20,
     "attack": 10,
     "defense": 2,
+    "speed": 2,
     "attackMove": {
         "name": "Heavy Swipe",
         "targets": 1,

@@ -76,7 +76,7 @@ class raceclasscolorerTests: XCTestCase {
     
     func testShootNextThruTrees() {
         let nonMovingWiz = Person(preClass: classWithId(classId: "wizard"))
-        nonMovingWiz.canMove = false
+        nonMovingWiz.currentSpeed = 0
         let ourTestTeam = Team(members: [nonMovingWiz])
         let enemyTeam = Team(members: [Person.testDummy()])
         let testGround = GroundJson(id: "testGround", ground:  [["e", "t", "o", "t", "e"],["e", "t", "e", "t", "e"],["e", "t", "m", "t", "e"]])
@@ -99,7 +99,7 @@ class raceclasscolorerTests: XCTestCase {
     
     func testConerShootThruTrees() {
         let nonMovingWiz = Person(preClass: classWithId(classId: "wizard"))
-        nonMovingWiz.canMove = false
+        nonMovingWiz.currentSpeed = 0
         let ourTestTeam = Team(members: [nonMovingWiz])
         let enemyTeam = Team(members: [Person.testDummy()])
         let testGround = GroundJson(id: "testGround", ground:  [["e", "e", "e", "o", "e"],["e", "e", "e", "e", "e"],["e", "t", "m", "t", "e"]])
@@ -122,7 +122,7 @@ class raceclasscolorerTests: XCTestCase {
     
     func testTreeInFrontWay() {
         let nonMovingWiz = Person(preClass: classWithId(classId: "wizard"))
-        nonMovingWiz.canMove = false
+        nonMovingWiz.currentSpeed = 0
         let ourTestTeam = Team(members: [nonMovingWiz])
         let enemyTeam = Team(members: [Person.testDummy()])
         let testGround = GroundJson(id: "testGround", ground:  [["e", "e", "o", "e", "e"],["e", "e", "t", "e", "e"],["e", "e", "m", "e", "e"]])
@@ -145,7 +145,7 @@ class raceclasscolorerTests: XCTestCase {
     
     func testTreeToTheSideInWay() {
         let nonMovingWiz = Person(preClass: classWithId(classId: "wizard"))
-        nonMovingWiz.canMove = false
+        nonMovingWiz.currentSpeed = 0
         let ourTestTeam = Team(members: [nonMovingWiz])
         let enemyTeam = Team(members: [Person.testDummy()])
         let testGround = GroundJson(id: "testGround", ground:  [["e", "e", "e", "o", "e"],["e", "e", "e", "t", "e"],["e", "e", "m", "e", "e"]])
@@ -168,7 +168,7 @@ class raceclasscolorerTests: XCTestCase {
     
     func testMultiHit() {
         let nonMovingWiz = Person(preClass: classWithId(classId: "wizard"))
-        nonMovingWiz.canMove = false
+        nonMovingWiz.currentSpeed = 0
         let ourTestTeam = Team(members: [nonMovingWiz])
         let enemyTeam = Team(members: [Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy()])
         let testGround = GroundJson(id: "testGround", ground:  [["e", "e", "o", "e", "e"],["e", "e", "t", "e", "e"],["m"]])
@@ -191,7 +191,7 @@ class raceclasscolorerTests: XCTestCase {
     
     func testAllHit() {
         let nonMovingWiz = Person(preClass: classWithId(classId: "bloodmage"))
-        nonMovingWiz.canMove = false
+        nonMovingWiz.currentSpeed = 0
         let ourTestTeam = Team(members: [nonMovingWiz])
         let enemyTeam = Team(members: [Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy(), Person.testDummy()])
         let testGround = GroundJson(id: "testGround", ground:  [["e", "e", "o", "e", "e"],["e", "e", "t", "e", "e"],["m"]])

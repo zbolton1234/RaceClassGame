@@ -152,18 +152,22 @@ class BattleGround {
             let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
             let attackMove = attackingPerson.attackMove
             var targets = closestEnemy(attackingPerson: attackingPersonState,
-                                       numberOfTargets: attackMove.targets)
+                                       numberOfTargets: attackMove.targets,
+                                       onlySee: true)
             
-            //Also ensures targets is not empty
-            guard let closestTarget = targets.first else {
-                return
+            guard let closestTarget = closestEnemy(attackingPerson: attackingPersonState,
+                                             numberOfTargets: 1,
+                                             onlySee: false).first else {
+                                                return
             }
 
             //If our closest target is out of range or we can't hit it move closer.  Might not be the best spot to move to but not sure how to fix that yet.
             if (closestTarget.distance >= Double(attackMove.range) + 1.0 || sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: closestTarget.person.position) && attackMove.range != -1) {
                 smartMove(personState: attackingPersonState, goalPosition: closestTarget.person.position)
                 //we moved need to update the states as we might be in range now
-                targets = closestEnemy(attackingPerson: attackingPersonState, numberOfTargets: attackMove.targets)
+                targets = closestEnemy(attackingPerson: attackingPersonState,
+                                       numberOfTargets: attackMove.targets,
+                                       onlySee: true)
             }
 
             for target in targets {
@@ -206,14 +210,14 @@ extension BattleGround {
     }
     
     typealias Distance = (distance: Double, person: PersonState)
-    private func closestEnemy(attackingPerson: PersonState, numberOfTargets: Int) -> [Distance] {
+    private func closestEnemy(attackingPerson: PersonState, numberOfTargets: Int, onlySee: Bool) -> [Distance] {
         let onOur = attackingPerson.teamType == .our
         let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
         
         let distances = defendingTeam.compactMap({ (defender) -> Distance? in
             let blocked = sightBlocked(attackingPosition: attackingPerson.position, defendingPosition: defender.position)
             
-            guard defender.person.currentHp > 0, (numberOfTargets == -1 || !blocked) else {
+            guard defender.person.currentHp > 0, (numberOfTargets == -1 || !(blocked && onlySee)) else {
                 return nil
             }
             
@@ -247,7 +251,7 @@ extension BattleGround {
     private func smartMove(personState: PersonState, goalPosition: Position) {
         let startPosition = personState.position
         
-        if !personState.person.canMove {
+        if personState.person.currentSpeed == 0 {
             return
         }
         
@@ -274,7 +278,9 @@ extension BattleGround {
             closedList.append(currentNode)
             
             if currentNode == endNode {
-                if let nextNode = currentNode.nextNode(startNode: startNode) {
+                if let nextNode = currentNode.nextNode(startNode: startNode,
+                                                       endNode: endNode,
+                                                       depth: 0/*personState.person.currentSpeed*/) {
                     move(person: personState, position: nextNode.position)
                 }
                 
@@ -371,15 +377,33 @@ private class PositionNode: Hashable {
         hasher.combine(position.y)
     }
     
-    func nextNode(startNode: PositionNode) -> PositionNode? {
-        if parent == startNode {
+    //me (startnode) -> empty -> enemy (endnode)
+    
+    //TODO: putting a hard max of ... should fix or make better
+    func nextNode(startNode: PositionNode, endNode: PositionNode, depth: Int) -> PositionNode? {
+        var lookingAt: PositionNode?
+        
+        if let grandParent = self.parent?.parent?.parent, depth == 2 {
+            lookingAt = grandParent
+        } else if let grandParent = self.parent?.parent, depth >= 1 {
+            lookingAt = grandParent
+        } else {
+            lookingAt = self.parent
+        }
+        
+        if lookingAt == startNode {
+            //We want to move more then 1 but did not move at all so need to try a shorter depth
+            if self == endNode && depth > 0 {
+                return self.nextNode(startNode: startNode, endNode: endNode, depth: depth - 1)
+            }
+            
             return self
         } else {
-            return parent?.nextNode(startNode: startNode)
+            return parent?.nextNode(startNode: startNode, endNode: endNode, depth: depth)
         }
     }
 }
 
 private func ==(lhs: PositionNode, rhs: PositionNode) -> Bool {
-  return lhs.position == rhs.position
+    return lhs.position == rhs.position
 }

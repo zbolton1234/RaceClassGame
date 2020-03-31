@@ -7,7 +7,8 @@
     "description": "The most common race living mainly in the plains of Hilmore.",
     "friendlyRaces": ["elf", "drawf", "gnome"],
     "animals": ["cow", "dog"],
-    "hatedRaces": ["goblin", "orc", "monsters", "gnoll"]
+    "hatedRaces": ["goblin", "orc", "monsters", "gnoll"],
+    "bounusSpeed": 0
   },
   {
     "name": "Forest Elf",
@@ -17,7 +18,8 @@
     "description": "The most wild of the elves. They live in small villages.",
     "friendlyRaces": ["elf", "human", "gnome"],
     "animals": ["bear"],
-    "hatedRaces": ["goblin", "orc", "giants", "gnoll"]
+    "hatedRaces": ["goblin", "orc", "giants", "gnoll"],
+    "bounusSpeed": 1
   },
   {
     "name": "Dessert Elf",
@@ -27,7 +29,8 @@
     "description": "Sun baked elfs that live in huts on the sand.",
     "friendlyRaces": ["elf", "human", "lizard"],
     "animals": ["lion"],
-    "hatedRaces": ["goblin", "orc", "gnoll"]
+    "hatedRaces": ["goblin", "orc", "gnoll"],
+    "bounusSpeed": 1
   },
   {
     "name": "Red Orc",
@@ -37,7 +40,8 @@
     "description": "The most common orc.",
     "friendlyRaces": ["goblin"],
     "animals": [],
-    "hatedRaces": ["human", "elf", "drawf"]
+    "hatedRaces": ["human", "elf", "drawf"],
+    "bounusSpeed": 0
   },
   {
     "name": "Yellow Orc",
@@ -47,7 +51,8 @@
     "description": "The other most common orc.",
     "friendlyRaces": ["goblin"],
     "animals": [],
-    "hatedRaces": ["human", "elf", "drawf"]
+    "hatedRaces": ["human", "elf", "drawf"],
+    "bounusSpeed": 0
   },
   {
     "name": "Green Orc",
@@ -57,7 +62,8 @@
     "description": "The other most common orc.",
     "friendlyRaces": ["goblin"],
     "animals": [],
-    "hatedRaces": ["human", "elf", "drawf"]
+    "hatedRaces": ["human", "elf", "drawf"],
+    "bounusSpeed": 0
   },
   {
     "name": "Brown Orc",
@@ -67,7 +73,8 @@
     "description": "The other most common orc.",
     "friendlyRaces": ["goblin"],
     "animals": [],
-    "hatedRaces": ["human", "elf", "drawf"]
+    "hatedRaces": ["human", "elf", "drawf"],
+    "bounusSpeed": 0
   },
   {
     "name": "Purple Orc",
@@ -77,6 +84,7 @@
     "description": "The other most common orc.",
     "friendlyRaces": ["goblin"],
     "animals": [],
-    "hatedRaces": ["human", "elf", "drawf"]
+    "hatedRaces": ["human", "elf", "drawf"],
+    "bounusSpeed": 0
   }
 ]
