@@ -1,20 +1,41 @@
 [
-  {
-    "name": "Human Warriors",
-    "raceId": "human",
-    "groupId": "warrior",
-    "groundId": "Empty"
-  },
-  {
-    "name": "Human Wizards",
-    "raceId": "human",
-    "groupId": "magic",
-    "groundId": "Tree"
-  },
-  {
-    "name": "Elf Clerics",
-    "raceId": "elf",
-    "groupId": "holy",
-    "groundId": "Tree"
-  }
+    {
+        "name": "Evil Blood Mages",
+        "intro": "Off in the distance there is a red glow. After getting closer there is a group of blood mages peforming a ritual on a prisoner. When they see you they turn their magic to us.",
+        "win": "With the mages defeated we are able to free the prisoner.",
+        "loss": "The mages are too strong and we could not save the prisoner",
+        "reward": "p",
+        "raceId": "any",
+        "groupId": "bloodmage",
+        "enemySpawnRate": 5,
+        "groundId": "Empty",
+        "difficulty": 0,
+        "restrictions": ["Evil"]
+    },
+    {
+        "name": "Human Guards",
+        "intro": "Approaching the gates of a small town a group of guards approach accusing the group of stealing from a near by town. They will not listen and draw their swords.",
+        "win": "The guards are overwhelmed and retreat into the town.",
+        "loss": "The guards are too strong and arrest the team. After taking the group in they relize they have the wrong group and let the group go",
+        "reward": "g",
+        "raceId": "human",
+        "groupId": "warrior",
+        "enemySpawnRate": 6,
+        "groundId": "Town",
+        "difficulty": 0,
+        "restrictions": ["Good"]
+    },
+    {
+        "name": "Human Wizard",
+        "intro": "A group of human wizard traines approach the group and ask to spare.",
+        "win": "The group of traines are sure they need a little more work.",
+        "loss": "The group of wizards have a smug smerk on their face as say that was a good duel",
+        "reward": "",
+        "raceId": "human",
+        "groupId": "wizard",
+        "enemySpawnRate": 6,
+        "groundId": "Town",
+        "difficulty": 0,
+        "restrictions": []
+    }
 ]

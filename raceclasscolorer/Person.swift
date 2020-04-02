@@ -11,9 +11,233 @@ import UIKit
 
 let allRaces = loadRaces()
 let allClasses = loadClasses()
+let anyConstant = "any"
 
-func allClasses(ofType: TribeType) -> [Class] {
-    return allClasses.filter({ $0.tribeType == ofType })
+func raceClass(globalRaceId: String, globalClassId: String) -> (Race?, Class?) {
+    if globalRaceId == anyConstant && globalClassId == anyConstant {
+        let randomRace = allRaces.randomElement()!
+        let randomClass = allClasses(ofClassType: randomRace.tribeType).randomElement()
+        
+        return (randomRace, randomClass)
+    }
+    
+    var preselectedRace: Race?
+    
+    if let tribeType = TribeType(rawValue: globalRaceId) {
+        preselectedRace = allRacesForceType(ofRaceType: tribeType).randomElement()
+    }
+    
+    let usingRaceId = allRaces(ofRaceId: globalRaceId)
+    
+    if usingRaceId.count > 0 {
+        preselectedRace = usingRaceId.randomElement()
+    }
+    
+    let usingId = allRaces(ofId: globalRaceId)
+    
+    if usingId.count > 0 {
+        preselectedRace = usingId.randomElement()
+    }
+    
+    if let preselectedRace = preselectedRace {
+        var allowedClass: Class?
+        
+        if globalClassId == anyConstant {
+            allowedClass = allClasses(ofClassType: preselectedRace.tribeType).randomElement()
+        }
+        
+        if let classTribeType = TribeType(rawValue: globalClassId) {
+            if invalidTribeTypes(classTribeType: classTribeType, raceTribeType: preselectedRace.tribeType) {
+                print("invalid class selected \(globalRaceId) \(globalClassId)")
+                allowedClass = allClasses(ofClassType: preselectedRace.tribeType).randomElement()
+            } else {
+                allowedClass = allClassesForceType(ofClassType: classTribeType).randomElement()
+            }
+        }
+        
+        let usingGroupId = allClasses(ofGroupId: globalClassId)
+        
+        if usingGroupId.count > 0 {
+            let purposedClass = usingGroupId.randomElement()!
+            
+            if invalidTribeTypes(classTribeType: purposedClass.tribeType, raceTribeType: preselectedRace.tribeType) {
+                print("invalid class selected \(globalRaceId) \(globalClassId)")
+                allowedClass = allClasses(ofClassType: preselectedRace.tribeType).randomElement()
+            } else {
+                allowedClass = purposedClass
+            }
+        }
+        
+        let usingId = allClasses(ofId: globalClassId)
+        
+        if usingId.count > 0 {
+            let purposedClass = usingId.randomElement()!
+            
+            if invalidTribeTypes(classTribeType: purposedClass.tribeType, raceTribeType: preselectedRace.tribeType) {
+                print("invalid class selected \(globalRaceId) \(globalClassId)")
+                allowedClass = allClasses(ofClassType: preselectedRace.tribeType).randomElement()
+            } else {
+                allowedClass = purposedClass
+            }
+        }
+        
+        return (preselectedRace, allowedClass)
+    } else {
+        var preselectedClass: Class?
+        
+        if let tribeType = TribeType(rawValue: globalClassId) {
+            preselectedClass = allClassesForceType(ofClassType: tribeType).randomElement()
+        }
+        
+        let usingRaceId = allClasses(ofGroupId: globalClassId)
+        
+        if usingRaceId.count > 0 {
+            preselectedClass = usingRaceId.randomElement()
+        }
+        
+        let usingId = allClasses(ofId: globalClassId)
+        
+        if usingId.count > 0 {
+            preselectedClass = usingId.randomElement()
+        }
+        
+        if let preselectedClass = preselectedClass {
+            var allowedRace: Race?
+            
+            if globalRaceId == anyConstant {
+                allowedRace = allRaces(ofClassType: preselectedClass.tribeType).randomElement()
+            }
+            
+            if let raceTribeType = TribeType(rawValue: globalRaceId) {
+                if invalidTribeTypes(classTribeType: preselectedClass.tribeType, raceTribeType: raceTribeType) {
+                    print("invalid race selected \(globalRaceId) \(globalClassId)")
+                    allowedRace = allRaces(ofRaceType: preselectedClass.tribeType).randomElement()
+                } else {
+                    allowedRace = allRacesForceType(ofRaceType: raceTribeType).randomElement()
+                }
+            }
+            
+            let usingGroupId = allRaces(ofRaceId: globalRaceId)
+            
+            if usingGroupId.count > 0 {
+                let purposedRace = usingGroupId.randomElement()!
+                
+                if invalidTribeTypes(classTribeType: preselectedClass.tribeType, raceTribeType: purposedRace.tribeType) {
+                    print("invalid race selected \(globalRaceId) \(globalClassId)")
+                    allowedRace = allRaces(ofRaceType: preselectedClass.tribeType).randomElement()
+                } else {
+                    allowedRace = purposedRace
+                }
+            }
+            
+            let usingId = allRaces(ofId: globalRaceId)
+            
+            if usingId.count > 0 {
+                let purposedRace = usingId.randomElement()!
+                
+                if invalidTribeTypes(classTribeType: preselectedClass.tribeType, raceTribeType: purposedRace.tribeType) {
+                    print("invalid race selected \(globalRaceId) \(globalClassId)")
+                    allowedRace = allRaces(ofRaceType: preselectedClass.tribeType).randomElement()
+                } else {
+                    allowedRace = purposedRace
+                }
+            }
+            
+            return (allowedRace, preselectedClass)
+        }
+    }
+    
+    print("everything failed \(globalRaceId) \(globalClassId)")
+    return (nil, nil)
+}
+
+func invalidTribeTypes(classTribeType: TribeType, raceTribeType: TribeType) -> Bool {
+    //Currently the only invalid combo is wild race with civ class aka a Gnoll Wizard
+    return classTribeType == .civilized && raceTribeType == .wild
+}
+
+//Accepts 4 different types of values raceId "elf", tribeType "civilized", id "forsestElf", any "any" to get the correct Race from the list
+func raceWith(globalId: String) -> Race? {
+    if globalId == anyConstant {
+        return allRaces.randomElement()
+    }
+    
+    if let tribeType = TribeType(rawValue: globalId) {
+        return allRaces(ofRaceType: tribeType).randomElement()
+    }
+    
+    let usingRaceId = allRaces(ofRaceId: globalId)
+    
+    if usingRaceId.count > 0 {
+        return usingRaceId.randomElement()
+    }
+    
+    let usingId = allRaces(ofId: globalId)
+    
+    if usingId.count > 0 {
+        return usingId.randomElement()
+    }
+    
+    print("Error: could not find a Race of \(globalId)")
+    return nil
+}
+
+//Accepts 4 different types of values groupId "magic", tribeType "civilized", id "wizard", any "any" to get the correct Race from the list
+func classWith(globalId: String) -> Class? {
+    if globalId == anyConstant {
+        return allClasses.randomElement()
+    }
+    
+    if let tribeType = TribeType(rawValue: globalId) {
+        return allClasses(ofClassType: tribeType).randomElement()
+    }
+    
+    let usingGroupId = allClasses(ofGroupId: globalId)
+    
+    if usingGroupId.count > 0 {
+        return usingGroupId.randomElement()
+    }
+    
+    let usingId = allClasses(ofId: globalId)
+    
+    if usingId.count > 0 {
+        return usingId.randomElement()
+    }
+    
+    print("Error: could not find a Class of \(globalId)")
+    return nil
+}
+
+func allClassesForceType(ofClassType: TribeType) -> [Class] {
+    return allClasses.filter({ $0.tribeType == ofClassType })
+}
+
+func allRacesForceType(ofRaceType: TribeType) -> [Race] {
+    return allRaces.filter({ $0.tribeType == ofRaceType })
+}
+
+func allClasses(ofClassType: TribeType) -> [Class] {
+    if ofClassType == .civilized {
+        return allClasses
+    }
+    
+    return allClasses.filter({ $0.tribeType == ofClassType })
+}
+
+func allRaces(ofClassType: TribeType) -> [Race] {
+    if ofClassType == .wild {
+        return allRaces
+    }
+    
+    return allRaces.filter({ $0.tribeType == ofClassType })
+}
+
+func allRaces(ofRaceType: TribeType) -> [Race] {
+    if ofRaceType == .civilized {
+        return allRaces
+    }
+    
+    return allRaces.filter({ $0.tribeType == ofRaceType })
 }
 
 func allRaceIds() -> [String] {
@@ -24,8 +248,16 @@ func allRaces(ofRaceId: String) -> [Race] {
     return allRaces.filter({ $0.raceId == ofRaceId })
 }
 
+func allRaces(ofId: String) -> [Race] {
+    return allRaces.filter({ $0.id == ofId })
+}
+
 func allClasses(ofGroupId: String) -> [Class] {
     return allClasses.filter({ $0.groupId == ofGroupId })
+}
+
+func allClasses(ofId: String) -> [Class] {
+    return allClasses.filter({ $0.id == ofId })
 }
 
 func classWithId(classId: String) -> Class? {
@@ -98,9 +330,9 @@ class Person: Battler, CustomStringConvertible {
     var currentDefense: Int
     var currentSpeed: Int
     
-    convenience init(raceId: String, groupId: String) {
-        let preRace = allRaces(ofRaceId: raceId).randomElement()!
-        let preClass = allClasses(ofGroupId: groupId).randomElement()!
+    convenience init(globalRaceId: String, globalClassId: String) {
+        let preRace = raceWith(globalId: globalRaceId)
+        let preClass = classWith(globalId: globalClassId)
         
         self.init(preRace: preRace, preClass: preClass)
     }
@@ -135,7 +367,7 @@ class Person: Battler, CustomStringConvertible {
             let validClasses: [Class]
             
             if selectedRace.tribeType == .wild {
-                validClasses = allClasses(ofType: .wild)
+                validClasses = allClasses(ofClassType: .wild)
             } else {
                 validClasses = allClasses
             }

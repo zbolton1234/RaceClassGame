@@ -96,7 +96,7 @@
   },
   {
     "name": "Barb",
-    "groupId": "warrior",
+    "groupId": "wildWarrior",
     "id": "barb",
     "tribeType": "wild",
     "description": "A true wild man",
