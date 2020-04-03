@@ -8,7 +8,9 @@
     "friendlyRaces": ["elf", "drawf", "gnome"],
     "animals": ["cow", "dog"],
     "hatedRaces": ["goblin", "orc", "monsters", "gnoll"],
-    "bounusSpeed": 0
+    "bounusSpeed": 0,
+    "goodEvil": "neither",
+    "alignmentLevel": "neither"
   },
   {
     "name": "Forest Elf",
@@ -19,7 +21,9 @@
     "friendlyRaces": ["elf", "human", "gnome"],
     "animals": ["bear"],
     "hatedRaces": ["goblin", "orc", "giants", "gnoll"],
-    "bounusSpeed": 1
+    "bounusSpeed": 1,
+    "goodEvil": "good",
+    "alignmentLevel": "minor"
   },
   {
     "name": "Dessert Elf",
@@ -30,7 +34,9 @@
     "friendlyRaces": ["elf", "human", "lizard"],
     "animals": ["lion"],
     "hatedRaces": ["goblin", "orc", "gnoll"],
-    "bounusSpeed": 1
+    "bounusSpeed": 1,
+    "goodEvil": "good",
+    "alignmentLevel": "minor"
   },
   {
     "name": "Red Orc",
@@ -41,7 +47,9 @@
     "friendlyRaces": ["goblin"],
     "animals": [],
     "hatedRaces": ["human", "elf", "drawf"],
-    "bounusSpeed": 0
+    "bounusSpeed": 0,
+    "goodEvil": "evil",
+    "alignmentLevel": "major"
   },
   {
     "name": "Yellow Orc",
@@ -52,7 +60,9 @@
     "friendlyRaces": ["goblin"],
     "animals": [],
     "hatedRaces": ["human", "elf", "drawf"],
-    "bounusSpeed": 0
+    "bounusSpeed": 0,
+    "goodEvil": "evil",
+    "alignmentLevel": "major"
   },
   {
     "name": "Green Orc",
@@ -63,7 +73,9 @@
     "friendlyRaces": ["goblin"],
     "animals": [],
     "hatedRaces": ["human", "elf", "drawf"],
-    "bounusSpeed": 0
+    "bounusSpeed": 0,
+    "goodEvil": "evil",
+    "alignmentLevel": "major"
   },
   {
     "name": "Brown Orc",
@@ -74,7 +86,9 @@
     "friendlyRaces": ["goblin"],
     "animals": [],
     "hatedRaces": ["human", "elf", "drawf"],
-    "bounusSpeed": 0
+    "bounusSpeed": 0,
+    "goodEvil": "evil",
+    "alignmentLevel": "major"
   },
   {
     "name": "Purple Orc",
@@ -85,6 +99,8 @@
     "friendlyRaces": ["goblin"],
     "animals": [],
     "hatedRaces": ["human", "elf", "drawf"],
-    "bounusSpeed": 0
+    "bounusSpeed": 0,
+    "goodEvil": "evil",
+    "alignmentLevel": "major"
   }
 ]

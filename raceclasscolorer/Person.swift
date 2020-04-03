@@ -237,6 +237,8 @@ struct Race: Decodable {
     let animals: [String]
     let hatedRaces: [String]
     let bounusSpeed: Int
+    let alignmentLevel: AlignmentLevel
+    let goodEvil: GoodEvil
 }
 
 struct Class: Decodable {
@@ -250,6 +252,8 @@ struct Class: Decodable {
     let defense: Int
     let speed: Int
     let attackMove: Attack
+    let alignmentLevel: AlignmentLevel
+    let goodEvil: GoodEvil
 }
 
 struct Attack: Decodable {
@@ -266,6 +270,48 @@ enum Color: Int, CaseIterable {
     case red
     case blue
     case green
+    case white
+    case black
+}
+
+enum GoodEvil: String, Decodable {
+    case good
+    case evil
+    case neither
+}
+
+enum AlignmentLevel: String, Decodable {
+    case total //Should only be used on class so Litch Angels are evil and Cleric Orcs are good
+    case mega
+    case major
+    case minor
+    case neither
+    
+    var value: Int {
+        switch self {
+        case .total:
+            return 1000
+        case .mega:
+            return 10
+        case .major:
+            return 2
+        case .minor:
+            return 1
+        case .neither:
+            return 0
+        }
+    }
+    
+    //Rounds off to major so one one unit can't over power a team for alignment
+    static func levelFor(value: Int) -> AlignmentLevel {
+        if value == 0 {
+            return .neither
+        } else if value == 1 {
+            return .minor
+        } else {
+            return .major
+        }
+    }
 }
 
 class Person: Battler, CustomStringConvertible {
@@ -277,6 +323,8 @@ class Person: Battler, CustomStringConvertible {
     let attack: Int
     let defense: Int
     let speed: Int
+    let alignmentLevel: AlignmentLevel
+    let goodEvil: GoodEvil
     let attackMove: Attack
     
     var currentHp: Int
@@ -350,6 +398,21 @@ class Person: Battler, CustomStringConvertible {
         currentSpeed = speed
         
         attackMove = pclass.attackMove
+        
+        let raceValue = race.goodEvil == .evil ? -race.alignmentLevel.value : race.alignmentLevel.value
+        let classValue = pclass.goodEvil == .evil ? -pclass.alignmentLevel.value : pclass.alignmentLevel.value
+        let personAlignmentValue = raceValue + classValue
+        
+        if personAlignmentValue == 0 {
+            goodEvil = .neither
+            alignmentLevel = .neither
+        } else if personAlignmentValue < 0 {
+            goodEvil = .evil
+            alignmentLevel = AlignmentLevel.levelFor(value: -personAlignmentValue)
+        } else {
+            goodEvil = .good
+            alignmentLevel = AlignmentLevel.levelFor(value: personAlignmentValue)
+        }
     }
     
     var description: String {

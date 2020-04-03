@@ -57,7 +57,7 @@ extension UIStackView {
             case .person(let personInSpot):
                 label.backgroundColor = .lightGray
   
-                label.text = "\(personInSpot.person.race.name)\n\(personInSpot.person.pclass.name)\n\(personInSpot.person.color) \(personInSpot.person.currentHp)"//"\n\(personInSpot.hp) \(personInSpot.attack) \(personInSpot.defense)\n\(personInSpot.totalBuffs(team: team))"
+                label.text = "\(personInSpot.person.race.name)\n\(personInSpot.person.pclass.name)\n\(personInSpot.person.color) \(personInSpot.person.currentHp)\n\(personInSpot.person.goodEvil) \(personInSpot.person.alignmentLevel)"//"\n\(personInSpot.hp) \(personInSpot.attack) \(personInSpot.defense)\n\(personInSpot.totalBuffs(team: team))"
                 
                 switch personInSpot.teamType {
                 case .our:
