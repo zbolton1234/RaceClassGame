@@ -7,7 +7,7 @@
         "reward": "p",
         "raceId": "any",
         "groupId": "bloodmage",
-        "enemySpawnRate": 5,
+        "enemySpawnRate": 4,
         "groundId": "Empty",
         "difficulty": 0,
         "restrictions": ["Evil"]
@@ -20,7 +20,7 @@
         "reward": "g",
         "raceId": "human",
         "groupId": "warrior",
-        "enemySpawnRate": 6,
+        "enemySpawnRate": 5,
         "groundId": "Town",
         "difficulty": 0,
         "restrictions": ["Good"]
@@ -33,7 +33,7 @@
         "reward": "",
         "raceId": "human",
         "groupId": "wizard",
-        "enemySpawnRate": 6,
+        "enemySpawnRate": 5,
         "groundId": "Town",
         "difficulty": 0,
         "restrictions": []

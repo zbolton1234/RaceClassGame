@@ -63,7 +63,7 @@ struct Encounter {
         
         var personArray = [Person]()
         
-        for _ in 0...encountJson.enemySpawnRate {
+        for _ in 0...encountJson.enemySpawnRate - 1 {
             //TODO: These names are now miss matched
             personArray.append(Person(globalRaceId: encountJson.raceId,
                                       globalClassId: encountJson.groupId))

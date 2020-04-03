@@ -60,6 +60,9 @@ class BattleGround {
         var convertedOur = [PersonState]()
         var convertedEnemy = [PersonState]()
         
+        //TODO: are all my grounds equal size???
+        let teamWidth = groundJson.ground[1].count - 2
+        
         var ground = [[Spot]]()
         for (lineIndex, line) in groundJson.ground.enumerated() {
             var groundLine = [Spot]()
@@ -74,7 +77,21 @@ class BattleGround {
                                     position: (index + tileIndex, lineIndex))
                     })
                     
+                    let extraSpace = teamWidth - convertedOur.count
+                    let firstHalf = extraSpace / 2
+                    let secondHalf = extraSpace - firstHalf
+                    
+                    if firstHalf > 0 {
+                        for _ in 0...firstHalf - 1 {
+                            groundLine.append(.empty)
+                        }
+                    }
                     groundLine.append(contentsOf: convertedOur.map({ Spot.person($0) }))
+                    if secondHalf > 0 {
+                        for _ in 0...secondHalf - 1 {
+                            groundLine.append(.empty)
+                        }
+                    }
                 case "m":
                     convertedEnemy = enemyTeam.members.enumerated().map({ (index, person) in
                         PersonState(person: person,
@@ -82,7 +99,21 @@ class BattleGround {
                                     position: (index + tileIndex, lineIndex))
                     })
                     
+                    let extraSpace = teamWidth - convertedEnemy.count
+                    let firstHalf = extraSpace / 2
+                    let secondHalf = extraSpace - firstHalf
+                    
+                    if firstHalf > 0 {
+                        for _ in 0...firstHalf - 1 {
+                            groundLine.append(.empty)
+                        }
+                    }
                     groundLine.append(contentsOf: convertedEnemy.map({ Spot.person($0) }))
+                    if secondHalf > 0 {
+                        for _ in 0...secondHalf - 1 {
+                            groundLine.append(.empty)
+                        }
+                    }
                 case "t":
                     groundLine.append(.terain("Tree"))
                 default:
