@@ -233,12 +233,23 @@ struct Race: Decodable {
     let id: String
     let tribeType: TribeType
     let description: String
-    let friendlyRaces: [String]
+    let buffTags: [String]
+    let debuffTags: [String]
+    let extraTags: [String]
     let animals: [String]
-    let hatedRaces: [String]
     let bounusSpeed: Int
     let alignmentLevel: AlignmentLevel
     let goodEvil: GoodEvil
+    
+    func tags() -> [String] {
+        var allTags = [String]()
+        
+        allTags.append(name)
+        allTags.append(raceId)
+        allTags.append(id)
+        
+        return allTags
+    }
 }
 
 struct Class: Decodable {
@@ -254,6 +265,20 @@ struct Class: Decodable {
     let attackMove: Attack
     let alignmentLevel: AlignmentLevel
     let goodEvil: GoodEvil
+    let buffTags: [String]
+    let debuffTags: [String]
+    let extraTags: [String]
+    
+    func tags() -> [String] {
+        var allTags = [String]()
+        
+        allTags.append(name)
+        allTags.append(groupId)
+        allTags.append(id)
+        allTags.append(tribeType.rawValue)
+        
+        return allTags
+    }
 }
 
 struct Attack: Decodable {
@@ -325,6 +350,11 @@ class Person: Battler, CustomStringConvertible {
     let speed: Int
     let alignmentLevel: AlignmentLevel
     let goodEvil: GoodEvil
+    //TODO: Need a real object for this :)
+    let buffTags: [String]
+    let debuffTags: [String]
+    let personTags: [String]
+    
     let attackMove: Attack
     
     var currentHp: Int
@@ -399,6 +429,9 @@ class Person: Battler, CustomStringConvertible {
         
         attackMove = pclass.attackMove
         
+        buffTags = race.buffTags + pclass.buffTags
+        debuffTags = race.debuffTags + pclass.debuffTags
+        
         let raceValue = race.goodEvil == .evil ? -race.alignmentLevel.value : race.alignmentLevel.value
         let classValue = pclass.goodEvil == .evil ? -pclass.alignmentLevel.value : pclass.alignmentLevel.value
         let personAlignmentValue = raceValue + classValue
@@ -413,6 +446,14 @@ class Person: Battler, CustomStringConvertible {
             goodEvil = .good
             alignmentLevel = AlignmentLevel.levelFor(value: personAlignmentValue)
         }
+        
+        var allTags = [String]()
+        
+        allTags.append(goodEvil.rawValue)
+        allTags.append(contentsOf: pclass.tags())
+        allTags.append(contentsOf: race.tags())
+        
+        personTags = allTags
     }
     
     var description: String {
@@ -425,31 +466,20 @@ class Person: Battler, CustomStringConvertible {
                 return total
             }
             
-            return total + self.buffForRace(person: otherPerson) + self.buffForClass(person: otherPerson)
-        }
-    }
-    
-    func buffForRace(person: Person) -> Int {
-        if race.raceId == person.race.raceId {
-            //extra bonus if same sub race?
-            return Buffs.same
-        } else if person.race.friendlyRaces.contains(race.raceId) {
-            return Buffs.liked
-        } else if person.race.hatedRaces.contains(race.raceId) {
-            return Buffs.hated
-        }
-        return Buffs.other
-    }
-    
-    func buffForClass(person: Person) -> Int {
-        if pclass.groupId == person.pclass.groupId {
-            if color == color {
-                return Buffs.identical
-            } else {
-                return Buffs.same
+            let buffs = otherPerson.buffTags.reduce(0) { (buffTotal, tag) -> Int in
+                return total + (self.containsTag(tag: tag) ? 1 : 0)
             }
+            
+            let debuffs = otherPerson.debuffTags.reduce(0) { (buffTotal, tag) -> Int in
+                return total + (self.containsTag(tag: tag) ? 1 : 0)
+            }
+            
+            return total + buffs + debuffs
         }
-        return 0
+    }
+    
+    private func containsTag(tag: String) -> Bool {
+        return personTags.contains(tag)
     }
     
     func personImage() -> UIImage {

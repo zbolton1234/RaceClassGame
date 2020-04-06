@@ -7,12 +7,3 @@
 //
 
 import Foundation
-
-struct Buffs {
-    static let identical = 10
-    static let same = 5
-    static let liked = 3
-    static let other = 1
-    static let unliked = -3
-    static let hated = -5
-}
