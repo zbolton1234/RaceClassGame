@@ -243,8 +243,7 @@ struct Race: Decodable {
     
     func tags() -> [String] {
         var allTags = [String]()
-        
-        allTags.append(name)
+
         allTags.append(raceId)
         allTags.append(id)
         
@@ -271,8 +270,7 @@ struct Class: Decodable {
     
     func tags() -> [String] {
         var allTags = [String]()
-        
-        allTags.append(name)
+
         allTags.append(groupId)
         allTags.append(id)
         allTags.append(tribeType.rawValue)

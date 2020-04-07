@@ -11,9 +11,17 @@ import UIKit
 let allEncounters = loadEncounters()
 let allGrounds = loadGrounds()
 
-func randomEncounter() -> Encounter {
-    let json = allEncounters.randomElement()!
-    return Encounter(encountJson: json)
+func randomEncounter(team: Team) -> Encounter {
+    //The number of restrictions is low so this should find a encounter quickly
+    //There are also encounters with 0 restrictions so this will always return
+    while true {
+        let json = allEncounters.randomElement()!
+        let possibleEncounter = Encounter(encountJson: json)
+        
+        if possibleEncounter.teamAllowed(team: team) {
+            return possibleEncounter
+        }
+    }
 }
 
 func groundWithId(id: String) -> GroundJson {
@@ -47,7 +55,7 @@ struct Encounter {
     let lossString: String
     let rewards: [RewardType] //TODO: reward system
     let difficulty: Int //TODO: should this be an enum?  What am I doing with this?
-    let restrictions: [String] //TODO: need the new buff more global system now
+    let restrictions: [String]
     
     let enemyTeam: Team
     let groundJson: GroundJson
@@ -71,6 +79,34 @@ struct Encounter {
         
         self.enemyTeam = Team(members: personArray)
         self.groundJson = groundWithId(id: encountJson.groundId)
+    }
+    
+    func teamAllowed(team: Team) -> Bool {
+        for restriction in restrictions {
+            if let goodEvil = GoodEvil(rawValue: restriction) {
+                if team.teamGoodEvil().goodEvil == goodEvil {
+                    return false
+                }
+                continue
+            }
+            
+            if let tribeType = TribeType(rawValue: restriction) {
+                let tribes = team.teamTribe()
+                let tribeCount = tribes[tribeType] ?? 0
+                let ratio = tribeCount / team.members.count
+                
+                if ratio >= 8 {
+                    return false
+                }
+                continue
+            }
+            
+            if team.teamTags().contains(restriction) {
+                return false
+            }
+        }
+        
+        return true
     }
     
     private static func rewards(rewardString: String) -> [RewardType] {

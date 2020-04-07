@@ -10,7 +10,7 @@
         "enemySpawnRate": 4,
         "groundId": "Empty",
         "difficulty": 0,
-        "restrictions": ["Evil"]
+        "restrictions": ["evil"]
     },
     {
         "name": "Human Guards",
@@ -23,7 +23,7 @@
         "enemySpawnRate": 5,
         "groundId": "Town",
         "difficulty": 0,
-        "restrictions": ["Good"]
+        "restrictions": ["good", "warrior"]
     },
     {
         "name": "Human Wizard",
@@ -36,6 +36,6 @@
         "enemySpawnRate": 5,
         "groundId": "Town",
         "difficulty": 0,
-        "restrictions": []
+        "restrictions": ["warrior"]
     }
 ]
