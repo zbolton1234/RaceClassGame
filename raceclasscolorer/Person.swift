@@ -233,8 +233,8 @@ struct Race: Decodable {
     let id: String
     let tribeType: TribeType
     let description: String
-    let buffTags: [String]
-    let debuffTags: [String]
+    let buffs: [Buff]
+    let debuffs: [Buff]
     let extraTags: [String]
     let animals: [String]
     let bounusSpeed: Int
@@ -265,8 +265,8 @@ struct Class: Decodable {
     let attackMove: Attack
     let alignmentLevel: AlignmentLevel
     let goodEvil: GoodEvil
-    let buffTags: [String]
-    let debuffTags: [String]
+    let buffs: [Buff]
+    let debuffs: [Buff]
     let extraTags: [String]
     
     func tags() -> [String] {
@@ -281,9 +281,18 @@ struct Class: Decodable {
     }
 }
 
+struct Buff: Decodable {
+    ///The condiition that needs to be true to trigger.
+    let tag: String
+    ///The amount of the buff.  Should always be positive.
+    let amount: Int
+    ///Acts as a not of the tag.  tag = "orc" and all others will buff all races that are not orc
+    let allOthers: Bool
+}
+
 struct Attack: Decodable {
     let name: String
-    //extra affect
+    //TODO: extra affect
     let targets: Int
     let range: Int
     let isMelee: Bool
@@ -351,8 +360,8 @@ class Person: Battler, CustomStringConvertible {
     let alignmentLevel: AlignmentLevel
     let goodEvil: GoodEvil
     //TODO: Need a real object for this :)
-    let buffTags: [String]
-    let debuffTags: [String]
+    let buffs: [Buff]
+    let debuffs: [Buff]
     let personTags: [String]
     
     let attackMove: Attack
@@ -429,8 +438,8 @@ class Person: Battler, CustomStringConvertible {
         
         attackMove = pclass.attackMove
         
-        buffTags = race.buffTags + pclass.buffTags
-        debuffTags = race.debuffTags + pclass.debuffTags
+        buffs = race.buffs + pclass.buffs
+        debuffs = race.debuffs + pclass.debuffs
         
         let raceValue = race.goodEvil == .evil ? -race.alignmentLevel.value : race.alignmentLevel.value
         let classValue = pclass.goodEvil == .evil ? -pclass.alignmentLevel.value : pclass.alignmentLevel.value
@@ -466,20 +475,30 @@ class Person: Battler, CustomStringConvertible {
                 return total
             }
             
-            let buffs = otherPerson.buffTags.reduce(0) { (buffTotal, tag) -> Int in
-                return total + (self.containsTag(tag: tag) ? 1 : 0)
+            let buffs = otherPerson.buffs.reduce(0) { (buffTotal, buff) -> Int in
+                return total + self.buffAmount(buff: buff)
             }
             
-            let debuffs = otherPerson.debuffTags.reduce(0) { (buffTotal, tag) -> Int in
-                return total + (self.containsTag(tag: tag) ? 1 : 0)
+            let debuffs = otherPerson.debuffs.reduce(0) { (buffTotal, buff) -> Int in
+                return total + self.buffAmount(buff: buff)
             }
             
             return total + buffs + debuffs
         }
     }
     
-    private func containsTag(tag: String) -> Bool {
-        return personTags.contains(tag)
+    private func buffAmount(buff: Buff) -> Int {
+        var applyBuff = personTags.contains(buff.tag)
+        
+        if buff.allOthers {
+            applyBuff = !applyBuff
+        }
+        
+        if applyBuff {
+            return buff.amount
+        }
+        
+        return 0
     }
     
     func personImage() -> UIImage {

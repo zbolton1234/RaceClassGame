@@ -11,8 +11,25 @@
     "speed": 1,
     "goodEvil": "neither",
     "alignmentLevel": "neither",
-    "buffTags": ["magic", "naturemagic"],
-    "debuffTags": ["chaos"],
+    "buffs": [
+        {
+            "tag": "magic",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
+    "debuffs": [
+        {
+            "tag": "magic",
+            "amount": 1,
+            "allOthers": true
+        },
+        {
+            "tag": "chaos",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "extraTags": [],
     "attackMove": {
         "name": "Fire Bolt",
@@ -35,8 +52,25 @@
     "speed": 1,
     "goodEvil": "neither",
     "alignmentLevel": "neither",
-    "buffTags": ["elements", "naturemagic"],
-    "debuffTags": ["chaos"],
+    "buffs": [
+        {
+            "tag": "elements",
+            "amount": 1,
+            "allOthers": false
+        },
+        {
+            "tag": "naturemagic",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
+    "debuffs": [
+        {
+            "tag": "chaos",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "extraTags": ["elements"],
     "attackMove": {
         "name": "Fire Balls",
@@ -59,8 +93,14 @@
     "speed": 0,
     "goodEvil": "evil",
     "alignmentLevel": "major",
-    "buffTags": ["naturemagic"],
-    "debuffTags": [],
+    "buffs": [
+        {
+            "tag": "naturemagic",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
+    "debuffs": [],
     "extraTags": ["magic"],
     "attackMove": {
         "name": "Blood Boil",
@@ -83,8 +123,25 @@
     "speed": 1,
     "goodEvil": "good",
     "alignmentLevel": "total",
-    "buffTags": ["holy", "good"],
-    "debuffTags": ["evil"],
+    "buffs": [
+        {
+            "tag": "holy",
+            "amount": 1,
+            "allOthers": false
+        },
+        {
+            "tag": "good",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
+    "debuffs": [
+        {
+            "tag": "evil",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "extraTags": [],
     "attackMove": {
         "name": "Smite",
@@ -107,8 +164,14 @@
     "speed": 1,
     "goodEvil": "good",
     "alignmentLevel": "minor",
-    "buffTags": [],
-    "debuffTags": [],
+    "buffs": [
+        {
+            "tag": "warrior",
+            "amount": 2,
+            "allOthers": true
+        }
+    ],
+    "debuffs": [],
     "extraTags": [],
     "attackMove": {
         "name": "Quick Swipes",
@@ -131,8 +194,20 @@
     "speed": 2,
     "goodEvil": "evil",
     "alignmentLevel": "minor",
-    "buffTags": ["wild"],
-    "debuffTags": [],
+    "buffs": [
+        {
+            "tag": "wild",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
+    "debuffs": [
+        {
+            "tag": "wild",
+            "amount": 1,
+            "allOthers": true
+        }
+    ],
     "extraTags": ["chaos"],
     "attackMove": {
         "name": "Heavy Swipe",

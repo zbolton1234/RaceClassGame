@@ -26,10 +26,19 @@ func loadGrounds() -> [GroundJson] {
 }
 
 private func load<T: Decodable>(assetName: String, decodeClass: T.Type) -> T? {
-    guard let asset = NSDataAsset(name: assetName),
-        let decoded = try? JSONDecoder().decode(T.self, from: asset.data) else {
+    guard let asset = NSDataAsset(name: assetName) else {
             print("Failed to load \(assetName)")
             return nil
+    }
+    
+    let decoded: T
+    
+    do {
+        decoded = try JSONDecoder().decode(T.self, from: asset.data)
+    } catch {
+        print("Failed to load \(assetName)")
+        print(error)
+        return nil
     }
     
     return decoded

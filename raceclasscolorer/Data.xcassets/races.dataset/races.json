@@ -5,9 +5,20 @@
     "id": "commonHuman",
     "tribeType": "civilized",
     "description": "The most common race living mainly in the plains of Hilmore.",
-    "buffTags": ["elf", "drawf", "gnome"],
+    "buffs": [
+        {
+            "tag": "commonHuman",
+            "amount": 1,
+            "allOthers": false
+        },
+        {
+            "tag": "elf",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": ["cow", "dog"],
-    "debuffTags": ["goblin", "orc", "monsters", "gnoll"],
+    "debuffs": [],
     "extraTags": [],
     "bounusSpeed": 0,
     "goodEvil": "neither",
@@ -19,9 +30,20 @@
     "id": "forestElf",
     "tribeType": "civilized",
     "description": "The most wild of the elves. They live in small villages.",
-    "buffTags": ["elf", "human", "gnome"],
+    "buffs": [
+        {
+            "tag": "elf",
+            "amount": 1,
+            "allOthers": false
+        },
+        {
+            "tag": "forestElf",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": ["bear"],
-    "debuffTags": ["goblin", "orc", "giants", "gnoll"],
+    "debuffs": [],
     "extraTags": ["forest"],
     "bounusSpeed": 1,
     "goodEvil": "good",
@@ -33,9 +55,20 @@
     "id": "dessertElf",
     "tribeType": "civilized",
     "description": "Sun baked elfs that live in huts on the sand.",
-    "buffTags": ["elf", "human", "lizard"],
+    "buffs": [
+        {
+            "tag": "elf",
+            "amount": 1,
+            "allOthers": false
+        },
+        {
+            "tag": "dessertElf",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": ["lion"],
-    "debuffTags": ["goblin", "orc", "gnoll"],
+    "debuffs": [],
     "extraTags": ["dessert"],
     "bounusSpeed": 1,
     "goodEvil": "good",
@@ -47,9 +80,21 @@
     "id": "redOrc",
     "tribeType": "wild",
     "description": "The most common orc.",
-    "buffTags": ["goblin"],
+    "buffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": [],
-    "debuffTags": ["human", "elf", "drawf"],
+    "debuffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": true
+        }
+    ],
     "extraTags": [],
     "bounusSpeed": 0,
     "goodEvil": "evil",
@@ -61,9 +106,21 @@
     "id": "yellowOrc",
     "tribeType": "wild",
     "description": "The other most common orc.",
-    "buffTags": ["goblin"],
+    "buffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": [],
-    "debuffTags": ["human", "elf", "drawf"],
+    "debuffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": true
+        }
+    ],
     "extraTags": [],
     "bounusSpeed": 0,
     "goodEvil": "evil",
@@ -75,9 +132,21 @@
     "id": "greenOrc",
     "tribeType": "wild",
     "description": "The other most common orc.",
-    "buffTags": ["goblin"],
+    "buffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": [],
-    "debuffTags": ["human", "elf", "drawf"],
+    "debuffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": true
+        }
+    ],
     "extraTags": [],
     "bounusSpeed": 0,
     "goodEvil": "evil",
@@ -89,9 +158,21 @@
     "id": "brownOrc",
     "tribeType": "wild",
     "description": "The other most common orc.",
-    "buffTags": ["goblin"],
+    "buffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": [],
-    "debuffTags": ["human", "elf", "drawf"],
+    "debuffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": true
+        }
+    ],
     "extraTags": [],
     "bounusSpeed": 0,
     "goodEvil": "evil",
@@ -103,9 +184,21 @@
     "id": "purpleOrc",
     "tribeType": "wild",
     "description": "The other most common orc.",
-    "buffTags": ["goblin"],
+    "buffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": false
+        }
+    ],
     "animals": [],
-    "debuffTags": ["human", "elf", "drawf"],
+    "debuffs": [
+        {
+            "tag": "orc",
+            "amount": 1,
+            "allOthers": true
+        }
+    ],
     "extraTags": [],
     "bounusSpeed": 0,
     "goodEvil": "evil",
