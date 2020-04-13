@@ -20,6 +20,9 @@
 		827F7F2523CA5D1700545431 /* raceclasscolorerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F2423CA5D1700545431 /* raceclasscolorerUITests.swift */; };
 		827F7F3323CA5D7C00545431 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827F7F3223CA5D7C00545431 /* Person.swift */; };
 		8295613F243592DB007F9A3F /* RaceClassSelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8295613E243592DA007F9A3F /* RaceClassSelectorTests.swift */; };
+		82956141243F9192007F9A3F /* yoster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82956140243F9163007F9A3F /* yoster.ttf */; };
+		829561432444D40D007F9A3F /* FancyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829561422444D40D007F9A3F /* FancyTextView.swift */; };
+		829561452444E3CC007F9A3F /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829561442444E3CC007F9A3F /* Extentions.swift */; };
 		829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D842823D3A76A006AEBE5 /* Encounter.swift */; };
 		829D842B23D50538006AEBE5 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D842A23D50538006AEBE5 /* Loader.swift */; };
 		829D842D23D5062C006AEBE5 /* Data.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 829D842C23D5062B006AEBE5 /* Data.xcassets */; };
@@ -65,6 +68,9 @@
 		827F7F2623CA5D1700545431 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		827F7F3223CA5D7C00545431 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		8295613E243592DA007F9A3F /* RaceClassSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceClassSelectorTests.swift; sourceTree = "<group>"; };
+		82956140243F9163007F9A3F /* yoster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = yoster.ttf; path = "../../../Downloads/yoster-island/yoster.ttf"; sourceTree = "<group>"; };
+		829561422444D40D007F9A3F /* FancyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTextView.swift; sourceTree = "<group>"; };
+		829561442444E3CC007F9A3F /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		829D842823D3A76A006AEBE5 /* Encounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encounter.swift; sourceTree = "<group>"; };
 		829D842A23D50538006AEBE5 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		829D842C23D5062B006AEBE5 /* Data.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Data.xcassets; sourceTree = "<group>"; };
@@ -125,6 +131,7 @@
 				827F7F0623CA5D1100545431 /* BattleViewController.swift */,
 				826025D524119A1C00811B98 /* SelectionViewController.swift */,
 				826025D12409767300811B98 /* BattleFieldView.swift */,
+				829561422444D40D007F9A3F /* FancyTextView.swift */,
 				829D843023D612F1006AEBE5 /* Constants.swift */,
 				827F7F3223CA5D7C00545431 /* Person.swift */,
 				82439586242144E20011E2B0 /* BattleWrapper.swift */,
@@ -133,6 +140,8 @@
 				829D842823D3A76A006AEBE5 /* Encounter.swift */,
 				826025D3240D822B00811B98 /* BattleGround.swift */,
 				82BC2A222416BE3900A16599 /* Position.swift */,
+				829561442444E3CC007F9A3F /* Extentions.swift */,
+				82956140243F9163007F9A3F /* yoster.ttf */,
 				827F7F0823CA5D1100545431 /* Main.storyboard */,
 				829D842C23D5062B006AEBE5 /* Data.xcassets */,
 				827F7F0B23CA5D1700545431 /* Assets.xcassets */,
@@ -271,6 +280,7 @@
 				827F7F0F23CA5D1700545431 /* LaunchScreen.storyboard in Resources */,
 				827F7F0C23CA5D1700545431 /* Assets.xcassets in Resources */,
 				827F7F0A23CA5D1100545431 /* Main.storyboard in Resources */,
+				82956141243F9192007F9A3F /* yoster.ttf in Resources */,
 				829D842D23D5062C006AEBE5 /* Data.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -299,8 +309,10 @@
 				82BC2A232416BE3900A16599 /* Position.swift in Sources */,
 				829D842F23D6109D006AEBE5 /* Team.swift in Sources */,
 				827F7F3323CA5D7C00545431 /* Person.swift in Sources */,
+				829561432444D40D007F9A3F /* FancyTextView.swift in Sources */,
 				829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */,
 				826025D4240D822B00811B98 /* BattleGround.swift in Sources */,
+				829561452444E3CC007F9A3F /* Extentions.swift in Sources */,
 				826025D22409767300811B98 /* BattleFieldView.swift in Sources */,
 				826025D624119A1C00811B98 /* SelectionViewController.swift in Sources */,
 				82439587242144E20011E2B0 /* BattleWrapper.swift in Sources */,
