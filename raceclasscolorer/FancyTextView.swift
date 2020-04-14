@@ -11,6 +11,14 @@ import UIKit
 class FancyTextView: UIView {
 
     let label: UILabel
+    private var dismiss: (() -> Void)?
+    
+    convenience init(text: String, dismiss: (() -> Void)? = nil) {
+        self.init(frame: CGRect.zero)
+        
+        label.text = text
+        self.dismiss = dismiss
+    }
     
     override init(frame: CGRect) {
         label = UILabel()
@@ -36,6 +44,8 @@ class FancyTextView: UIView {
                                                     alpha: 1.0).cgColor
                 
         super.init(frame: frame)
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(labelBackground)
         
@@ -64,6 +74,7 @@ class FancyTextView: UIView {
     
     @objc private func dismissView() {
         self.removeFromSuperview()
+        dismiss?()
     }
     
     required init?(coder: NSCoder) {

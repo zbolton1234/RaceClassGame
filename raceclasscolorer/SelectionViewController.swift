@@ -20,15 +20,7 @@ class SelectionViewController: UIViewController {
         fontTestLabel.font = UIFont(name: "YosterIslandReg", size: 20.0)
         
         let testView = FancyTextView()
-        testView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(testView)
-        view.addConstraints([
-            view.leftAnchor.constraint(equalTo: testView.leftAnchor),
-            view.rightAnchor.constraint(equalTo: testView.rightAnchor),
-            view.topAnchor.constraint(equalTo: testView.topAnchor),
-            view.bottomAnchor.constraint(equalTo: testView.bottomAnchor)
-        ])
+        view.showFullScreen(view: testView)
     }
     
     @IBAction func selectedOur(_ sender: UIButton) {

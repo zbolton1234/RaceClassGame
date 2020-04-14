@@ -26,27 +26,27 @@ class BattleViewController: UIViewController {
         super.init(coder: coder)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         battleFieldView.updateBattleGround(battleGround: battleGround)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        
+        let introView = FancyTextView(text: encounter.introString)
+        view.showFullScreen(view: introView)
     }
     
     @IBAction func attack(_ sender: Any) {
         battleGround.fight(stateChanged: {
             self.battleFieldView.updateBattleGround(battleGround: self.battleGround)
         }, completion: { (fightResult) in
-            if fightResult.won {
-                print("We won")
-            } else {
-                print("We lost")
-            }
-            
-            self.navigationController?.popViewController(animated: true)
+            let resultView = FancyTextView(text: fightResult.won ? self.encounter.winString : self.encounter.lossString, dismiss: {
+                self.navigationController?.popViewController(animated: true)
+            })
+            self.view.showFullScreen(view: resultView)
         })
     }
 }
