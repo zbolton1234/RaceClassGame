@@ -10,15 +10,21 @@ import Foundation
 import UIKit
 
 func loadRaces() -> [Race] {
-    return load(assetName: "races", decodeClass: [Race].self)!
+    return load(assetName: "races", decodeClass: [Race].self) ?? []
 }
 
 func loadClasses() -> [Class] {
-    return load(assetName: "classes", decodeClass: [Class].self)!
+    return load(assetName: "classes", decodeClass: [Class].self) ?? []
 }
 
-func loadEncounters() -> [EncounterJson] {
-    return load(assetName: "encounters", decodeClass: [EncounterJson].self)!
+func loadEncounters() -> [Encounter] {
+    let jsons = load(assetName: "encounters", decodeClass: [EncounterJson].self) ?? []
+    return jsons.map({ Encounter(encountJson: $0) })
+}
+
+func loadCities() -> [City] {
+    let jsons = load(assetName: "cities", decodeClass: [CityJson].self) ?? []
+    return jsons.map({ City(cityJson: $0) })
 }
 
 func loadGrounds() -> [GroundJson] {

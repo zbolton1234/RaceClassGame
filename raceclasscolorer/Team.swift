@@ -71,6 +71,4 @@ class Team {
             }
         }
     }
-    
-    //race, class, color
 }

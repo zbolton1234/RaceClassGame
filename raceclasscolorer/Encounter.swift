@@ -15,8 +15,7 @@ func randomEncounter(team: Team) -> Encounter {
     //The number of restrictions is low so this should find a encounter quickly
     //There are also encounters with 0 restrictions so this will always return
     while true {
-        let json = allEncounters.randomElement()!
-        let possibleEncounter = Encounter(encountJson: json)
+        let possibleEncounter = allEncounters.randomElement()!
         
         if possibleEncounter.teamAllowed(team: team) {
             return possibleEncounter
@@ -26,7 +25,7 @@ func randomEncounter(team: Team) -> Encounter {
 
 func groundWithId(id: String) -> GroundJson {
     //TODO: this should not be forced but ......
-    return allGrounds.first(where: { $0.id == id })!
+    return allGrounds.first(where: { $0.id == id }) ?? allGrounds.first!
 }
 
 struct EncounterJson: Decodable {
@@ -40,7 +39,10 @@ struct EncounterJson: Decodable {
     let groundId: String
     let enemySpawnRate: Int
     let difficulty: Int
+    let weight: Int
     let restrictions: [String]
+    let weightTags: [String]
+    let cityLocationId: String
 }
 
 struct GroundJson: Decodable {
@@ -55,7 +57,12 @@ struct Encounter {
     let lossString: String
     let rewards: [RewardType] //TODO: reward system
     let difficulty: Int //TODO: should this be an enum?  What am I doing with this?
+    let weight: Int
     let restrictions: [String]
+    let weightTags: [String]
+    
+    let cityLocationId: String
+    let raceId: String
     
     let enemyTeam: Team
     let groundJson: GroundJson
@@ -67,7 +74,11 @@ struct Encounter {
         self.lossString = encountJson.loss
         self.rewards = Encounter.rewards(rewardString: encountJson.reward)
         self.difficulty = encountJson.difficulty
+        self.weight = encountJson.weight
         self.restrictions = encountJson.restrictions
+        self.cityLocationId = encountJson.cityLocationId
+        self.raceId = encountJson.raceId
+        self.weightTags = encountJson.weightTags
         
         var personArray = [Person]()
         

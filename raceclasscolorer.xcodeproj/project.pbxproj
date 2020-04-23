@@ -23,6 +23,7 @@
 		82956141243F9192007F9A3F /* yoster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82956140243F9163007F9A3F /* yoster.ttf */; };
 		829561432444D40D007F9A3F /* FancyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829561422444D40D007F9A3F /* FancyTextView.swift */; };
 		829561452444E3CC007F9A3F /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829561442444E3CC007F9A3F /* Extentions.swift */; };
+		82956147244678C4007F9A3F /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82956146244678C4007F9A3F /* World.swift */; };
 		829D842923D3A76A006AEBE5 /* Encounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D842823D3A76A006AEBE5 /* Encounter.swift */; };
 		829D842B23D50538006AEBE5 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829D842A23D50538006AEBE5 /* Loader.swift */; };
 		829D842D23D5062C006AEBE5 /* Data.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 829D842C23D5062B006AEBE5 /* Data.xcassets */; };
@@ -71,6 +72,7 @@
 		82956140243F9163007F9A3F /* yoster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = yoster.ttf; path = "../../../Downloads/yoster-island/yoster.ttf"; sourceTree = "<group>"; };
 		829561422444D40D007F9A3F /* FancyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTextView.swift; sourceTree = "<group>"; };
 		829561442444E3CC007F9A3F /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
+		82956146244678C4007F9A3F /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		829D842823D3A76A006AEBE5 /* Encounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encounter.swift; sourceTree = "<group>"; };
 		829D842A23D50538006AEBE5 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		829D842C23D5062B006AEBE5 /* Data.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Data.xcassets; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				827F7F3223CA5D7C00545431 /* Person.swift */,
 				82439586242144E20011E2B0 /* BattleWrapper.swift */,
 				829D842E23D6109D006AEBE5 /* Team.swift */,
+				82956146244678C4007F9A3F /* World.swift */,
 				829D842A23D50538006AEBE5 /* Loader.swift */,
 				829D842823D3A76A006AEBE5 /* Encounter.swift */,
 				826025D3240D822B00811B98 /* BattleGround.swift */,
@@ -315,6 +318,7 @@
 				829561452444E3CC007F9A3F /* Extentions.swift in Sources */,
 				826025D22409767300811B98 /* BattleFieldView.swift in Sources */,
 				826025D624119A1C00811B98 /* SelectionViewController.swift in Sources */,
+				82956147244678C4007F9A3F /* World.swift in Sources */,
 				82439587242144E20011E2B0 /* BattleWrapper.swift in Sources */,
 				827F7F0723CA5D1100545431 /* BattleViewController.swift in Sources */,
 				829D843123D612F1006AEBE5 /* Constants.swift in Sources */,

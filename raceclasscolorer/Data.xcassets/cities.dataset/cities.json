@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Fasim",
+    "id": "fasim",
+    "tribeType": "civilized",
+    "lockedRaces": ["elf", "drawf", "gnome"],
+    "primaryRace": "human"
+  }
+]

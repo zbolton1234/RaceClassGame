@@ -57,6 +57,13 @@ class SelectionViewController: UIViewController {
             return nil
         }
         
+        let testCity = loadCities().first!
+        
+        for _ in 0...10 {
+            let e = testCity.randomEncounter(team: selectedOurTeam)
+            print(e.name)
+        }
+        
         return BattleViewController(coder: coder,
                                     ourTeam: selectedOurTeam,
                                     encounter: randomEncounter(team: selectedOurTeam))

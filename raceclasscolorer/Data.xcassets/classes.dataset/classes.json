@@ -4,7 +4,7 @@
     "groupId": "magic",
     "id": "wizard",
     "tribeType": "civilized",
-    "description": "Classicly trained maigic user.",
+    "description": "Classicly trained magic user.",
     "hp": 5,
     "attack": 3,
     "defense": 2,
