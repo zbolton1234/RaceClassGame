@@ -13,6 +13,9 @@ class SelectionViewController: UIViewController {
     private var selectedEnemyTeam: Team?
     private var selectedOurTeam: Team?
     @IBOutlet weak var fontTestLabel: UILabel!
+    @IBOutlet weak var worldScrollView: UIScrollView!
+    private var testGold = 0
+    private var worldImageView = UIImageView(image: UIImage(named: "world"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +24,27 @@ class SelectionViewController: UIViewController {
         
         let testView = FancyTextView()
         view.showFullScreen(view: testView)
+        
+        worldScrollView.addSubview(worldImageView)
+        worldScrollView.minimumZoomScale = 1.0
+        worldScrollView.maximumZoomScale = 5.0
+        
+        for city in loadCities() {
+            let cityButton = UIButton()
+            cityButton.translatesAutoresizingMaskIntoConstraints = false
+            cityButton.setTitle(city.name, for: .normal)
+            cityButton.backgroundColor = .orange
+            cityButton.titleLabel?.textColor = .black
+            
+            worldImageView.addSubview(cityButton)
+            
+            worldImageView.addConstraints([
+                worldImageView.leftAnchor.constraint(equalTo: cityButton.leftAnchor, constant: -city.position.x),
+                worldImageView.topAnchor.constraint(equalTo: cityButton.topAnchor, constant: -city.position.y)
+            ])
+            
+            //cityButton.center = city.position
+        }
     }
     
     @IBAction func selectedOur(_ sender: UIButton) {
@@ -66,6 +90,15 @@ class SelectionViewController: UIViewController {
         
         return BattleViewController(coder: coder,
                                     ourTeam: selectedOurTeam,
-                                    encounter: randomEncounter(team: selectedOurTeam))
+                                    encounter: randomEncounter(team: selectedOurTeam), completion: { (results) in
+                                        self.testGold += results.gold
+                                        self.fontTestLabel.text = "\(self.testGold)"
+        })
+    }
+}
+
+extension SelectionViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return worldImageView
     }
 }

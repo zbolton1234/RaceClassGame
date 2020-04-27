@@ -4,6 +4,8 @@
     "id": "fasim",
     "tribeType": "civilized",
     "lockedRaces": ["elf", "drawf", "gnome"],
-    "primaryRace": "human"
+    "primaryRace": "human",
+    "x": 100,
+    "y": 100
   }
 ]

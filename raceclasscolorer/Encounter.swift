@@ -33,7 +33,7 @@ struct EncounterJson: Decodable {
     let intro: String
     let win: String
     let loss: String
-    let reward: String
+    let reward: [String: String]
     let raceId: String
     let groupId: String
     let groundId: String
@@ -55,7 +55,7 @@ struct Encounter {
     let introString: String
     let winString: String
     let lossString: String
-    let rewards: [RewardType] //TODO: reward system
+    let rewards: [RewardType]
     let difficulty: Int //TODO: should this be an enum?  What am I doing with this?
     let weight: Int
     let restrictions: [String]
@@ -72,7 +72,7 @@ struct Encounter {
         self.introString = encountJson.intro
         self.winString = encountJson.win
         self.lossString = encountJson.loss
-        self.rewards = Encounter.rewards(rewardString: encountJson.reward)
+        self.rewards = Encounter.rewards(rewards: encountJson.reward)
         self.difficulty = encountJson.difficulty
         self.weight = encountJson.weight
         self.restrictions = encountJson.restrictions
@@ -120,39 +120,50 @@ struct Encounter {
         return true
     }
     
-    private static func rewards(rewardString: String) -> [RewardType] {
+    private static func rewards(rewards: [String: String]) -> [RewardType] {
         //TODO: temp logic for now need to think this thur does difficulty affect this or do I need to add more info then a string
-        var rewards = [RewardType]()
+        var parsedRewards = [RewardType]()
         
-        for char in rewardString {
-            if char == "p" {
-                rewards.append(.person)
-            } else if char == "g" {
-                rewards.append(.gold)
+        for (type, value) in rewards {
+            switch type {
+            case "gold":
+                parsedRewards.append(.gold(Int(value) ?? 10))
+            case "person":
+                let split = value.split(separator: ",")
+                parsedRewards.append(.person(String(split[0]), String(split[1])))
+            case "npc":
+                parsedRewards.append(.npc(value))
+            case "city":
+                parsedRewards.append(.city(value))
+            case "building":
+                parsedRewards.append(.building(value))
+            default:
+                print("unexpected \(type)\(value)")
             }
         }
         
-        return rewards
+        return parsedRewards
     }
 }
 
+//TODO: not sure I need this anymore?
 struct FightState {
     let won: Bool
-    let reward: Reward
 }
 
-struct Points {
-    let race: Race
-    let points: Int
-}
-
-//TODO: beef this out for how much gold and how to select person
 enum RewardType {
-    case gold
-    case person
+    case gold(Int)
+    case person(String, String)
+    case npc(String)
+    case city(String)
+    case building(String)
 }
 
-struct Reward {
+struct EncounterResults {
+    let fightState: FightState
+    let gold: Int
     let people: [Person]
-    let points: [Points]
+    let npcs: [String]
+    let buildings: [String]
+    let cities: [String]
 }

@@ -12,14 +12,6 @@ private let neturalEncounters = allEncounters.filter({ $0.cityLocationId == "any
 private let neturalCivEncounters = allEncounters.filter({ $0.cityLocationId == "anyCivilized" })
 private let neturalWildEncounters = allEncounters.filter({ $0.cityLocationId == "anyWild" })
 
-class World {
-    let states = [State]()
-}
-
-class State {
-    let cities = [City]()
-}
-
 //npcs
 
 class CityJson: Decodable {
@@ -28,11 +20,14 @@ class CityJson: Decodable {
     let tribeType: TribeType
     let lockedRaces: [String]
     let primaryRace: String
+    let x: Int
+    let y: Int
 }
 
 class City {
     let name: String
     let id: String
+    let position: CGPoint
     let tribeType: TribeType
     private(set) var lockedRaces: [String: Bool]
     private(set) var primaryRace: String?
@@ -42,6 +37,7 @@ class City {
     init(cityJson: CityJson) {
         self.name = cityJson.name
         self.id = cityJson.id
+        self.position = CGPoint(x: cityJson.x, y: cityJson.y)
         self.tribeType = cityJson.tribeType
         
         var lraces = [String: Bool]()
@@ -94,4 +90,9 @@ class City {
         
         return possibleEncounters.randomElement()!
     }
+}
+
+struct Building {
+    let name: String
+    let id: String
 }

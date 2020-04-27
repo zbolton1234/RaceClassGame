@@ -141,16 +141,8 @@ class BattleGround {
             
             let wonState = self.ourTeam.isAlive
             
-            let reward: Reward
-            if wonState {
-                reward = Reward(people: [self.enemyTeam.members.randomElement()!],
-                                points: [Points(race: self.ourTeam.members.first!.race, points: 5)])
-            } else {
-                reward = Reward(people: [], points: [])
-            }
-            
             DispatchQueue.main.sync {
-                completion(FightState(won: wonState, reward: reward))
+                completion(FightState(won: wonState))
             }
         }
     }
