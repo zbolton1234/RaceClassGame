@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Wizard College",
+        "id": "fasimWizardCollege",
+        "cityId": "fasim",
+        "classId": "wizard",
+        "description": "The wizard college in Fasim."
+    }
+]

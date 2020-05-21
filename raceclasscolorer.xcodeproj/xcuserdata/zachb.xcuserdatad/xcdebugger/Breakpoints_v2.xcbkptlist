@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EDD6EDEE-2D1C-480F-BA4E-28C2ADBEEE00"
+            uuid = "7CA1827C-FE31-4AB9-8318-E457CD7601A2"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "raceclasscolorer/SelectionViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "selectedTown(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

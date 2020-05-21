@@ -217,5 +217,29 @@
         "size": 1,
         "damage": 7
     }
+  },
+  {
+    "name": "Farmer",
+    "groupId": "common",
+    "id": "farmer",
+    "tribeType": "wild",
+    "description": "A simple farmer",
+    "hp": 5,
+    "attack": 1,
+    "defense": 1,
+    "speed": 1,
+    "goodEvil": "neither",
+    "alignmentLevel": "neither",
+    "buffs": [],
+    "debuffs": [],
+    "extraTags": [],
+    "attackMove": {
+        "name": "Pitch Fork",
+        "targets": 1,
+        "range": 1,
+        "isMelee": true,
+        "size": 1,
+        "damage": 1
+    }
   }
 ]

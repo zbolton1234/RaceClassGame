@@ -12,6 +12,7 @@ class SelectionViewController: UIViewController {
     
     private var selectedEnemyTeam: Team?
     private var selectedOurTeam: Team?
+    private var selectedCity: City?
     @IBOutlet weak var fontTestLabel: UILabel!
     @IBOutlet weak var worldScrollView: UIScrollView!
     private var testGold = 0
@@ -25,30 +26,47 @@ class SelectionViewController: UIViewController {
         let testView = FancyTextView()
         view.showFullScreen(view: testView)
         
+        worldImageView.isUserInteractionEnabled = true
         worldScrollView.addSubview(worldImageView)
         worldScrollView.minimumZoomScale = 1.0
         worldScrollView.maximumZoomScale = 5.0
         
         for city in loadCities() {
-            let cityButton = UIButton()
-            cityButton.translatesAutoresizingMaskIntoConstraints = false
-            cityButton.setTitle(city.name, for: .normal)
-            cityButton.backgroundColor = .orange
-            cityButton.titleLabel?.textColor = .black
+            if city.locked {
+                continue
+            }
             
-            worldImageView.addSubview(cityButton)
-            
-            worldImageView.addConstraints([
-                worldImageView.leftAnchor.constraint(equalTo: cityButton.leftAnchor, constant: -city.position.x),
-                worldImageView.topAnchor.constraint(equalTo: cityButton.topAnchor, constant: -city.position.y)
-            ])
-            
-            //cityButton.center = city.position
+            showCityButton(city)
         }
+    }
+    
+    private func showCityButton(_ city: City) {
+        let cityButton = UIButton()
+        cityButton.translatesAutoresizingMaskIntoConstraints = false
+        cityButton.setTitle(city.name, for: .normal)
+        cityButton.backgroundColor = .clear
+        cityButton.titleLabel?.textColor = .black
+        cityButton.tag = loadCities().firstIndex(of: city) ?? -1
+        
+        worldImageView.addSubview(cityButton)
+        
+        worldImageView.addConstraints([
+            worldImageView.leftAnchor.constraint(equalTo: cityButton.leftAnchor, constant: -city.position.x),
+            worldImageView.topAnchor.constraint(equalTo: cityButton.topAnchor, constant: -city.position.y)
+        ])
+        
+        cityButton.addTarget(self,
+                             action: #selector(selectedTown),
+                             for: .touchUpInside)
     }
     
     @IBAction func selectedOur(_ sender: UIButton) {
         selectedOurTeam = team(tag: sender.tag)
+    }
+    
+    @objc func selectedTown(_ sender: UIButton) {
+        selectedCity = loadCities()[sender.tag]
+        performSegue(withIdentifier: "showBattleViewController", sender: nil)
     }
     
     func team(tag: Int) -> Team {
@@ -67,9 +85,13 @@ class SelectionViewController: UIViewController {
             break
         }
         
-        return Team(members: [Person(preClass: overriddenClass),
-                              Person(preClass: overriddenClass),
-                              Person(preClass: overriddenClass)])
+        //TODO: For testing please remember to remove
+        let godPerson = Person(preClass: overriddenClass)
+        godPerson.currentHp = 1000
+        godPerson.currentAttack = 1000
+        godPerson.currentDefense = 1000
+        
+        return Team(members: [godPerson, godPerson, godPerson])
     }
     
     @IBAction func selectedBattle(_ sender: Any) {
@@ -77,22 +99,47 @@ class SelectionViewController: UIViewController {
     }
     
     @IBSegueAction func showBattleSegue(_ coder: NSCoder) -> BattleViewController? {
-        guard let selectedOurTeam = selectedOurTeam else {
+        guard let selectedOurTeam = selectedOurTeam,
+            let selectedCity = selectedCity else {
             return nil
-        }
-        
-        let testCity = loadCities().first!
-        
-        for _ in 0...10 {
-            let e = testCity.randomEncounter(team: selectedOurTeam)
-            print(e.name)
         }
         
         return BattleViewController(coder: coder,
                                     ourTeam: selectedOurTeam,
-                                    encounter: randomEncounter(team: selectedOurTeam), completion: { (results) in
+                                    encounter: selectedCity.randomEncounter(team: selectedOurTeam), completion: { (results) in
                                         self.testGold += results.gold
                                         self.fontTestLabel.text = "\(self.testGold)"
+                                        
+                                        for cityId in results.cities {
+                                            for city in loadCities() {
+                                                if city.id == cityId {
+                                                    if city.locked {
+                                                        city.locked = false
+                                                        self.showCityButton(city)
+                                                    }
+                                                    break
+                                                }
+                                            }
+                                        }
+                                        
+                                        for buildingId in results.buildings {
+                                            for building in loadBuildings() {
+                                                if building.id == buildingId {
+                                                    for city in loadCities() {
+                                                        if city.id == building.cityId {
+                                                            if !city.buildings.contains(building) {
+                                                                city.buildings.append(building)
+                                                            }
+                                                            break
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        let selectedBuilding = selectedCity.buildings.randomElement()!
+                                        print(Person(globalRaceId: selectedCity.primaryRace,
+                                                     globalClassId: selectedBuilding.classId))
         })
     }
 }

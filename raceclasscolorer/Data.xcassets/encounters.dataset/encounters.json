@@ -84,7 +84,7 @@
         "intro": "The wizard Franlis has requested our services. He has sent us to invistigate the former lair of a chaos cult. When we get there we are amushed by cultest.",
         "win": "With the last cultest defeated we are able to invistigate. zygx is written over and over in one of the books. We are sure this is what Franlis was looking for.",
         "loss": "The cultest are too strong we have to retreat.",
-        "reward": {"npc": "franlis"},
+        "reward": {"npc": "franlis", "building": "fasimWizardCollege"},
         "raceId": "any",
         "groupId": "zygx",
         "enemySpawnRate": 4,
@@ -109,6 +109,22 @@
         "weight": 1,
         "restrictions": ["good", "netural"],
         "weightTags": ["theif"],
+        "cityLocationId": "fasim"
+    },
+    {
+        "name": "Find the drawfs",
+        "intro": "TESTING",
+        "win": "We win and the drawfs are free",
+        "loss": "What no the drawfs will sleep forever now",
+        "reward": {"city": "roslos"},
+        "raceId": "any",
+        "groupId": "any",
+        "enemySpawnRate": 2,
+        "groundId": "empty",
+        "difficulty": 0,
+        "weight": 100,
+        "restrictions": [],
+        "weightTags": [],
         "cityLocationId": "fasim"
     }
 ]

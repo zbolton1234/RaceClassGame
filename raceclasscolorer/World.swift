@@ -18,19 +18,22 @@ class CityJson: Decodable {
     let name: String
     let id: String
     let tribeType: TribeType
+    let locked: Bool
     let lockedRaces: [String]
     let primaryRace: String
     let x: Int
     let y: Int
 }
 
-class City {
+class City: Equatable {
     let name: String
     let id: String
     let position: CGPoint
     let tribeType: TribeType
+    var buildings = [Building]()
+    var locked: Bool
     private(set) var lockedRaces: [String: Bool]
-    private(set) var primaryRace: String?
+    private(set) var primaryRace: String
     
     private let encounters: [Encounter]
     
@@ -39,6 +42,8 @@ class City {
         self.id = cityJson.id
         self.position = CGPoint(x: cityJson.x, y: cityJson.y)
         self.tribeType = cityJson.tribeType
+        self.locked = cityJson.locked
+        self.primaryRace = cityJson.primaryRace
         
         var lraces = [String: Bool]()
         
@@ -48,6 +53,13 @@ class City {
         
         self.lockedRaces = lraces
         self.encounters = allEncounters.filter({ $0.cityLocationId == cityJson.id })
+        
+        let commonBuilding = Building(name: "Town Hall",
+                                      id: "townHall",
+                                      cityId: cityJson.id,
+                                      classId: "common",
+                                      description: "The town hall of \(cityJson.name) where the commoners gather.")
+        self.buildings.append(commonBuilding)
     }
     
     func randomEncounter(team: Team) -> Encounter {
@@ -90,9 +102,16 @@ class City {
         
         return possibleEncounters.randomElement()!
     }
+    
+    static func == (lhs: City, rhs: City) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct Building {
+struct Building: Decodable, Equatable {
     let name: String
     let id: String
+    let cityId: String
+    let classId: String
+    let description: String
 }

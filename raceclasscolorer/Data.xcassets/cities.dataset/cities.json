@@ -1,11 +1,22 @@
 [
-  {
-    "name": "Fasim",
-    "id": "fasim",
-    "tribeType": "civilized",
-    "lockedRaces": ["elf", "drawf", "gnome"],
-    "primaryRace": "human",
-    "x": 100,
-    "y": 100
-  }
+    {
+        "name": "Fasim",
+        "id": "fasim",
+        "tribeType": "civilized",
+        "locked": false,
+        "lockedRaces": ["elf", "drawf", "gnome"],
+        "primaryRace": "human",
+        "x": 100,
+        "y": 100
+    },
+    {
+        "name": "Roslos",
+        "id": "roslos",
+        "tribeType": "civilized",
+        "locked": true,
+        "lockedRaces": ["gnome"],
+        "primaryRace": "drawf",
+        "x": 150,
+        "y": 250
+    }
 ]
