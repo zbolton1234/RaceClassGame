@@ -58,6 +58,24 @@ class SelectionViewController: UIViewController {
         cityButton.addTarget(self,
                              action: #selector(selectedTown),
                              for: .touchUpInside)
+        
+        let infoButton = UIButton()
+        infoButton.translatesAutoresizingMaskIntoConstraints = false
+        infoButton.setTitle("\(city.name) Info", for: .normal)
+        infoButton.backgroundColor = .clear
+        infoButton.titleLabel?.textColor = .black
+        infoButton.tag = loadCities().firstIndex(of: city) ?? -1
+        
+        worldImageView.addSubview(infoButton)
+        
+        worldImageView.addConstraints([
+            cityButton.leftAnchor.constraint(equalTo: infoButton.leftAnchor),
+            cityButton.bottomAnchor.constraint(equalTo: infoButton.topAnchor)
+        ])
+        
+        infoButton.addTarget(self,
+                             action: #selector(cityInfo),
+                             for: .touchUpInside)
     }
     
     @IBAction func selectedOur(_ sender: UIButton) {
@@ -67,6 +85,11 @@ class SelectionViewController: UIViewController {
     @objc func selectedTown(_ sender: UIButton) {
         selectedCity = loadCities()[sender.tag]
         performSegue(withIdentifier: "showBattleViewController", sender: nil)
+    }
+    
+    @objc func cityInfo(_ sender: UIButton) {
+        selectedCity = loadCities()[sender.tag]
+        performSegue(withIdentifier: "showCityViewController", sender: nil)
     }
     
     func team(tag: Int) -> Team {
@@ -98,6 +121,14 @@ class SelectionViewController: UIViewController {
         performSegue(withIdentifier: "showBattleViewController", sender: nil)
     }
     
+    @IBSegueAction func showCitySegue(_ coder: NSCoder) -> CityViewController? {
+        guard let selectedCity = selectedCity else {
+            return nil
+        }
+        
+        return CityViewController(coder: coder, city: selectedCity)
+    }
+    
     @IBSegueAction func showBattleSegue(_ coder: NSCoder) -> BattleViewController? {
         guard let selectedOurTeam = selectedOurTeam,
             let selectedCity = selectedCity else {
@@ -127,8 +158,8 @@ class SelectionViewController: UIViewController {
                                                 if building.id == buildingId {
                                                     for city in loadCities() {
                                                         if city.id == building.cityId {
-                                                            if !city.buildings.contains(building) {
-                                                                city.buildings.append(building)
+                                                            if !city.buildings.contains(where: { $0.id == building.id }) {
+                                                                city.buildings.append(Building(buildingJSON: building))
                                                             }
                                                             break
                                                         }
@@ -136,10 +167,6 @@ class SelectionViewController: UIViewController {
                                                 }
                                             }
                                         }
-                                        
-                                        let selectedBuilding = selectedCity.buildings.randomElement()!
-                                        print(Person(globalRaceId: selectedCity.primaryRace,
-                                                     globalClassId: selectedBuilding.classId))
         })
     }
 }

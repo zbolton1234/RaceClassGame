@@ -5,7 +5,9 @@
         "tribeType": "civilized",
         "locked": false,
         "lockedRaces": ["elf", "drawf", "gnome"],
+        "unlockedRaces": ["human", "halfling"],
         "primaryRace": "human",
+        "startingBuildings": ["fasimWizardCollege"],
         "x": 100,
         "y": 100
     },
@@ -15,7 +17,9 @@
         "tribeType": "civilized",
         "locked": true,
         "lockedRaces": ["gnome"],
+        "unlockedRaces": ["human", "halfling"],
         "primaryRace": "drawf",
+        "startingBuildings": ["fasimWizardCollege"],
         "x": 150,
         "y": 250
     }

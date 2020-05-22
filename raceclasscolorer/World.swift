@@ -12,6 +12,8 @@ private let neturalEncounters = allEncounters.filter({ $0.cityLocationId == "any
 private let neturalCivEncounters = allEncounters.filter({ $0.cityLocationId == "anyCivilized" })
 private let neturalWildEncounters = allEncounters.filter({ $0.cityLocationId == "anyWild" })
 
+let allBuildings = loadBuildings()
+
 //npcs
 
 class CityJson: Decodable {
@@ -20,7 +22,9 @@ class CityJson: Decodable {
     let tribeType: TribeType
     let locked: Bool
     let lockedRaces: [String]
+    let unlockedRaces: [String]
     let primaryRace: String
+    let startingBuildings: [String]
     let x: Int
     let y: Int
 }
@@ -51,15 +55,36 @@ class City: Equatable {
             lraces[raceId] = true
         }
         
+        for raceId in cityJson.unlockedRaces {
+            lraces[raceId] = false
+        }
+        
         self.lockedRaces = lraces
         self.encounters = allEncounters.filter({ $0.cityLocationId == cityJson.id })
         
-        let commonBuilding = Building(name: "Town Hall",
-                                      id: "townHall",
-                                      cityId: cityJson.id,
-                                      classId: "common",
-                                      description: "The town hall of \(cityJson.name) where the commoners gather.")
-        self.buildings.append(commonBuilding)
+        var startingBuildings = [Building]()
+        
+        for buildingId in cityJson.startingBuildings {
+            if let buildingJSON = allBuildings.first(where: { $0.id == buildingId }) {
+                startingBuildings.append(Building(buildingJSON: buildingJSON))
+            } else {
+                print("\(buildingId) missing")
+            }
+        }
+        
+        buildings = startingBuildings
+    }
+    
+    func unlockedRaces() -> [String] {
+        var races = [String]()
+        
+        for key in lockedRaces.keys {
+            if !(lockedRaces[key] ?? true) {
+                races.append(key)
+            }
+        }
+        
+        return races
     }
     
     func randomEncounter(team: Team) -> Encounter {
@@ -108,10 +133,67 @@ class City: Equatable {
     }
 }
 
-struct Building: Decodable, Equatable {
+//How are buildings unlocked
+//city starts with some
+//some are unlocked via encounters
+//some require the correct person to start
+//some take gold
+
+//How to level
+//gold (but how much)
+//person (maybe)
+//items but that lattttter
+//do all have the same max
+//taverns for commoners are they different?
+struct BuildingJSON: Decodable, Equatable {
     let name: String
     let id: String
     let cityId: String
-    let classId: String
+    let groupId: String
     let description: String
+    let levels: [String: [String]]
+}
+
+class Building {
+    let name: String
+    let id: String
+    let cityId: String
+    let groupId: String
+    let bdescription: String
+    let levels: [String: [String]]
+    
+    var currentLevel = 1 {
+        didSet {
+            if let currentLevelClasses = levels[String(currentLevel)] {
+                validClasses.append(contentsOf: currentLevelClasses)
+            }
+        }
+    }
+    
+    private var validClasses = [String]()
+    
+    init(buildingJSON: BuildingJSON) {
+        self.name = buildingJSON.name
+        self.id = buildingJSON.id
+        self.cityId = buildingJSON.cityId
+        self.groupId = buildingJSON.groupId
+        self.bdescription = buildingJSON.description
+        self.levels = buildingJSON.levels
+        
+        if let levelOneClasses = buildingJSON.levels["1"] {
+            validClasses.append(contentsOf: levelOneClasses)
+        }
+    }
+    
+    func reward(city: City) -> BuildingReward {
+        //TODO: what is this going to be?
+        let randomGold = Int.random(in: 0...100)
+        
+        guard let selectedRace = city.unlockedRaces().randomElement(),
+            let selectedClass = validClasses.randomElement() else {
+                return BuildingReward(gold: randomGold, people: [])
+        }
+        
+        return BuildingReward(gold: randomGold, people: [Person(globalRaceId: selectedRace, globalClassId: selectedClass)])
+    }
 }

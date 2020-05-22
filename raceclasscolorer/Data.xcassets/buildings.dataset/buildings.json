@@ -3,7 +3,21 @@
         "name": "Wizard College",
         "id": "fasimWizardCollege",
         "cityId": "fasim",
-        "classId": "wizard",
-        "description": "The wizard college in Fasim."
+        "groupId": "magic",
+        "description": "The wizard college in Fasim.",
+        "levels": {
+            "1": ["wizard"],
+            "3": ["elementalist"]
+        }
+    },
+    {
+        "name": "Temple",
+        "id": "fasimTemple",
+        "cityId": "fasim",
+        "groupId": "holy",
+        "description": "The temple in Fasim.",
+        "levels": {
+            "1": ["cleric"]
+        }
     }
 ]

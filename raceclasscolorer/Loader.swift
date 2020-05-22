@@ -22,8 +22,8 @@ func loadEncounters() -> [Encounter] {
     return jsons.map({ Encounter(encountJson: $0) })
 }
 
-func loadBuildings() -> [Building] {
-    return load(assetName: "buildings", decodeClass: [Building].self) ?? []
+func loadBuildings() -> [BuildingJSON] {
+    return load(assetName: "buildings", decodeClass: [BuildingJSON].self) ?? []
 }
 
 func loadCities() -> [City] {

@@ -167,3 +167,8 @@ struct EncounterResults {
     let buildings: [String]
     let cities: [String]
 }
+
+struct BuildingReward {
+    let gold: Int
+    let people: [Person]
+}
