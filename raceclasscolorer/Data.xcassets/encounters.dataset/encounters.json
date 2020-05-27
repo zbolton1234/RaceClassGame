@@ -122,7 +122,7 @@
         "enemySpawnRate": 2,
         "groundId": "empty",
         "difficulty": 0,
-        "weight": 100,
+        "weight": 1,
         "restrictions": [],
         "weightTags": [],
         "cityLocationId": "fasim"

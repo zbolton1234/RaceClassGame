@@ -16,7 +16,7 @@ class Team {
     }
     
     var isAlive: Bool {
-        return !members.reduce(true, { $0 && $1.currentHp <= 0 })
+        return !members.reduce(true, { $0 && !$1.isAlive })
     }
     
     func teamTags() -> [String] {

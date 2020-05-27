@@ -467,6 +467,10 @@ class Person: Battler, CustomStringConvertible {
         return "race: \(race.id) class: \(pclass.id) color: \(color)"
     }
     
+    var isAlive: Bool {
+        return currentHp > 0
+    }
+    
     func totalBuffs(team: Team) -> Int {
         return team.members.reduce(0) { (total, otherPerson) -> Int in
             if self.id == otherPerson.id {

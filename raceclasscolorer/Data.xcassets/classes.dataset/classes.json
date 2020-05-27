@@ -36,7 +36,7 @@
         "targets": 2,
         "range": 4,
         "isMelee": false,
-        "size": 1,
+        "size": 0,
         "damage": 3
     }
   },
@@ -77,7 +77,7 @@
         "targets": 2,
         "range": 4,
         "isMelee": false,
-        "size": 2,
+        "size": 1,
         "damage": 3
     }
   },
@@ -107,7 +107,7 @@
         "targets": -1,
         "range": -1,
         "isMelee": false,
-        "size": 1,
+        "size": 0,
         "damage": 1
     }
   },
@@ -146,9 +146,9 @@
     "attackMove": {
         "name": "Smite",
         "targets": 1,
-        "range": 2,
+        "range": 1,
         "isMelee": false,
-        "size": 1,
+        "size": 0,
         "damage": 4
     }
   },
@@ -176,9 +176,9 @@
     "attackMove": {
         "name": "Quick Swipes",
         "targets": 3,
-        "range": 1,
+        "range": 0,
         "isMelee": true,
-        "size": 1,
+        "size": 0,
         "damage": 5
     }
   },
@@ -212,9 +212,9 @@
     "attackMove": {
         "name": "Heavy Swipe",
         "targets": 1,
-        "range": 1,
+        "range": 0,
         "isMelee": true,
-        "size": 1,
+        "size": 0,
         "damage": 7
     }
   },
@@ -236,9 +236,9 @@
     "attackMove": {
         "name": "Pitch Fork",
         "targets": 1,
-        "range": 1,
+        "range": 0,
         "isMelee": true,
-        "size": 1,
+        "size": 0,
         "damage": 1
     }
   }

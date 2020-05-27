@@ -50,6 +50,7 @@ class BattleGround {
     
     private(set) var ground: [[Spot]]
     
+    //TODO: fix ground logic
     init(ourTeam: Team, enemyTeam: Team, groundJson: GroundJson) {
         self.ourTeam = ourTeam
         self.enemyTeam = enemyTeam
@@ -60,9 +61,6 @@ class BattleGround {
         var convertedOur = [PersonState]()
         var convertedEnemy = [PersonState]()
         
-        //TODO: are all my grounds equal size???
-        let teamWidth = groundJson.ground[1].count - 2
-        
         var ground = [[Spot]]()
         for (lineIndex, line) in groundJson.ground.enumerated() {
             var groundLine = [Spot]()
@@ -71,13 +69,7 @@ class BattleGround {
                 case "e":
                     groundLine.append(.empty)
                 case "o":
-                    convertedOur = ourTeam.members.enumerated().map({ (index, person) in
-                        PersonState(person: person,
-                                    teamType: .our,
-                                    position: (index + tileIndex, lineIndex))
-                    })
-                    
-                    let extraSpace = teamWidth - convertedOur.count
+                    let extraSpace = enemyTeam.members.count - ourTeam.members.count
                     let firstHalf = extraSpace / 2
                     let secondHalf = extraSpace - firstHalf
                     
@@ -86,20 +78,22 @@ class BattleGround {
                             groundLine.append(.empty)
                         }
                     }
+                    
+                    convertedOur = ourTeam.members.enumerated().map({ (index, person) in
+                        PersonState(person: person,
+                                    teamType: .our,
+                                    position: (groundLine.count + index + tileIndex, lineIndex))
+                    })
+                    
                     groundLine.append(contentsOf: convertedOur.map({ Spot.person($0) }))
+                    
                     if secondHalf > 0 {
                         for _ in 0...secondHalf - 1 {
                             groundLine.append(.empty)
                         }
                     }
                 case "m":
-                    convertedEnemy = enemyTeam.members.enumerated().map({ (index, person) in
-                        PersonState(person: person,
-                                    teamType: .enemy,
-                                    position: (index + tileIndex, lineIndex))
-                    })
-                    
-                    let extraSpace = teamWidth - convertedEnemy.count
+                    let extraSpace = ourTeam.members.count - enemyTeam.members.count
                     let firstHalf = extraSpace / 2
                     let secondHalf = extraSpace - firstHalf
                     
@@ -108,7 +102,15 @@ class BattleGround {
                             groundLine.append(.empty)
                         }
                     }
+                    
+                    convertedEnemy = enemyTeam.members.enumerated().map({ (index, person) in
+                        PersonState(person: person,
+                                    teamType: .enemy,
+                                    position: (groundLine.count + index + tileIndex, lineIndex))
+                    })
+                    
                     groundLine.append(contentsOf: convertedEnemy.map({ Spot.person($0) }))
+                    
                     if secondHalf > 0 {
                         for _ in 0...secondHalf - 1 {
                             groundLine.append(.empty)
@@ -148,15 +150,14 @@ class BattleGround {
     }
     
     //TODO:s
-    //aoe
     //extra affects
     //is melee do anything
-    //dead bodies
     //all
-    //phases?  like all move then all attack?
-    //speed
+    //phases? Buffs
+    //fix speed
     //unit test the math problems to guard againts bad numbers
     //sometimes we don't attack all valid if there are bad targets
+    //attack less
     
     //summons
     //buffs
@@ -165,268 +166,52 @@ class BattleGround {
     private func teamAttack(attackingTeam: [PersonState], defendingTeam: [PersonState]) {
         attackingTeam.enumerated().forEach({ (index, attackingPersonState) in
             let attackingPerson = attackingPersonState.person
-            guard attackingPerson.currentHp > 0 else {
+            guard attackingPerson.isAlive else {
                 return
             }
             
             print("\(attackingPerson.id) is attacking \(attackingPerson.attackMove.name)")
             
             let onOur = attackingPersonState.teamType == .our
-            let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
+            let defendingTeam = (onOur ? enemyTeamSide : ourTeamSide).filter({ $0.person.isAlive })
+            let defendingTeamIndexs = defendingTeam.map({ $0.position.x })
             let attackMove = attackingPerson.attackMove
-            var targets = closestEnemy(attackingPerson: attackingPersonState,
-                                       numberOfTargets: attackMove.targets,
-                                       onlySee: true)
             
-            guard let closestTarget = closestEnemy(attackingPerson: attackingPersonState,
-                                             numberOfTargets: 1,
-                                             onlySee: false).first else {
-                                                return
+            //TODO: fix infinate range
+            if attackMove.range == -1 {
+                return
             }
-
-            //If our closest target is out of range or we can't hit it move closer.  Might not be the best spot to move to but not sure how to fix that yet.
-            if (closestTarget.distance >= Double(attackMove.range) + 1.0 || sightBlocked(attackingPosition: attackingPersonState.position, defendingPosition: closestTarget.person.position) && attackMove.range != -1) {
-                smartMove(personState: attackingPersonState, goalPosition: closestTarget.person.position)
-                //we moved need to update the states as we might be in range now
-                targets = closestEnemy(attackingPerson: attackingPersonState,
-                                       numberOfTargets: attackMove.targets,
-                                       onlySee: true)
-            }
-
-            for target in targets {
-                //Check range and visibility
-                if target.distance <= Double(attackMove.range) + 1.0 || attackMove.range == -1 {
-                    //TODO: More math problems ensure this can't be 0
-                    target.person.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: target.person.person)) + 1
-                    
-                    //If AOE then attack others near by
-                    if attackMove.size > 1 {
-                        for enemy in defendingTeam {
-                            if target.person.distance(otherPerson: enemy) <= Double(attackMove.size) &&
-                                !sightBlocked(attackingPosition: target.person.position, defendingPosition: enemy.position) {
-                                enemy.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: enemy.person)) + 1
-                            }
-                        }
-                    }
+            
+            for _ in 1...attackMove.targets {
+                
+                guard let leftMostDefending = defendingTeamIndexs.min(),
+                    let rightMostDefending = defendingTeamIndexs.max() else {
+                        return
+                }
+                
+                print("Im \(attackingPersonState.position.x)")
+                print("left most \(leftMostDefending) right most \(rightMostDefending)")
+                
+                //Find the closest index to our index if we are on the outside.
+                let targetIndex = min(max(attackingPersonState.position.x, leftMostDefending), rightMostDefending)
+                
+                print("targeting \(targetIndex)")
+                
+                let minRange = max(targetIndex - attackMove.range, leftMostDefending)
+                let maxRange = min(targetIndex + attackMove.range, rightMostDefending)
+                
+                let targetedIndex = (minRange...maxRange).randomElement() ?? 0
+                
+                print("updated target \(targetedIndex)")
+                                
+                let hitEnemies = defendingTeam.filter({ $0.position.x >= targetedIndex - attackMove.size && $0.position.x <= targetIndex + attackMove.size })
+                
+                //TODO: More math problems ensure this can't be 0
+                print("hitting \(hitEnemies)")
+                for hitEnemy in hitEnemies {
+                    hitEnemy.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: hitEnemy.person)) + 1
                 }
             }
         })
     }
-}
-
-//MARK: State Helpers
-extension BattleGround {
-    private func sightBlocked(attackingPosition: Position, defendingPosition: Position) -> Bool {
-        let allPositions = smartVisionLine(position1: attackingPosition, position2: defendingPosition)
-        
-        for position in allPositions {
-            if position != attackingPosition && position != defendingPosition {
-                if case .empty = ground[position.y][position.x] {
-                    //TODO: uuugggg
-                } else {
-                    return true
-                }
-            }
-        }
-        
-        return false
-    }
-    
-    typealias Distance = (distance: Double, person: PersonState)
-    private func closestEnemy(attackingPerson: PersonState, numberOfTargets: Int, onlySee: Bool) -> [Distance] {
-        let onOur = attackingPerson.teamType == .our
-        let defendingTeam = onOur ? enemyTeamSide : ourTeamSide
-        
-        let distances = defendingTeam.compactMap({ (defender) -> Distance? in
-            let blocked = sightBlocked(attackingPosition: attackingPerson.position, defendingPosition: defender.position)
-            
-            guard defender.person.currentHp > 0, (numberOfTargets == -1 || !(blocked && onlySee)) else {
-                return nil
-            }
-            
-            let distance = attackingPerson.distance(otherPerson: defender)
-            return (distance, defender)
-        }).sorted(by: { $0.distance < $1.distance })
-        
-        if numberOfTargets == -1 {
-            return distances
-        } else {
-            return distances.count > numberOfTargets ? Array(distances[0...(numberOfTargets - 1)]) : distances
-        }
-    }
-}
-
-// MARK: Mutable Helpers
-extension BattleGround {
-    private func move(person: PersonState, position: Position) {
-        guard spotEmpty(position: position) else {
-            return
-        }
-
-        ground[position.y][position.x] = .person(person)
-
-        let oldPosition = person.position
-        ground[oldPosition.y][oldPosition.x] = .empty
-
-        person.position = position
-    }
-    
-    private func smartMove(personState: PersonState, goalPosition: Position) {
-        let startPosition = personState.position
-        
-        if personState.person.currentSpeed == 0 {
-            return
-        }
-        
-        var openList = [PositionNode]()
-        var closedList = [PositionNode]()
-        
-        let startNode = PositionNode(postion: startPosition)
-        let endNode = PositionNode(postion: goalPosition)
-        
-        openList.append(startNode)
-        
-        while openList.count > 0 {
-            var currentNode = openList.first!
-            var currentIndex = 0
-            
-            for (index, item) in openList.enumerated() {
-                if item.fScore < currentNode.fScore {
-                    currentNode = item
-                    currentIndex = index
-                }
-            }
-            
-            openList.remove(at: currentIndex)
-            closedList.append(currentNode)
-            
-            if currentNode == endNode {
-                if let nextNode = currentNode.nextNode(startNode: startNode,
-                                                       endNode: endNode,
-                                                       depth: 0/*personState.person.currentSpeed*/) {
-                    move(person: personState, position: nextNode.position)
-                }
-                
-                print("we got it")
-                return
-            }
-            
-            let validSpots = validNearSpots(position: currentNode.position).map({ PositionNode(postion: $0) })
-            
-            for validSpot in validSpots {
-                if closedList.contains(validSpot) {
-                    continue
-                }
-                
-                validSpot.parent = currentNode
-                validSpot.gScore = currentNode.gScore + 1
-                validSpot.hScore = distanceHisc(position1: validSpot.position, position2: endNode.position)
-                
-                for openNode in openList {
-                    if validSpot == openNode && validSpot.gScore > openNode.gScore {
-                        continue
-                    }
-                }
-                
-                openList.append(validSpot)
-            }
-        }
-        
-        print("Did not find it")
-    }
-    
-    private func spotValidPath(position: Position) -> Bool {
-        switch ground[position.y][position.x] {
-        case .terain(_):
-            return false
-        case .void:
-            return false
-        default:
-            return true
-        }
-    }
-    
-    private func spotEmpty(position: Position) -> Bool {
-        //TODO: do this better
-        if case .person(let personInSpot) = ground[position.y][position.x] {
-            if personInSpot.person.currentHp <= 0 {
-                ground[position.y][position.x] = .empty
-            }
-        }
-        
-        guard case .empty = ground[position.y][position.x] else {
-            return false
-        }
-        
-        return true
-    }
-    
-    private func validNearSpots(position: Position) -> [Position] {
-        var spots = [Position]()
-        
-        for xChange in -1...1 {
-            for yChange in -1...1 {
-                let possiblePosition = Position(x: position.x + xChange, y: position.y + yChange)
-                
-                let validX = possiblePosition.x >= 0 && possiblePosition.x < ground.first!.count
-                let validY = possiblePosition.y >= 0 && possiblePosition.y < ground.count
-                let isStartSpot = xChange == 0 && yChange == 0
-                if validX && validY && !isStartSpot && spotValidPath(position: possiblePosition) {
-                    spots.append(possiblePosition)
-                }
-            }
-        }
-        
-        return spots
-    }
-}
-
-private class PositionNode: Hashable {
-    let position: Position
-    var parent: PositionNode?
-    
-    var gScore = 0.0
-    var hScore = 0.0
-    var fScore: Double {
-        return gScore + hScore
-    }
-    
-    init(postion: Position) {
-        self.position = postion
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(position.x)
-        hasher.combine(position.y)
-    }
-    
-    //me (startnode) -> empty -> enemy (endnode)
-    
-    //TODO: putting a hard max of ... should fix or make better
-    func nextNode(startNode: PositionNode, endNode: PositionNode, depth: Int) -> PositionNode? {
-        var lookingAt: PositionNode?
-        
-        if let grandParent = self.parent?.parent?.parent, depth == 2 {
-            lookingAt = grandParent
-        } else if let grandParent = self.parent?.parent, depth >= 1 {
-            lookingAt = grandParent
-        } else {
-            lookingAt = self.parent
-        }
-        
-        if lookingAt == startNode {
-            //We want to move more then 1 but did not move at all so need to try a shorter depth
-            if self == endNode && depth > 0 {
-                return self.nextNode(startNode: startNode, endNode: endNode, depth: depth - 1)
-            }
-            
-            return self
-        } else {
-            return parent?.nextNode(startNode: startNode, endNode: endNode, depth: depth)
-        }
-    }
-}
-
-private func ==(lhs: PositionNode, rhs: PositionNode) -> Bool {
-    return lhs.position == rhs.position
 }
