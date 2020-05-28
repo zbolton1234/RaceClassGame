@@ -38,7 +38,8 @@
         "isMelee": false,
         "size": 0,
         "damage": 3
-    }
+    },
+    "effectMoves": []
   },
   {
     "name": "Elementalist",
@@ -79,7 +80,8 @@
         "isMelee": false,
         "size": 1,
         "damage": 3
-    }
+    },
+    "effectMoves": []
   },
   {
     "name": "Blood Mage",
@@ -109,7 +111,8 @@
         "isMelee": false,
         "size": 0,
         "damage": 1
-    }
+    },
+    "effectMoves": []
   },
   {
     "name": "Cleric",
@@ -150,7 +153,8 @@
         "isMelee": false,
         "size": 0,
         "damage": 4
-    }
+    },
+    "effectMoves": []
   },
   {
     "name": "Warrior",
@@ -180,7 +184,16 @@
         "isMelee": true,
         "size": 0,
         "damage": 5
-    }
+    },
+    "effectMoves": [
+        {
+            "name": "Shields up",
+            "stat": "defense",
+            "amount": 1,
+            "targets": 10,
+            "our": true
+        }
+    ]
   },
   {
     "name": "Barb",
@@ -216,7 +229,8 @@
         "isMelee": true,
         "size": 0,
         "damage": 7
-    }
+    },
+    "effectMoves": []
   },
   {
     "name": "Farmer",
@@ -240,6 +254,7 @@
         "isMelee": true,
         "size": 0,
         "damage": 1
-    }
+    },
+    "effectMoves": []
   }
 ]

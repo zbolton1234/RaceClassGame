@@ -97,7 +97,7 @@ class SelectionViewController: UIViewController {
         
         switch tag {
         case 0:
-            overriddenClass = classWithId(classId: "barb")
+            overriddenClass = classWithId(classId: "warrior")
         case 1:
             overriddenClass = classWithId(classId: "wizard")
         case 2:

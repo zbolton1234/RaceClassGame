@@ -20,7 +20,7 @@ enum TeamType {
     case enemy
 }
 
-class PersonState {
+class PersonState: Hashable {
     let person: Person
     let teamType: TeamType
     var position: Position
@@ -31,13 +31,12 @@ class PersonState {
         self.position = position
     }
     
-    func distance(otherPerson: PersonState) -> Double {
-        let ourPosition = position
-        let otherPosition = otherPerson.position
-        
-        let xDiff = pow(Double(ourPosition.x - otherPosition.x), 2)
-        let yDiff = pow(Double(ourPosition.y - otherPosition.y), 2)
-        return sqrt(xDiff + yDiff)
+    static func == (lhs: PersonState, rhs: PersonState) -> Bool {
+        return lhs.person == rhs.person && lhs.position == rhs.position
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(person)
     }
 }
 
@@ -134,6 +133,7 @@ class BattleGround {
         DispatchQueue.global(qos: .background).async {
             while self.ourTeam.isAlive && self.enemyTeam.isAlive {
                 DispatchQueue.main.sync {
+                    self.clearEffects()
                     self.teamAttack(attackingTeam: self.ourTeamSide, defendingTeam: self.enemyTeamSide)
                     self.teamAttack(attackingTeam: self.enemyTeamSide, defendingTeam: self.ourTeamSide)
                     stateChanged()
@@ -147,6 +147,11 @@ class BattleGround {
                 completion(FightState(won: wonState))
             }
         }
+    }
+    
+    func clearEffects() {
+        ourTeamSide.forEach({ $0.person.clearEffects() })
+        enemyTeamSide.forEach({ $0.person.clearEffects() })
     }
     
     //TODO:s
@@ -174,12 +179,27 @@ class BattleGround {
             
             let onOur = attackingPersonState.teamType == .our
             let defendingTeam = (onOur ? enemyTeamSide : ourTeamSide).filter({ $0.person.isAlive })
+            let attackingTeam = (!onOur ? enemyTeamSide : ourTeamSide).filter({ $0.person.isAlive })
             let defendingTeamIndexs = defendingTeam.map({ $0.position.x })
+            
             let attackMove = attackingPerson.attackMove
+            let ourEffects = attackingPerson.effectMoves.filter({ $0.our })
+            let enemyEffects = attackingPerson.effectMoves.filter({ !$0.our })
             
             //TODO: fix infinate range
             if attackMove.range == -1 {
                 return
+            }
+            
+            for ourEffect in ourEffects {
+                var nonAffectedPeople = Set(attackingTeam)
+                
+                for _ in 1...ourEffect.targets {
+                    if let effecty = nonAffectedPeople.randomElement() {
+                        effecty.person.applyEffect(effect: ourEffect)
+                        nonAffectedPeople.remove(effecty)
+                    }
+                }
             }
             
             for _ in 1...attackMove.targets {

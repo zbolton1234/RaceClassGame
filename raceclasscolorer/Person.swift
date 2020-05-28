@@ -262,6 +262,7 @@ struct Class: Decodable {
     let defense: Int
     let speed: Int
     let attackMove: Attack
+    let effectMoves: [Effect]
     let alignmentLevel: AlignmentLevel
     let goodEvil: GoodEvil
     let buffs: [Buff]
@@ -286,6 +287,21 @@ struct Buff: Decodable {
     let amount: Int
     ///Acts as a not of the tag.  tag = "orc" and all others will buff all races that are not orc
     let allOthers: Bool
+}
+
+struct Effect: Decodable {
+    let name: String
+    let stat: Stat
+    let amount: Int
+    let targets: Int
+    let our: Bool
+}
+
+enum Stat: String, Decodable {
+    case health
+    case attack
+    case defense
+    case multi
 }
 
 struct Attack: Decodable {
@@ -346,7 +362,7 @@ enum AlignmentLevel: String, Decodable {
     }
 }
 
-class Person: Battler, CustomStringConvertible {
+class Person: Battler, CustomStringConvertible, Hashable {
     let id = UUID()
     let race: Race
     let pclass: Class
@@ -363,11 +379,14 @@ class Person: Battler, CustomStringConvertible {
     let personTags: [String]
     
     let attackMove: Attack
+    let effectMoves: [Effect]
     
     var currentHp: Int
     var currentAttack: Int
     var currentDefense: Int
     var currentSpeed: Int
+    
+    private var currentEffects = [Effect]()
     
     convenience init(globalRaceId: String, globalClassId: String) {
         let selectedPerson = raceClass(globalRaceId: globalRaceId, globalClassId: globalClassId)
@@ -435,6 +454,7 @@ class Person: Battler, CustomStringConvertible {
         currentSpeed = speed
         
         attackMove = pclass.attackMove
+        effectMoves = pclass.effectMoves
         
         buffs = race.buffs + pclass.buffs
         debuffs = race.debuffs + pclass.debuffs
@@ -461,6 +481,14 @@ class Person: Battler, CustomStringConvertible {
         allTags.append(contentsOf: race.tags())
         
         personTags = allTags
+    }
+    
+    static func == (lhs: Person, rhs: Person) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     var description: String {
@@ -501,6 +529,42 @@ class Person: Battler, CustomStringConvertible {
         }
         
         return 0
+    }
+    
+    func applyEffect(effect: Effect) {
+        currentEffects.append(effect)
+        
+        switch effect.stat {
+        case .health:
+            currentHp += effect.amount
+        case .attack:
+            currentAttack += effect.amount
+        case .defense:
+            currentDefense += effect.amount
+        case .multi:
+            //uuuuummmmm
+            break
+        }
+    }
+    
+    func clearEffects() {
+        for effect in currentEffects {
+
+            switch effect.stat {
+            case .health:
+                //uuuuummmmm
+                break
+            case .attack:
+                currentAttack -= effect.amount
+            case .defense:
+                currentDefense -= effect.amount
+            case .multi:
+                //uuuuummmmm
+                break
+            }
+        }
+        
+        currentEffects.removeAll()
     }
     
     func personImage() -> UIImage {
