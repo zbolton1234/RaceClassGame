@@ -15,10 +15,6 @@ class Team {
         self.members = members
     }
     
-    var isAlive: Bool {
-        return !members.reduce(true, { $0 && !$1.isAlive })
-    }
-    
     func teamTags() -> [String] {
         return members.flatMap({ $0.personTags })
     }

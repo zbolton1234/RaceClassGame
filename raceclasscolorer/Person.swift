@@ -362,8 +362,83 @@ enum AlignmentLevel: String, Decodable {
     }
 }
 
-class Person: Battler, CustomStringConvertible, Hashable {
-    let id = UUID()
+class BattlePerson: Person {
+    var currentHp: Int
+    var currentAttack: Int
+    var currentDefense: Int
+    var currentSpeed: Int
+    
+    private var currentEffects = [Effect]()
+    
+    //TODO: made debug only or move to test???
+//    class func testDummy() -> BattlePerson {
+//        let dummy = BattlePerson()
+//
+//        dummy.currentHp = 1
+//        dummy.currentAttack = 0
+//        dummy.currentDefense = 0
+//        dummy.currentSpeed = 0
+//
+//        return dummy
+//    }
+    
+    override init(person: Person) {
+        currentHp = 0
+        currentAttack = 0
+        currentDefense = 0
+        currentSpeed = 0
+        
+        super.init(person: person)
+        
+        currentHp = hp
+        currentAttack = attack
+        currentDefense = defense
+        currentSpeed = speed
+    }
+    
+    var isAlive: Bool {
+        return currentHp > 0
+    }
+    
+    func applyEffect(effect: Effect) {
+        currentEffects.append(effect)
+        
+        switch effect.stat {
+        case .health:
+            currentHp += effect.amount
+        case .attack:
+            currentAttack += effect.amount
+        case .defense:
+            currentDefense += effect.amount
+        case .multi:
+            //uuuuummmmm
+            break
+        }
+    }
+    
+    func clearEffects() {
+        for effect in currentEffects {
+
+            switch effect.stat {
+            case .health:
+                //uuuuummmmm
+                break
+            case .attack:
+                currentAttack -= effect.amount
+            case .defense:
+                currentDefense -= effect.amount
+            case .multi:
+                //uuuuummmmm
+                break
+            }
+        }
+        
+        currentEffects.removeAll()
+    }
+}
+
+class Person: CustomStringConvertible, Hashable {
+    let id: UUID
     let race: Race
     let pclass: Class
     let color: Color
@@ -381,29 +456,28 @@ class Person: Battler, CustomStringConvertible, Hashable {
     let attackMove: Attack
     let effectMoves: [Effect]
     
-    var currentHp: Int
-    var currentAttack: Int
-    var currentDefense: Int
-    var currentSpeed: Int
-    
-    private var currentEffects = [Effect]()
-    
     convenience init(globalRaceId: String, globalClassId: String) {
         let selectedPerson = raceClass(globalRaceId: globalRaceId, globalClassId: globalClassId)
         
         self.init(preRace: selectedPerson.race, preClass: selectedPerson.class)
     }
     
-    //TODO: made debug only or move to test???
-    class func testDummy() -> Person {
-        let dummy = Person()
-        
-        dummy.currentHp = 1
-        dummy.currentAttack = 0
-        dummy.currentDefense = 0
-        dummy.currentSpeed = 0
-        
-        return dummy
+    init(person: Person) {
+        id = person.id
+        race = person.race
+        pclass = person.pclass
+        color = person.color
+        hp = person.hp
+        attack = person.attack
+        defense = person.defense
+        speed = person.speed
+        alignmentLevel = person.alignmentLevel
+        goodEvil = person.goodEvil
+        buffs = person.buffs
+        debuffs = person.debuffs
+        personTags = person.personTags
+        attackMove = person.attackMove
+        effectMoves = person.effectMoves
     }
     
     init(preRace: Race? = nil, preClass: Class? = nil, preColor: Color? = nil) {
@@ -448,11 +522,6 @@ class Person: Battler, CustomStringConvertible, Hashable {
         defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
         speed = pclass.speed + race.bounusSpeed
         
-        currentHp = hp
-        currentAttack = attack
-        currentDefense = defense
-        currentSpeed = speed
-        
         attackMove = pclass.attackMove
         effectMoves = pclass.effectMoves
         
@@ -481,6 +550,8 @@ class Person: Battler, CustomStringConvertible, Hashable {
         allTags.append(contentsOf: race.tags())
         
         personTags = allTags
+        
+        id = UUID()
     }
     
     static func == (lhs: Person, rhs: Person) -> Bool {
@@ -493,10 +564,6 @@ class Person: Battler, CustomStringConvertible, Hashable {
     
     var description: String {
         return "race: \(race.id) class: \(pclass.id) color: \(color)"
-    }
-    
-    var isAlive: Bool {
-        return currentHp > 0
     }
     
     func totalBuffs(team: Team) -> Int {
@@ -529,42 +596,6 @@ class Person: Battler, CustomStringConvertible, Hashable {
         }
         
         return 0
-    }
-    
-    func applyEffect(effect: Effect) {
-        currentEffects.append(effect)
-        
-        switch effect.stat {
-        case .health:
-            currentHp += effect.amount
-        case .attack:
-            currentAttack += effect.amount
-        case .defense:
-            currentDefense += effect.amount
-        case .multi:
-            //uuuuummmmm
-            break
-        }
-    }
-    
-    func clearEffects() {
-        for effect in currentEffects {
-
-            switch effect.stat {
-            case .health:
-                //uuuuummmmm
-                break
-            case .attack:
-                currentAttack -= effect.amount
-            case .defense:
-                currentDefense -= effect.amount
-            case .multi:
-                //uuuuummmmm
-                break
-            }
-        }
-        
-        currentEffects.removeAll()
     }
     
     func personImage() -> UIImage {

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8222A37B2476FBC600977DBB /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8222A37A2476FBC600977DBB /* CityViewController.swift */; };
-		82439587242144E20011E2B0 /* BattleWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82439586242144E20011E2B0 /* BattleWrapper.swift */; };
 		826025D22409767300811B98 /* BattleFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D12409767300811B98 /* BattleFieldView.swift */; };
 		826025D4240D822B00811B98 /* BattleGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D3240D822B00811B98 /* BattleGround.swift */; };
 		826025D624119A1C00811B98 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826025D524119A1C00811B98 /* SelectionViewController.swift */; };
@@ -52,7 +51,6 @@
 
 /* Begin PBXFileReference section */
 		8222A37A2476FBC600977DBB /* CityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityViewController.swift; sourceTree = "<group>"; };
-		82439586242144E20011E2B0 /* BattleWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleWrapper.swift; sourceTree = "<group>"; };
 		826025D12409767300811B98 /* BattleFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleFieldView.swift; sourceTree = "<group>"; };
 		826025D3240D822B00811B98 /* BattleGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleGround.swift; sourceTree = "<group>"; };
 		826025D524119A1C00811B98 /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 				829561422444D40D007F9A3F /* FancyTextView.swift */,
 				829D843023D612F1006AEBE5 /* Constants.swift */,
 				827F7F3223CA5D7C00545431 /* Person.swift */,
-				82439586242144E20011E2B0 /* BattleWrapper.swift */,
 				829D842E23D6109D006AEBE5 /* Team.swift */,
 				82956146244678C4007F9A3F /* World.swift */,
 				829D842A23D50538006AEBE5 /* Loader.swift */,
@@ -322,7 +319,6 @@
 				826025D22409767300811B98 /* BattleFieldView.swift in Sources */,
 				826025D624119A1C00811B98 /* SelectionViewController.swift in Sources */,
 				82956147244678C4007F9A3F /* World.swift in Sources */,
-				82439587242144E20011E2B0 /* BattleWrapper.swift in Sources */,
 				8222A37B2476FBC600977DBB /* CityViewController.swift in Sources */,
 				827F7F0723CA5D1100545431 /* BattleViewController.swift in Sources */,
 				829D843123D612F1006AEBE5 /* Constants.swift in Sources */,

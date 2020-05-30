@@ -21,12 +21,12 @@ enum TeamType {
 }
 
 class PersonState: Hashable {
-    let person: Person
+    let person: BattlePerson
     let teamType: TeamType
     var position: Position
     
     init(person: Person, teamType: TeamType, position: Position) {
-        self.person = person
+        self.person = BattlePerson(person: person)
         self.teamType = teamType
         self.position = position
     }
@@ -37,6 +37,12 @@ class PersonState: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(person)
+    }
+}
+
+extension Array where Element == PersonState {
+    var isAlive: Bool {
+        return !reduce(true, { $0 && !$1.person.isAlive })
     }
 }
 
@@ -131,7 +137,7 @@ class BattleGround {
     func fight(stateChanged: @escaping (() -> Void), completion: @escaping ((FightState) -> Void)) {
         
         DispatchQueue.global(qos: .background).async {
-            while self.ourTeam.isAlive && self.enemyTeam.isAlive {
+            while self.ourTeamSide.isAlive && self.enemyTeamSide.isAlive {
                 DispatchQueue.main.sync {
                     self.clearEffects()
                     self.teamAttack(attackingTeam: self.ourTeamSide, defendingTeam: self.enemyTeamSide)
@@ -141,7 +147,7 @@ class BattleGround {
                 sleep(3)
             }
             
-            let wonState = self.ourTeam.isAlive
+            let wonState = self.ourTeamSide.isAlive
             
             DispatchQueue.main.sync {
                 completion(FightState(won: wonState))
@@ -229,7 +235,7 @@ class BattleGround {
                 //TODO: More math problems ensure this can't be 0
                 print("hitting \(hitEnemies)")
                 for hitEnemy in hitEnemies {
-                    hitEnemy.person.currentHp -= Int(Float(attackMove.damage) * attackingPerson.attackModifer(enemy: hitEnemy.person)) + 1
+                    hitEnemy.person.currentHp -= Int(Float(attackMove.damage) * Float(attackingPerson.attack / hitEnemy.person.defense)) + 1
                 }
             }
         })

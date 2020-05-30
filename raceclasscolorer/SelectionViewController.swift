@@ -110,9 +110,9 @@ class SelectionViewController: UIViewController {
         
         //TODO: For testing please remember to remove
         let godPerson = Person(preClass: overriddenClass)
-        godPerson.currentHp = 1000
-        godPerson.currentAttack = 1000
-        godPerson.currentDefense = 1000
+//        godPerson.currentHp = 1000
+//        godPerson.currentAttack = 1000
+//        godPerson.currentDefense = 1000
         
         return Team(members: [godPerson, godPerson, godPerson])
     }
