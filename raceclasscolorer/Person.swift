@@ -289,12 +289,22 @@ struct Buff: Decodable {
     let allOthers: Bool
 }
 
-struct Effect: Decodable {
+class Effect: Decodable, Hashable {
+    let id = UUID()
     let name: String
     let stat: Stat
     let amount: Int
     let targets: Int
+    var length: Int
     let our: Bool
+    
+    static func == (lhs: Effect, rhs: Effect) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 enum Stat: String, Decodable {
@@ -368,7 +378,10 @@ class BattlePerson: Person {
     var currentDefense: Int
     var currentSpeed: Int
     
-    private var currentEffects = [Effect]()
+    var extraAttacks = 0
+    var regen = 0
+    
+    private var currentEffects = Set<Effect>()
     
     //TODO: made debug only or move to test???
 //    class func testDummy() -> BattlePerson {
@@ -401,7 +414,7 @@ class BattlePerson: Person {
     }
     
     func applyEffect(effect: Effect) {
-        currentEffects.append(effect)
+        currentEffects.insert(effect)
         
         switch effect.stat {
         case .health:
@@ -418,22 +431,25 @@ class BattlePerson: Person {
     
     func clearEffects() {
         for effect in currentEffects {
-
-            switch effect.stat {
-            case .health:
-                //uuuuummmmm
-                break
-            case .attack:
-                currentAttack -= effect.amount
-            case .defense:
-                currentDefense -= effect.amount
-            case .multi:
-                //uuuuummmmm
-                break
+            effect.length -= 1
+            
+            if effect.length <= 0 {
+                switch effect.stat {
+                case .health:
+                    //uuuuummmmm
+                    break
+                case .attack:
+                    currentAttack -= effect.amount
+                case .defense:
+                    currentDefense -= effect.amount
+                case .multi:
+                    //uuuuummmmm
+                    break
+                }
+                
+                currentEffects.remove(effect)
             }
         }
-        
-        currentEffects.removeAll()
     }
 }
 

@@ -139,9 +139,10 @@ class BattleGround {
         DispatchQueue.global(qos: .background).async {
             while self.ourTeamSide.isAlive && self.enemyTeamSide.isAlive {
                 DispatchQueue.main.sync {
-                    self.clearEffects()
                     self.teamAttack(attackingTeam: self.ourTeamSide, defendingTeam: self.enemyTeamSide)
                     self.teamAttack(attackingTeam: self.enemyTeamSide, defendingTeam: self.ourTeamSide)
+                    //TODO: how do I clear these and compared to when they are applied.  To ensure they always get an effect off.
+                    self.clearEffects()
                     stateChanged()
                 }
                 sleep(3)

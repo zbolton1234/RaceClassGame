@@ -191,6 +191,7 @@
             "stat": "defense",
             "amount": 1,
             "targets": 10,
+            "length": 2,
             "our": true
         }
     ]
