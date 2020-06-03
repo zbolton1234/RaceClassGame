@@ -9,8 +9,6 @@
 import GameKit
 import UIKit
 
-let allRaces = loadRaces()
-let allClasses = loadClasses()
 let anyConstant = "any"
 
 //Accepts 4 different race types of values raceId "elf", tribeType "civilized", id "forsestElf", any "any" to get the correct Race from the list
@@ -403,10 +401,14 @@ class BattlePerson: Person {
         
         super.init(person: person)
         
-        currentHp = hp
+        currentHp = health
         currentAttack = attack
         currentDefense = defense
         currentSpeed = speed
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     var isAlive: Bool {
@@ -453,12 +455,12 @@ class BattlePerson: Person {
     }
 }
 
-class Person: CustomStringConvertible, Hashable {
-    let id: UUID
+class Person: NSObject, NSCoding {
+    private let id: UUID
     let race: Race
     let pclass: Class
     let color: Color
-    let hp: Int
+    let health: Int
     let attack: Int
     let defense: Int
     let speed: Int
@@ -472,10 +474,18 @@ class Person: CustomStringConvertible, Hashable {
     let attackMove: Attack
     let effectMoves: [Effect]
     
-    convenience init(globalRaceId: String, globalClassId: String) {
+    convenience init(globalRaceId: String, globalClassId: String, preselectedColor: Int? = nil, preAttack: Int? = nil, preDefense: Int? = nil, preHealth: Int? = nil) {
         let selectedPerson = raceClass(globalRaceId: globalRaceId, globalClassId: globalClassId)
         
-        self.init(preRace: selectedPerson.race, preClass: selectedPerson.class)
+        let color: Color?
+        
+        if let preselectedColor = preselectedColor {
+            color = Color(rawValue: preselectedColor)
+        } else {
+            color = nil
+        }
+        
+        self.init(preRace: selectedPerson.race, preClass: selectedPerson.class, preColor: color, preAttack: preAttack, preDefense: preDefense, preHealth: preHealth)
     }
     
     init(person: Person) {
@@ -483,7 +493,7 @@ class Person: CustomStringConvertible, Hashable {
         race = person.race
         pclass = person.pclass
         color = person.color
-        hp = person.hp
+        health = person.health
         attack = person.attack
         defense = person.defense
         speed = person.speed
@@ -496,7 +506,7 @@ class Person: CustomStringConvertible, Hashable {
         effectMoves = person.effectMoves
     }
     
-    init(preRace: Race? = nil, preClass: Class? = nil, preColor: Color? = nil) {
+    init(preRace: Race? = nil, preClass: Class? = nil, preColor: Color? = nil, preAttack: Int? = nil, preDefense: Int? = nil, preHealth: Int? = nil) {
         let selectedRace: Race
         let selectedClass: Class
         let selectedColor: Color
@@ -533,9 +543,24 @@ class Person: CustomStringConvertible, Hashable {
         color = selectedColor
         
         //TODO: math!  need to ensure we never get a 0 here
-        hp = Int(Double(pclass.hp) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
-        attack = Int(Double(pclass.attack) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
-        defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
+        if let preHealth = preHealth {
+            health = preHealth
+        } else {
+            health = Int(Double(pclass.hp) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
+        }
+        
+        if let preAttack = preAttack {
+            attack = preAttack
+        } else {
+            attack = Int(Double(pclass.attack) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
+        }
+        
+        if let preDefense = preDefense {
+            defense = preDefense
+        } else {
+            defense = Int(Double(pclass.defense) * (Double(randomPersentage.nextInt()) / 100.0)) + 1
+        }
+        
         speed = pclass.speed + race.bounusSpeed
         
         attackMove = pclass.attackMove
@@ -574,11 +599,11 @@ class Person: CustomStringConvertible, Hashable {
         return lhs.id == rhs.id
     }
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
+//    override func hash(into hasher: inout Hasher) {
+//        hasher.combine(id)
+//    }
     
-    var description: String {
+    override var description: String {
         return "race: \(race.id) class: \(pclass.id) color: \(color)"
     }
     
@@ -626,5 +651,41 @@ class Person: CustomStringConvertible, Hashable {
         UIGraphicsEndImageContext()
         
         return image!
+    }
+
+    //MARK: NSCoding
+    struct PropertyKey {
+        static let race = "race"
+        static let pclass = "pclass"
+        static let color = "color"
+        
+        static let attack = "attack"
+        static let defense = "defense"
+        static let health = "health"
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(race.id, forKey: PropertyKey.race)
+        coder.encode(pclass.id, forKey: PropertyKey.pclass)
+        coder.encode(color.rawValue, forKey: PropertyKey.color)
+        
+        coder.encode(attack, forKey: PropertyKey.attack)
+        coder.encode(defense, forKey: PropertyKey.defense)
+        coder.encode(health, forKey: PropertyKey.health)
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        guard let raceId = coder.decodeObject(forKey: PropertyKey.race) as? String,
+            let classId = coder.decodeObject(forKey: PropertyKey.pclass) as? String else {
+                return nil
+        }
+        
+        let colorRaw = coder.decodeInteger(forKey: PropertyKey.color)
+        
+        let attack = coder.decodeInteger(forKey: PropertyKey.attack)
+        let defense = coder.decodeInteger(forKey: PropertyKey.defense)
+        let health = coder.decodeInteger(forKey: PropertyKey.health)
+        
+        self.init(globalRaceId: raceId, globalClassId: classId, preselectedColor: colorRaw, preAttack: attack, preDefense: defense, preHealth: health)
     }
 }

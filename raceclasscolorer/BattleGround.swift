@@ -56,7 +56,7 @@ class BattleGround {
     private(set) var ground: [[Spot]]
     
     //TODO: fix ground logic
-    init(ourTeam: Team, enemyTeam: Team, groundJson: GroundJson) {
+    init(ourTeam: Team, enemyTeam: Team) {
         self.ourTeam = ourTeam
         self.enemyTeam = enemyTeam
         
@@ -67,7 +67,9 @@ class BattleGround {
         var convertedEnemy = [PersonState]()
         
         var ground = [[Spot]]()
-        for (lineIndex, line) in groundJson.ground.enumerated() {
+        //TODO: finish refactoring all of this
+        let hack = [["o"],["m"]]
+        for (lineIndex, line) in hack.enumerated() {
             var groundLine = [Spot]()
             for (tileIndex, tile) in line.enumerated() {
                 switch tile {
@@ -182,7 +184,7 @@ class BattleGround {
                 return
             }
             
-            print("\(attackingPerson.id) is attacking \(attackingPerson.attackMove.name)")
+            print("\(attackingPerson) is attacking \(attackingPerson.attackMove.name)")
             
             let onOur = attackingPersonState.teamType == .our
             let defendingTeam = (onOur ? enemyTeamSide : ourTeamSide).filter({ $0.person.isAlive })

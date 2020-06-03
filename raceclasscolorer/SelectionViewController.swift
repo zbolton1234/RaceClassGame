@@ -31,7 +31,7 @@ class SelectionViewController: UIViewController {
         worldScrollView.minimumZoomScale = 1.0
         worldScrollView.maximumZoomScale = 5.0
         
-        for city in loadCities() {
+        for city in allCities {
             if city.locked {
                 continue
             }
@@ -46,7 +46,7 @@ class SelectionViewController: UIViewController {
         cityButton.setTitle(city.name, for: .normal)
         cityButton.backgroundColor = .clear
         cityButton.titleLabel?.textColor = .black
-        cityButton.tag = loadCities().firstIndex(of: city) ?? -1
+        cityButton.tag = allCities.firstIndex(of: city) ?? -1
         
         worldImageView.addSubview(cityButton)
         
@@ -64,7 +64,7 @@ class SelectionViewController: UIViewController {
         infoButton.setTitle("\(city.name) Info", for: .normal)
         infoButton.backgroundColor = .clear
         infoButton.titleLabel?.textColor = .black
-        infoButton.tag = loadCities().firstIndex(of: city) ?? -1
+        infoButton.tag = allCities.firstIndex(of: city) ?? -1
         
         worldImageView.addSubview(infoButton)
         
@@ -83,12 +83,12 @@ class SelectionViewController: UIViewController {
     }
     
     @objc func selectedTown(_ sender: UIButton) {
-        selectedCity = loadCities()[sender.tag]
+        selectedCity = allCities[sender.tag]
         performSegue(withIdentifier: "showBattleViewController", sender: nil)
     }
     
     @objc func cityInfo(_ sender: UIButton) {
-        selectedCity = loadCities()[sender.tag]
+        selectedCity = allCities[sender.tag]
         performSegue(withIdentifier: "showCityViewController", sender: nil)
     }
     
@@ -142,7 +142,7 @@ class SelectionViewController: UIViewController {
                                         self.fontTestLabel.text = "\(self.testGold)"
                                         
                                         for cityId in results.cities {
-                                            for city in loadCities() {
+                                            for city in allCities {
                                                 if city.id == cityId {
                                                     if city.locked {
                                                         city.locked = false
@@ -154,9 +154,9 @@ class SelectionViewController: UIViewController {
                                         }
                                         
                                         for buildingId in results.buildings {
-                                            for building in loadBuildings() {
+                                            for building in allBuildings {
                                                 if building.id == buildingId {
-                                                    for city in loadCities() {
+                                                    for city in allCities {
                                                         if city.id == building.cityId {
                                                             if !city.buildings.contains(where: { $0.id == building.id }) {
                                                                 city.buildings.append(Building(buildingJSON: building))
@@ -167,6 +167,8 @@ class SelectionViewController: UIViewController {
                                                 }
                                             }
                                         }
+                                        
+                                        saveWorld()
         })
     }
 }

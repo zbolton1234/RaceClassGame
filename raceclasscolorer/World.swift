@@ -12,9 +12,7 @@ private let neturalEncounters = allEncounters.filter({ $0.cityLocationId == "any
 private let neturalCivEncounters = allEncounters.filter({ $0.cityLocationId == "anyCivilized" })
 private let neturalWildEncounters = allEncounters.filter({ $0.cityLocationId == "anyWild" })
 
-let allBuildings = loadBuildings()
-
-//npcs
+//TODO: npcs
 
 class CityJson: Decodable {
     let name: String
@@ -29,7 +27,7 @@ class CityJson: Decodable {
     let y: Int
 }
 
-class City: Equatable {
+class City: NSObject, NSCoding {
     let name: String
     let id: String
     let position: CGPoint
@@ -131,6 +129,54 @@ class City: Equatable {
     static func == (lhs: City, rhs: City) -> Bool {
         return lhs.id == rhs.id
     }
+    
+    //MARK: NSCoding
+    struct PropertyKey {
+        static let name = "name"
+        static let id = "id"
+        static let position = "position"
+        static let tribeType = "tribeType"
+        static let buildings = "buildings"
+        static let locked = "locked"
+        static let lockedRaces = "lockedRaces"
+        static let primaryRace = "primaryRace"
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: PropertyKey.name)
+        coder.encode(id, forKey: PropertyKey.id)
+        coder.encode(position, forKey: PropertyKey.position)
+        coder.encode(tribeType.rawValue, forKey: PropertyKey.tribeType)
+        coder.encode(buildings, forKey: PropertyKey.buildings)
+        coder.encode(locked, forKey: PropertyKey.locked)
+        coder.encode(lockedRaces, forKey: PropertyKey.lockedRaces)
+        coder.encode(primaryRace, forKey: PropertyKey.primaryRace)
+    }
+    
+    required init?(coder: NSCoder) {
+        guard let name = coder.decodeObject(forKey: PropertyKey.name) as? String,
+            let id = coder.decodeObject(forKey: PropertyKey.id) as? String,
+            let tribeTypeString = coder.decodeObject(forKey: PropertyKey.tribeType) as? String,
+            let tribeType = TribeType(rawValue: tribeTypeString),
+            let buildings = coder.decodeObject(forKey: PropertyKey.buildings) as? [Building],
+            let lockedRaces = coder.decodeObject(forKey: PropertyKey.lockedRaces) as? [String: Bool],
+            let primaryRace = coder.decodeObject(forKey: PropertyKey.primaryRace) as? String else {
+                return nil
+        }
+        
+        let locked = coder.decodeBool(forKey: PropertyKey.locked)
+        let position = coder.decodeCGPoint(forKey: PropertyKey.position)
+        
+        self.name = name
+        self.id = id
+        self.position = position
+        self.tribeType = tribeType
+        self.buildings = buildings
+        self.locked = locked
+        self.lockedRaces = lockedRaces
+        self.primaryRace = primaryRace
+        self.encounters = allEncounters.filter({ $0.cityLocationId == id })
+    }
 }
 
 //How are buildings unlocked
@@ -154,7 +200,7 @@ struct BuildingJSON: Decodable, Equatable {
     let levels: [String: [String]]
 }
 
-class Building {
+class Building: NSObject, NSCoding {
     let name: String
     let id: String
     let cityId: String
@@ -195,5 +241,49 @@ class Building {
         }
         
         return BuildingReward(gold: randomGold, people: [Person(globalRaceId: selectedRace, globalClassId: selectedClass)])
+    }
+
+    //MARK: NSCoding
+    struct PropertyKey {
+        static let name = "name"
+        static let id = "id"
+        static let cityId = "cityId"
+        static let groupId = "groupId"
+        static let buildings = "buildings"
+        static let bdescription = "bdescription"
+        static let levels = "levels"
+        static let currentLevel = "currentLevel"
+        static let encounters = "encounters"
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: PropertyKey.name)
+        coder.encode(id, forKey: PropertyKey.id)
+        coder.encode(cityId, forKey: PropertyKey.cityId)
+        coder.encode(groupId, forKey: PropertyKey.groupId)
+        coder.encode(bdescription, forKey: PropertyKey.bdescription)
+        coder.encode(levels, forKey: PropertyKey.levels)
+        coder.encode(currentLevel, forKey: PropertyKey.currentLevel)
+    }
+    
+    required init?(coder: NSCoder) {
+        guard let name = coder.decodeObject(forKey: PropertyKey.name) as? String,
+            let id = coder.decodeObject(forKey: PropertyKey.id) as? String,
+            let cityId = coder.decodeObject(forKey: PropertyKey.cityId) as? String,
+            let groupId = coder.decodeObject(forKey: PropertyKey.groupId) as? String,
+            let bdescription = coder.decodeObject(forKey: PropertyKey.bdescription) as? String,
+            let levels = coder.decodeObject(forKey: PropertyKey.levels) as? [String: [String]] else {
+                return nil
+        }
+        
+        let currentLevel = coder.decodeInteger(forKey: PropertyKey.currentLevel)
+        
+        self.name = name
+        self.id = id
+        self.cityId = cityId
+        self.groupId = groupId
+        self.bdescription = bdescription
+        self.levels = levels
+        self.currentLevel = currentLevel
     }
 }

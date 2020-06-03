@@ -21,8 +21,7 @@ class BattleViewController: UIViewController {
         self.ourTeam = ourTeam
         self.encounter = encounter
         self.battleGround = BattleGround(ourTeam: ourTeam,
-                                         enemyTeam: encounter.enemyTeam,
-                                         groundJson: encounter.groundJson)
+                                         enemyTeam: encounter.enemyTeam)
         self.completion = completion
         
         super.init(coder: coder)
